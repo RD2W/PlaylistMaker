@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,7 @@ class MediaActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         binding.topAppBar.setNavigationOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 }
