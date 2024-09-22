@@ -1,8 +1,7 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
@@ -17,10 +16,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
+        binding.btSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
+
+        binding.btMediaLibrary.setOnClickListener {
+            startActivity(Intent(this, MediaActivity::class.java))
+        }
+
         binding.btSettings.setOnClickListener {
-            val msg = "Вы нажали на кнопку ${binding.btSettings.text}."
-            Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
-            Log.d("clickOnButton", msg)
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 }
