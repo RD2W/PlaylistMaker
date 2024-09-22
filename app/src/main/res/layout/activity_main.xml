@@ -1,19 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="@color/background_main"
+    android:paddingVertical="@dimen/offset_24"
+    android:paddingHorizontal="@dimen/offset_16">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/app_name"
+        app:titleTextColor="@color/white"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btSearch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/offset_16"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:text="@string/search_button"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="@dimen/bt_text_size"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_search_button"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/ic_padding"
+        app:iconTint="@color/black"
+        />
+
+    <Button
+        android:id="@+id/btMediaLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/offset_16"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:text="@string/media_library_button"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="@dimen/bt_text_size"
+        app:cornerRadius="@dimen/bt_corner_radius"
+        app:icon="@drawable/ic_media_button"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/ic_padding"
+        app:iconTint="@color/black"
+        />
+
+    <Button
+        android:id="@+id/btSettings"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginVertical="@dimen/offset_16"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:text="@string/settings_button"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="@dimen/bt_text_size"
+        app:cornerRadius="@dimen/bt_corner_radius"
+        app:icon="@drawable/ic_settings_button"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/ic_padding"
+        app:iconTint="@color/black"
+        />
+
+</LinearLayout>
