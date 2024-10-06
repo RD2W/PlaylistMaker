@@ -6,9 +6,11 @@
         <item name="android:layout_marginTop">@dimen/offset_16</item>
         <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/bt_text_size</item>
+        <item name="android:textFontWeight">@dimen/text_title_font_weight</item>
         <item name="cornerRadius">@dimen/bt_corner_radius</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/ic_padding</item>
