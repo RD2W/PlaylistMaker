@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LinearLayoutStyle"
     android:id="@+id/search"
-    tools:context=".SearchActivity"
-    style="@style/LinearLayoutStyle">
+    tools:context=".SearchActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
        android:id="@+id/topAppBar"

@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LinearLayoutStyle"
     android:id="@+id/media"
-    tools:context=".MediaActivity"
-    style="@style/LinearLayoutStyle">
+    tools:context=".MediaActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"

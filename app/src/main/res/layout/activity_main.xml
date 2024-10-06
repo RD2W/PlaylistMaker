@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LinearLayoutStyle"
     android:id="@+id/main"
     android:background="@color/background_main"
-    tools:context=".MainActivity"
-    style="@style/LinearLayoutStyle">
+    tools:context=".MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -15,17 +15,20 @@
         app:title="@string/app_name"
         app:titleTextColor="@color/white"/>
 
-    <Button style="@style/ButtonMainStyle"
+    <com.google.android.material.button.MaterialButton
+        style="@style/ButtonMainStyle"
         android:id="@+id/btSearch"
         android:text="@string/search_button"
         app:icon="@drawable/ic_search_button"/>
 
-    <Button style="@style/ButtonMainStyle"
+    <com.google.android.material.button.MaterialButton
+        style="@style/ButtonMainStyle"
         android:id="@+id/btMediaLibrary"
         android:text="@string/media_library_button"
         app:icon="@drawable/ic_media_button"/>
 
-    <Button style="@style/ButtonMainStyle"
+    <com.google.android.material.button.MaterialButton
+        style="@style/ButtonMainStyle"
         android:id="@+id/btSettings"
         android:text="@string/settings_button"
         app:icon="@drawable/ic_settings_button"/>
