@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="LinearLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:paddingVertical">@dimen/offset_24</item>
+        <item name="android:paddingHorizontal">@dimen/offset_16</item>
+    </style>
+
     <style name="ButtonMainStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/zero_dp</item>
@@ -16,4 +26,5 @@
         <item name="iconPadding">@dimen/ic_padding</item>
         <item name="iconTint">@color/black</item>
     </style>
+
 </resources>

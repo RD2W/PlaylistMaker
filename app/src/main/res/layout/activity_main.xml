@@ -4,13 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background_main"
-    android:paddingVertical="@dimen/offset_24"
-    android:paddingHorizontal="@dimen/offset_16"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    style="@style/LinearLayoutStyle">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
