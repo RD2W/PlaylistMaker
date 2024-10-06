@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Playlist Maker</string>
+    <string name="media_library_button">Медиатека</string>
+    <string name="search_button">Поиск</string>
+    <string name="settings_button">Настройки</string>
+    <string name="settings_dark_theme_item">Тёмная тема</string>
+    <string name="settings_share_app_item">Поделиться приложением</string>
+    <string name="settings_support_item">Написать в поддержку</string>
+    <string name="settings_user_agreement_item">Пользовательское соглашение</string>
+</resources>
