@@ -24,16 +24,19 @@
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
+        android:id="@+id/shareButtom"
         android:drawableEnd="@drawable/ic_share"
         android:text="@string/settings_share_app_item"/>
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
+        android:id="@+id/supportButtom"
         android:drawableEnd="@drawable/ic_support"
         android:text="@string/settings_support_item"/>
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
+        android:id="@+id/agreementButtom"
         android:drawableEnd="@drawable/ic_forward"
         android:text="@string/settings_user_agreement_item"/>
 

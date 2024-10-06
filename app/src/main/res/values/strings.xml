@@ -7,4 +7,10 @@
     <string name="settings_share_app_item">Share the app</string>
     <string name="settings_support_item">Write to support</string>
     <string name="settings_user_agreement_item">User Agreement</string>
+    <string name="app_link" translatable="false">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="app_share_msg">Share Playlist Maker app</string>
+    <string name="email_support_title">Message to the developers of the Playlist Maker app</string>
+    <string name="email_support_msg">Thanks to the developers for a cool app!</string>
+    <string name="email" translatable="false">putin@kremlin.ru</string>
+    <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
 </resources>
