@@ -27,4 +27,14 @@
         <item name="iconTint">@color/black</item>
     </style>
 
+    <style name="ItemSettingsStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">@dimen/offset_20</item>
+        <item name="android:paddingHorizontal">@dimen/offset_10</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
 </resources>

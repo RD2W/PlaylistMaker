@@ -16,45 +16,25 @@
         app:titleTextColor="@color/text"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/ItemSettingsStyle"
         android:id="@+id/themeSwitcher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
         android:text="@string/settings_dark_theme_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"
         android:thumbTintMode="screen"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ItemSettingsStyle"
         android:drawableEnd="@drawable/ic_share"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
-        android:text="@string/settings_share_app_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"/>
+        android:text="@string/settings_share_app_item"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ItemSettingsStyle"
         android:drawableEnd="@drawable/ic_support"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
-        android:text="@string/settings_support_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"/>
+        android:text="@string/settings_support_item"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ItemSettingsStyle"
         android:drawableEnd="@drawable/ic_forward"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
-        android:text="@string/settings_user_agreement_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"/>
+        android:text="@string/settings_user_agreement_item"/>
 
 </LinearLayout>
