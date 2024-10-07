@@ -39,15 +39,14 @@
             android:paddingStart="@dimen/offset_8"
             android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textCursorDrawable="@color/light_blue"
+            android:textCursorDrawable="@drawable/ic_cursor"
             tools:ignore="RtlSymmetry"/>
 
         <ImageView style="@style/IconClearStyle"
             android:id="@+id/clearIcon"
             android:layout_width="@dimen/offset_16"
             android:layout_height="@dimen/offset_16"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/offset_18"
+            android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="@dimen/offset_24"
             android:contentDescription="@string/ic_clear_description"
             android:src="@drawable/ic_clear"
