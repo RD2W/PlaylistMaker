@@ -7,11 +7,13 @@
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="offset_8">8dp</dimen>
     <dimen name="offset_10">10dp</dimen>
-    <dimen name="offset_12">20dp</dimen>
+    <dimen name="offset_12">12dp</dimen>
+    <dimen name="offset_14">14dp</dimen>
     <dimen name="offset_16">16dp</dimen>
     <dimen name="offset_18">18dp</dimen>
     <dimen name="offset_20">20dp</dimen>
     <dimen name="offset_24">24dp</dimen>
+    <dimen name="offset_28">28dp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_title_size">22sp</dimen>
 </resources>
