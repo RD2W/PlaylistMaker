@@ -13,4 +13,6 @@
     <string name="email_support_msg">Thanks to the developers for a cool app!</string>
     <string name="email" translatable="false">putin@kremlin.ru</string>
     <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="search_hint">Input text</string>
+    <string name="ic_clear_description">Icon for clearing search query text</string>
 </resources>

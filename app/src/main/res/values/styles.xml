@@ -21,7 +21,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/bt_text_size</item>
         <item name="android:textFontWeight">500</item>
-        <item name="cornerRadius">@dimen/bt_corner_radius</item>
+        <item name="cornerRadius">@dimen/corner_radius_16</item>
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/ic_padding</item>
         <item name="iconTint">@color/black</item>
@@ -37,6 +37,17 @@
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="IconClearStyle">
+        <item name="tint">@color/text_search_field</item>
+        <item name="android:background">@color/background_search_field</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:textColorHint">@color/text_search_field</item>
+        <item name="android:drawableTint">@color/icon_search_field</item>
+        <item name="android:backgroundTint">@color/background_search_field</item>
     </style>
 
 </resources>
