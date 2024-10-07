@@ -34,7 +34,7 @@
             android:drawablePadding="@dimen/ic_padding"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search_hint"
-            android:inputType="text"
+            android:inputType="textCapSentences"
             android:maxLines="1"
             android:paddingStart="@dimen/offset_8"
             android:textSize="@dimen/text_size"
