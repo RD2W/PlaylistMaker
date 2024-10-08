@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/LinearLayoutStyle"
+    style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/main"
     android:background="@color/background_main"
     tools:context=".MainActivity">
@@ -18,18 +18,30 @@
     <com.google.android.material.button.MaterialButton
         style="@style/ButtonMainStyle"
         android:id="@+id/btSearch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_16"
+        android:layout_weight="1"
         android:text="@string/search_button"
         app:icon="@drawable/ic_search_button"/>
 
     <com.google.android.material.button.MaterialButton
         style="@style/ButtonMainStyle"
         android:id="@+id/btMediaLibrary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_16"
+        android:layout_weight="1"
         android:text="@string/media_library_button"
         app:icon="@drawable/ic_media_button"/>
 
     <com.google.android.material.button.MaterialButton
         style="@style/ButtonMainStyle"
         android:id="@+id/btSettings"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_16"
+        android:layout_weight="1"
         android:text="@string/settings_button"
         app:icon="@drawable/ic_settings_button"/>
 

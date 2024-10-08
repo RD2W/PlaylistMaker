@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LinearLayoutStyle">
+    <style name="PrimeLinearLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
@@ -11,10 +11,6 @@
     </style>
 
     <style name="ButtonMainStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/zero_dp</item>
-        <item name="android:layout_marginTop">@dimen/value_16</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textAllCaps">false</item>
@@ -28,10 +24,6 @@
     </style>
 
     <style name="ItemSettingsStyle" parent="Widget.MaterialComponents.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingVertical">@dimen/value_20</item>
-        <item name="android:paddingHorizontal">@dimen/value_10</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">@dimen/text_size</item>
@@ -40,20 +32,11 @@
     </style>
 
     <style name="IconClearStyle">
-        <item name="android:layout_width">@dimen/value_14</item>
-        <item name="android:layout_height">@dimen/value_14</item>
-        <item name="android:layout_gravity">end|center_vertical</item>
-        <item name="android:layout_marginEnd">@dimen/value_28</item>
         <item name="android:background">@color/background_search_field</item>
         <item name="tint">@color/text_search_field</item>
     </style>
 
     <style name="SearchFieldStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginHorizontal">@dimen/value_16</item>
-        <item name="android:layout_marginVertical">@dimen/value_8</item>
         <item name="android:background">@drawable/ic_search_field</item>
         <item name="android:backgroundTint">@color/background_search_field</item>
         <item name="android:paddingStart">@dimen/value_8</item>
