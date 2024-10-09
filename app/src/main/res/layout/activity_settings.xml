@@ -3,13 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/settings"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background"
-    android:paddingVertical="@dimen/offset_24"
-    android:paddingHorizontal="@dimen/offset_16"
     tools:context=".SettingsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -18,53 +13,47 @@
         android:layout_height="?attr/actionBarSize"
         app:title="@string/settings_button"
         app:navigationIcon="@drawable/ic_back"
-        app:titleTextColor="@color/text"
-        />
+        app:titleTextColor="@color/text"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
+        style="@style/ItemSettingsStyle"
         android:id="@+id/themeSwitcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/value_20"
+        android:paddingHorizontal="@dimen/value_10"
         android:gravity="center_vertical"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
         android:text="@string/settings_dark_theme_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"
-        android:thumbTintMode="screen"
-        />
+        android:thumbTintMode="screen"/>
 
     <com.google.android.material.textview.MaterialTextView
+        style="@style/ItemSettingsStyle"
+        android:id="@+id/shareButtom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/value_20"
+        android:paddingHorizontal="@dimen/value_10"
         android:drawableEnd="@drawable/ic_share"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
-        android:text="@string/settings_share_app_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"
-        />
+        android:text="@string/settings_share_app_item"/>
 
     <com.google.android.material.textview.MaterialTextView
+        style="@style/ItemSettingsStyle"
+        android:id="@+id/supportButtom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/value_20"
+        android:paddingHorizontal="@dimen/value_10"
         android:drawableEnd="@drawable/ic_support"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
-        android:text="@string/settings_support_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"
-        />
+        android:text="@string/settings_support_item"/>
 
     <com.google.android.material.textview.MaterialTextView
+        style="@style/ItemSettingsStyle"
+        android:id="@+id/agreementButtom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/value_20"
+        android:paddingHorizontal="@dimen/value_10"
         android:drawableEnd="@drawable/ic_forward"
-        android:paddingVertical="@dimen/offset_20"
-        android:paddingHorizontal="@dimen/offset_10"
-        android:text="@string/settings_user_agreement_item"
-        android:textColor="@color/text"
-        android:textSize="@dimen/text_size"
-        />
+        android:text="@string/settings_user_agreement_item"/>
 
 </LinearLayout>

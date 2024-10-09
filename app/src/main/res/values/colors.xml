@@ -2,15 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="light_blue_900">#FF01579B</color>
-    <color name="light_blue_A200">#FF40C4FF</color>
-    <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
-
-    <color name="background">#FFFFFFFF</color>
-    <color name="background_main">#FF3772E7</color>
-    <color name="text">#000000</color>
-    <color name="icon">#AEAFB4</color>
-    <color name="button">#1A1B22</color>
+    <color name="text_gray">#FFAEAFB4</color>
+    <color name="light_blue">#FF3772E7</color>
+    <color name="light_gray">#FFE6E8EB</color>
+    <color name="dark_gray">#FF1A1B22</color>
+    <color name="background">@color/white</color>
+    <color name="background_main">@color/light_blue</color>
+    <color name="text">@color/black</color>
+    <color name="icon">@color/text_gray</color>
+    <color name="button">@color/dark_gray</color>
+    <color name="text_search_field">@color/text_gray</color>
+    <color name="icon_search_field">@color/text_gray</color>
+    <color name="background_search_field">@color/light_gray</color>
 </resources>

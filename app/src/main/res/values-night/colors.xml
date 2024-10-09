@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#FF000000</color>
-    <color name="background_main">#FF000000</color>
-    <color name="text">#FFFFFF</color>
-    <color name="icon">#FFFFFF</color>
-    <color name="button">#FFFFFF</color>
+    <color name="background">@color/black</color>
+    <color name="background_main">@color/black</color>
+    <color name="text">@color/white</color>
+    <color name="icon">@color/white</color>
+    <color name="button">@color/white</color>
+    <color name="text_search_field">@color/dark_gray</color>
+    <color name="icon_search_field">@color/dark_gray</color>
+    <color name="background_search_field">@color/white</color>
 </resources>

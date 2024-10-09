@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,5 +20,55 @@ class SettingsActivity : AppCompatActivity() {
         binding.topAppBar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+
+        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+
+        }
+
+        binding.shareButtom.setOnClickListener {
+            shareApp()
+        }
+
+        binding.supportButtom.setOnClickListener {
+            writeSupport()
+        }
+
+        binding.agreementButtom.setOnClickListener {
+            openUserAgreement()
+        }
+    }
+
+    private fun shareApp() {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.app_link))
+        }
+
+        startActivity(
+            Intent.createChooser(
+                shareIntent,
+                getString(R.string.app_share_msg)
+            )
+        )
+    }
+
+    private fun writeSupport() {
+        val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse(
+                "mailto:" + Uri.encode(getString(R.string.email)) +
+                        "?subject=" + Uri.encode(getString(R.string.email_support_title)) +
+                        "&body=" + Uri.encode(getString(R.string.email_support_msg))
+            )
+        }
+
+        startActivity(emailIntent)
+    }
+
+    private fun openUserAgreement() {
+        val agreementIntent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(getString(R.string.user_agreement_link))
+        }
+
+        startActivity(agreementIntent)
     }
 }
