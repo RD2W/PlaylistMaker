@@ -8,4 +8,9 @@
     <string name="settings_share_app_item">Поделиться приложением</string>
     <string name="settings_support_item">Написать в поддержку</string>
     <string name="settings_user_agreement_item">Пользовательское соглашение</string>
+    <string name="app_share_msg">Поделиться приложением Playlist Maker</string>
+    <string name="email_support_title">Сообщение разработчикам приложения Playlist Maker</string>
+    <string name="email_support_msg">Спасибо разработчикам за крутое приложение!</string>
+    <string name="search_hint">Введите поисковой запрос</string>
+    <string name="ic_clear_description">Иконка для очистки текста поиского запроса</string>
 </resources>

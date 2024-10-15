@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/search"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:background="@color/background"
-android:paddingVertical="@dimen/offset_24"
-android:paddingHorizontal="@dimen/offset_16"
-tools:context=".SearchActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/PrimeLinearLayoutStyle"
+    android:id="@+id/search"
+    tools:context=".SearchActivity">
 
-<com.google.android.material.appbar.MaterialToolbar
-    android:id="@+id/topAppBar"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:title="@string/search_button"
-    app:navigationIcon="@drawable/ic_back"
-    app:titleTextColor="@color/text"
-    />
+    <com.google.android.material.appbar.MaterialToolbar
+       android:id="@+id/topAppBar"
+       android:layout_width="match_parent"
+       android:layout_height="?attr/actionBarSize"
+       app:title="@string/search_button"
+       app:navigationIcon="@drawable/ic_back"
+       app:titleTextColor="@color/text"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+
+        <EditText style="@style/SearchFieldStyle"
+            android:id="@+id/inputSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/value_16"
+            android:layout_marginVertical="@dimen/value_8"
+            android:autofillHints="no"
+            android:contextClickable="true"
+            android:hint="@string/search_hint"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            tools:ignore="RtlSymmetry"/>
+
+        <ImageView style="@style/IconClearStyle"
+            android:id="@+id/clearIcon"
+            android:layout_width="@dimen/value_14"
+            android:layout_height="@dimen/value_14"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/value_28"
+            android:contentDescription="@string/ic_clear_description"
+            android:src="@drawable/ic_clear"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 
 </LinearLayout>
