@@ -75,7 +75,6 @@
     </style>
 
     <style name="FoundTrackCoverContainer">
-        <item name="android:outlineSpotShadowColor">@color/black</item>
         <item name="cardCornerRadius">@dimen/corner_radius_2</item>
     </style>
 

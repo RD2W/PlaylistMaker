@@ -36,16 +36,14 @@
             android:id="@+id/foundTrackName"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_vertical"
-            tools:text="Sweet Child O'Mine"/>
+            android:layout_gravity="center_vertical"/>
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/FoundTrackDetails"
             android:id="@+id/foundTrackDetails"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_vertical"
-            tools:text="Guns N' Roses • 22.54"/>
+            android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
 
