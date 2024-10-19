@@ -15,6 +15,7 @@
     <color name="text_search_field">@color/text_gray</color>
     <color name="icon_search_field">@color/text_gray</color>
     <color name="background_search_field">@color/light_gray</color>
+    <color name="background_track_placeholder">@color/white</color>
     <color name="icon_track_placeholder">@color/text_gray</color>
     <color name="text_track_details">@color/text_gray</color>
 </resources>

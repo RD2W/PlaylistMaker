@@ -7,12 +7,14 @@
     android:layout_marginVertical="@dimen/value_8"
     android:orientation="horizontal">
 
-    <androidx.cardview.widget.CardView style="@style/FoundTrackCoverContainer"
+    <androidx.cardview.widget.CardView
+        style="@style/FoundTrackCoverContainer"
         android:layout_width="@dimen/value_45"
         android:layout_height="@dimen/value_45"
         android:layout_gravity="start|center_vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
+            style="@style/FoundTrackCover"
             android:id="@+id/foundTrackCover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
