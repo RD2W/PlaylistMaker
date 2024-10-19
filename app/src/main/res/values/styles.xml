@@ -52,4 +52,25 @@
         <item name="android:textCursorDrawable">@drawable/ic_cursor</item>
     </style>
 
+    <style name="FoundTrackName">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="FoundTrackDetails">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/text_track_details</item>
+        <item name="android:textSize">@dimen/text_small_size</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="FoundTrackCoverContainer">
+        <item name="android:outlineSpotShadowColor">@color/black</item>
+        <item name="cardCornerRadius">@dimen/corner_radius_2</item>
+    </style>
+
 </resources>
