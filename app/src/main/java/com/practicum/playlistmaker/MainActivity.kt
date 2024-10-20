@@ -16,16 +16,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        binding.btSearch.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
+        binding.apply {
+            btSearch.setOnClickListener {
+                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+            }
+
+            btMediaLibrary.setOnClickListener {
+                startActivity(Intent(this@MainActivity, MediaActivity::class.java))
+            }
+
+            btSettings.setOnClickListener {
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+            }
         }
 
-        binding.btMediaLibrary.setOnClickListener {
-            startActivity(Intent(this, MediaActivity::class.java))
-        }
-
-        binding.btSettings.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-        }
     }
 }

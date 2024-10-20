@@ -45,4 +45,11 @@
 
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_8"
+        tools:listitem="@layout/track_item"/>
+
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="corner_radius_2">2dp</dimen>
     <dimen name="corner_radius_8">8dp</dimen>
     <dimen name="corner_radius_16">16dp</dimen>
     <dimen name="bt_text_size">20sp</dimen>
@@ -14,6 +15,8 @@
     <dimen name="value_20">20dp</dimen>
     <dimen name="value_24">24dp</dimen>
     <dimen name="value_28">28dp</dimen>
+    <dimen name="value_45">45dp</dimen>
     <dimen name="text_size">16sp</dimen>
+    <dimen name="text_small_size">12sp</dimen>
     <dimen name="text_title_size">22sp</dimen>
 </resources>
