@@ -29,10 +29,10 @@ class SearchActivity : AppCompatActivity() {
             inputSearch.setText(inputText)
 
             clearIcon.setOnClickListener {
-                binding.inputSearch.setText("")
+                inputSearch.setText("")
                 val inputMethodManager =
                     getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
+                inputMethodManager?.hideSoftInputFromWindow(clearIcon.windowToken, 0)
             }
 
             searchRecycler.apply {
