@@ -21,21 +21,25 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        binding.topAppBar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+        binding.apply {
+            topAppBar.setNavigationOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
+
+            inputSearch.setText(inputText)
+
+            clearIcon.setOnClickListener {
+                binding.inputSearch.setText("")
+                val inputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
+            }
+
+            searchRecycler.apply {
+                layoutManager = LinearLayoutManager(this@SearchActivity)
+                adapter = TrackAdapter(MockTrackList.getTracks())
+            }
         }
-
-        binding.inputSearch.setText(inputText)
-
-        binding.clearIcon.setOnClickListener {
-            binding.inputSearch.setText("")
-            val inputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
-        }
-
-        binding.searchRecycler.layoutManager = LinearLayoutManager(this)
-        binding.searchRecycler.adapter = TrackAdapter(MockTrackList.getTracks())
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
