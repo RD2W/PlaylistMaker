@@ -8,7 +8,7 @@ class TrackViewHolder(private val binding: TrackItemBinding) : RecyclerView.View
 
     fun bind(track: Track) {
 
-        binding.apply {
+        with (binding) {
             foundTrackName.text = track.trackName
             foundTrackDetails.text = String.format("%s • %s", track.artistName, track.trackTime)
         }
