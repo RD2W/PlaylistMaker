@@ -17,24 +17,26 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        binding.topAppBar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        with (binding) {
+            topAppBar.setNavigationOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+            themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
 
-        }
+            }
 
-        binding.shareButtom.setOnClickListener {
-            shareApp()
-        }
+            shareButtom.setOnClickListener {
+                shareApp()
+            }
 
-        binding.supportButtom.setOnClickListener {
-            writeSupport()
-        }
+            supportButtom.setOnClickListener {
+                writeSupport()
+            }
 
-        binding.agreementButtom.setOnClickListener {
-            openUserAgreement()
+            agreementButtom.setOnClickListener {
+                openUserAgreement()
+            }
         }
     }
 
