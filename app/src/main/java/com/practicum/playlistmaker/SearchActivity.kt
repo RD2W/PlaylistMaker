@@ -21,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        binding.apply {
+        with(binding) {
             topAppBar.setNavigationOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        binding.apply {
+        with(binding) {
             btSearch.setOnClickListener {
                 startActivity(Intent(this@MainActivity, SearchActivity::class.java))
             }
