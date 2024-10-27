@@ -10,4 +10,8 @@
     <color name="background_search_field">@color/white</color>
     <color name="background_track_placeholder">@color/black</color>
     <color name="text_track_details">@color/white</color>
+    <color name="switch_thumb_color_checked">@color/light_blue</color>
+    <color name="switch_thumb_color_unchecked">@color/text_gray</color>
+    <color name="switch_track_color_checked">@color/medium_gray</color>
+    <color name="switch_track_color_unchecked">@color/light_gray</color>
 </resources>

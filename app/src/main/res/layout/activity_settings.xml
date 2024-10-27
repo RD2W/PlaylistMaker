@@ -24,7 +24,8 @@
         android:paddingHorizontal="@dimen/value_10"
         android:gravity="center_vertical"
         android:text="@string/settings_dark_theme_item"
-        android:thumbTintMode="screen"/>
+        app:thumbTint="@color/switch_thumb_color"
+        app:trackTint="@color/switch_track_color"/>
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
