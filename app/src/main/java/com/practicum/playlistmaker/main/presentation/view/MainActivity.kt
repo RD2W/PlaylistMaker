@@ -1,10 +1,13 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.main.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.practicum.playlistmaker.settings.presentation.view.SettingsActivity
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
+import com.practicum.playlistmaker.media.presentation.view.MediaActivity
+import com.practicum.playlistmaker.search.presentation.view.SearchActivity
 
 class MainActivity : AppCompatActivity() {
 

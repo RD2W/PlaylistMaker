@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.search.data.model
 
 object MockTrackList {
     private val tracks = listOf<Track>(

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.search.data.model
 
 data class Track(
     val trackName: String,

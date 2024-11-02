@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.search.presentation.view
 
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.search.data.model.MockTrackList
+import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
 

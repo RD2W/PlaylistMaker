@@ -6,7 +6,7 @@
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/main"
     android:background="@color/background_main"
-    tools:context=".MainActivity">
+    tools:context=".main.presentation.view.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"

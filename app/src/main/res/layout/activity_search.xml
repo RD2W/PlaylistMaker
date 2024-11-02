@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/search"
-    tools:context=".SearchActivity">
+    tools:context=".search.presentation.view.SearchActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
        android:id="@+id/topAppBar"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/settings"
-    tools:context=".SettingsActivity">
+    tools:context=".settings.presentation.view.SettingsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
