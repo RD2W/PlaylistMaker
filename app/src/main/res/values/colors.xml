@@ -5,6 +5,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="text_gray">#FFAEAFB4</color>
     <color name="light_blue">#FF3772E7</color>
+    <color name="medium_gray">#FF9FBBF3</color>
     <color name="light_gray">#FFE6E8EB</color>
     <color name="dark_gray">#FF1A1B22</color>
     <color name="background">@color/white</color>
@@ -15,4 +16,11 @@
     <color name="text_search_field">@color/text_gray</color>
     <color name="icon_search_field">@color/text_gray</color>
     <color name="background_search_field">@color/light_gray</color>
+    <color name="background_track_placeholder">@color/white</color>
+    <color name="icon_track_placeholder">@color/text_gray</color>
+    <color name="text_track_details">@color/text_gray</color>
+    <color name="switch_thumb_color_checked">@color/light_blue</color>
+    <color name="switch_thumb_color_unchecked">@color/text_gray</color>
+    <color name="switch_track_color_checked">@color/medium_gray</color>
+    <color name="switch_track_color_unchecked">@color/light_gray</color>
 </resources>

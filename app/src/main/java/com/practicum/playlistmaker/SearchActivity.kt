@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {
@@ -21,17 +21,24 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        binding.topAppBar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        with(binding) {
+            topAppBar.setNavigationOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
-        binding.inputSearch.setText(inputText)
+            inputSearch.setText(inputText)
 
-        binding.clearIcon.setOnClickListener {
-            binding.inputSearch.setText("")
-            val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(binding.clearIcon.windowToken, 0)
+            clearIcon.setOnClickListener {
+                inputSearch.setText("")
+                val inputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(clearIcon.windowToken, 0)
+            }
+
+            searchRecycler.apply {
+                layoutManager = LinearLayoutManager(this@SearchActivity)
+                adapter = TrackAdapter(MockTrackList.getTracks())
+            }
         }
 
         val simpleTextWatcher = object : TextWatcher {
