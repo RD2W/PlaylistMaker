@@ -14,4 +14,6 @@
     <color name="switch_thumb_color_unchecked">@color/text_gray</color>
     <color name="switch_track_color_checked">@color/medium_gray</color>
     <color name="switch_track_color_unchecked">@color/light_gray</color>
+    <color name="search_placeholder">@color/white</color>
+    <color name="search_update_button">@color/dark_gray</color>
 </resources>
