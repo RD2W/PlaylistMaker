@@ -73,7 +73,17 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.clearIcon.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                with(binding) {
+                    if (s.isNullOrEmpty()) {
+                        clearIcon.visibility = View.GONE
+                        searchPlaceholderImage.visibility = View.GONE
+                        searchPlaceholderText.visibility = View.GONE
+                        searchUpdateButton.visibility = View.GONE
+                        searchRecycler.visibility = View.GONE
+                    } else {
+                        clearIcon.visibility = View.VISIBLE
+                    }
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
