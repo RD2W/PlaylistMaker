@@ -13,7 +13,8 @@ class TrackViewHolder(private val binding: TrackItemBinding) : RecyclerView.View
 
         with (binding) {
             foundTrackName.text = track.trackName
-            foundTrackDetails.text = String.format("%s • %s", track.artistName, formatDurationToMMSS(track.trackTime))
+            foundTrackDetails.text = String.format("%s • %s", track.artistName,
+                track.trackTime?.let { formatDurationToMMSS(it) })
         }
 
         Glide.with(binding.foundTrackCover.context)
