@@ -106,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
         lastQuery = term
         RetrofitClient.iTunesApiService.searchTracks(term).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.code() == 200) {
+                if (response.code() == RESPONSE_OK) {
                     val trackResponse = response.body()
                     trackResponse?.let {
                         handleTrackResponse(it)
@@ -181,5 +181,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SAVED_INPUT_TEXT = "SAVED_INPUT_TEXT"
         const val DEFAULT_INPUT_TEXT = ""
+        const val RESPONSE_OK = 200
     }
 }
