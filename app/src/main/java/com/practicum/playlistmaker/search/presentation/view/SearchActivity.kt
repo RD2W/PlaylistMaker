@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -98,6 +99,7 @@ class SearchActivity : AppCompatActivity() {
         val view = currentFocus
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
         if (view != null) inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+        if (view is EditText) view.clearFocus()
     }
 
     private fun searchForTracks(term: String) {
