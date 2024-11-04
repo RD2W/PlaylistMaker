@@ -8,12 +8,12 @@
     tools:context=".search.presentation.view.SearchActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
+       style="@style/CustomToolbarStyle"
        android:id="@+id/topAppBar"
        android:layout_width="match_parent"
        android:layout_height="?attr/actionBarSize"
        app:title="@string/search_button"
-       app:navigationIcon="@drawable/ic_back"
-       app:titleTextColor="@color/text"/>
+       app:navigationIcon="@drawable/ic_back"/>
 
     <FrameLayout
         android:layout_width="match_parent"
