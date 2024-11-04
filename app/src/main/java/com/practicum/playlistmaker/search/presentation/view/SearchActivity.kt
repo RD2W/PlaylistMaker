@@ -114,7 +114,7 @@ class SearchActivity : AppCompatActivity() {
                         Log.d("ServerResponse", "The response from the server is empty")
                     }
                 } else {
-                    setNotFoundPlaceholder()
+                    setNetworkErrorPlaceholder()
                     Log.e("ServerResponse", "Error code: ${response.code()}, result: ${response.message()}")
                 }
             }
