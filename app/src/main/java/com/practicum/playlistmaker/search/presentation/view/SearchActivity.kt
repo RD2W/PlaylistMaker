@@ -106,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
         lastQuery = term
         RetrofitClient.iTunesApiService.searchTracks(term).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     val trackResponse = response.body()
                     trackResponse?.let {
                         handleTrackResponse(it)
