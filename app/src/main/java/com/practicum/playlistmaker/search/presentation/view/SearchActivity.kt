@@ -120,8 +120,6 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                binding.inputSearch.setText("")
-                hideKeyboard()
                 setNetworkErrorPlaceholder()
                 Log.e("NetworkError", "No network connection: ${t.message}")
             }
