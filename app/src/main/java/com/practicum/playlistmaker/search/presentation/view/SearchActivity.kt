@@ -25,6 +25,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     private val tracks: MutableList<Track> = mutableListOf()
     private var inputText: String = DEFAULT_INPUT_TEXT
+    private var lastQuery: String = DEFAULT_INPUT_TEXT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +48,6 @@ class SearchActivity : AppCompatActivity() {
             }
 
             searchUpdateButton.setOnClickListener {
-                val lastQuery = inputSearch.text.toString()
                 searchForTracks(lastQuery)
             }
 
@@ -101,6 +101,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchForTracks(term: String) {
+        lastQuery = term
         RetrofitClient.iTunesApiService.searchTracks(term).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                 if (response.isSuccessful) {
@@ -111,14 +112,15 @@ class SearchActivity : AppCompatActivity() {
                         Log.d("ServerResponse", "The response from the server is empty")
                     }
                 } else {
-                    setNetworkErrorPlaceholder()
+                    setNotFoundPlaceholder()
                     Log.e("ServerResponse", "Error code: ${response.code()}, result: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                setNetworkErrorPlaceholder()
+                binding.inputSearch.setText("")
                 hideKeyboard()
+                setNetworkErrorPlaceholder()
                 Log.e("NetworkError", "No network connection: ${t.message}")
             }
         })
