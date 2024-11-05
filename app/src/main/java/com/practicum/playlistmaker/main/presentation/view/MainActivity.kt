@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.main.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.settings.presentation.view.SettingsActivity
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
@@ -31,6 +30,5 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
             }
         }
-
     }
 }

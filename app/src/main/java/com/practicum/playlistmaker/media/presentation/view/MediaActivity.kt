@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.media.presentation.view
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.databinding.ActivityMediaBinding
 

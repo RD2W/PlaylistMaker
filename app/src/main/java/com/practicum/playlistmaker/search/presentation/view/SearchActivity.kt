@@ -8,10 +8,10 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.search.data.model.Track
 import com.practicum.playlistmaker.search.data.model.TrackResponse
@@ -115,22 +115,22 @@ class SearchActivity : AppCompatActivity() {
         lastQuery = term
         RetrofitClient.iTunesApiService.searchTracks(term).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.code() == RESPONSE_OK) {
+                if (response.isSuccessful) {
                     val trackResponse = response.body()
                     trackResponse?.let {
                         handleTrackResponse(it)
                     } ?: run {
-                        Log.d("ServerResponse", "The response from the server is empty")
+                        Log.d(LogTags.API_RESPONSE, "The response from the server is empty")
                     }
                 } else {
                     setNetworkErrorPlaceholder()
-                    Log.e("ServerResponse", "Error code: ${response.code()}, result: ${response.message()}")
+                    Log.e(LogTags.API_RESPONSE, "Error code: ${response.code()}, result: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                 setNetworkErrorPlaceholder()
-                Log.e("NetworkError", "No network connection: ${t.message}")
+                Log.e(LogTags.NETWORK_STATUS, "No network connection: ${t.message}")
             }
         })
     }
@@ -138,10 +138,10 @@ class SearchActivity : AppCompatActivity() {
     private fun handleTrackResponse(trackResponse: TrackResponse) {
         if (trackResponse.resultCount > 0) {
             showFoundTracks(trackResponse)
-            Log.d("ServerResponse", "Tracks found: ${trackResponse.resultCount}")
+            Log.d(LogTags.API_RESPONSE, "Tracks found: ${trackResponse.resultCount}")
         } else {
             setNotFoundPlaceholder()
-            Log.d("ServerResponse", "No tracks found")
+            Log.d(LogTags.API_RESPONSE, "No tracks found")
         }
     }
 
@@ -188,6 +188,5 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SAVED_INPUT_TEXT = "SAVED_INPUT_TEXT"
         const val DEFAULT_INPUT_TEXT = ""
-        const val RESPONSE_OK = 200
     }
 }
