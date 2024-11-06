@@ -97,11 +97,13 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SAVED_INPUT_TEXT, inputText)
+        outState.putString(SAVED_LAST_QUERY, lastQuery)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         inputText = savedInstanceState.getString(SAVED_INPUT_TEXT, DEFAULT_INPUT_TEXT)
+        lastQuery = savedInstanceState.getString(SAVED_LAST_QUERY, DEFAULT_INPUT_TEXT)
     }
 
     private fun hideKeyboard() {
@@ -186,7 +188,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SAVED_INPUT_TEXT = "SAVED_INPUT_TEXT"
         const val DEFAULT_INPUT_TEXT = ""
+        const val SAVED_INPUT_TEXT = "SAVED_INPUT_TEXT"
+        const val SAVED_LAST_QUERY = "SAVED_LAST_QUERY"
     }
 }
