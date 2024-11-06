@@ -115,26 +115,33 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchForTracks(term: String) {
         lastQuery = term
-        RetrofitClient.iTunesApiService.searchTracks(term).enqueue(object : Callback<TrackResponse> {
-            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.isSuccessful) {
-                    val trackResponse = response.body()
-                    trackResponse?.let {
-                        handleTrackResponse(it)
-                    } ?: run {
-                        Log.d(LogTags.API_RESPONSE, "The response from the server is empty")
+        RetrofitClient.iTunesApiService.searchTracks(term)
+            .enqueue(object : Callback<TrackResponse> {
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val trackResponse = response.body()
+                        trackResponse?.let {
+                            handleTrackResponse(it)
+                        } ?: run {
+                            Log.d(LogTags.API_RESPONSE, "The response from the server is empty")
+                        }
+                    } else {
+                        setNetworkErrorPlaceholder()
+                        Log.e(
+                            LogTags.API_RESPONSE,
+                            "Error code: ${response.code()}, result: ${response.message()}"
+                        )
                     }
-                } else {
-                    setNetworkErrorPlaceholder()
-                    Log.e(LogTags.API_RESPONSE, "Error code: ${response.code()}, result: ${response.message()}")
                 }
-            }
 
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                setNetworkErrorPlaceholder()
-                Log.e(LogTags.NETWORK_STATUS, "No network connection: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    setNetworkErrorPlaceholder()
+                    Log.e(LogTags.NETWORK_STATUS, "No network connection: ${t.message}")
+                }
+            })
     }
 
     private fun handleTrackResponse(trackResponse: TrackResponse) {
@@ -148,19 +155,25 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showFoundTracks(trackResponse: TrackResponse) {
+        tracks.apply {
+            clear()
+            addAll(trackResponse.results)
+        }
+
         with(binding) {
             searchPlaceholderImage.visibility = View.GONE
             searchPlaceholderText.visibility = View.GONE
             searchUpdateButton.visibility = View.GONE
             searchRecycler.visibility = View.VISIBLE
+            searchRecycler.adapter?.notifyDataSetChanged()
         }
-
-        tracks.clear()
-        tracks.addAll(trackResponse.results)
-        binding.searchRecycler.adapter?.notifyDataSetChanged()
     }
 
-    private fun setPlaceholder(placeholderImageResId: Int, placeholderText: String, isUpdateButtonVisible: Boolean) {
+    private fun setPlaceholder(
+        placeholderImageResId: Int,
+        placeholderText: String,
+        isUpdateButtonVisible: Boolean
+    ) {
         with(binding) {
             searchRecycler.visibility = View.GONE
             searchPlaceholderImage.setImageResource(placeholderImageResId)
