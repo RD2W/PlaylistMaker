@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.LogTags
@@ -17,9 +18,9 @@ import com.practicum.playlistmaker.search.data.model.Track
 import com.practicum.playlistmaker.search.data.model.TrackResponse
 import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchActivity : AppCompatActivity() {
 
@@ -115,33 +116,19 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchForTracks(term: String) {
         lastQuery = term
-        RetrofitClient.iTunesApiService.searchTracks(term)
-            .enqueue(object : Callback<TrackResponse> {
-                override fun onResponse(
-                    call: Call<TrackResponse>,
-                    response: Response<TrackResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val trackResponse = response.body()
-                        trackResponse?.let {
-                            handleTrackResponse(it)
-                        } ?: run {
-                            Log.d(LogTags.API_RESPONSE, "The response from the server is empty")
-                        }
-                    } else {
-                        setNetworkErrorPlaceholder()
-                        Log.e(
-                            LogTags.API_RESPONSE,
-                            "Error code: ${response.code()}, result: ${response.message()}"
-                        )
-                    }
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val trackResponse = RetrofitClient.iTunesApiService.searchTracks(term)
+                withContext(Dispatchers.Main) {
+                    handleTrackResponse(trackResponse)
                 }
-
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
                     setNetworkErrorPlaceholder()
-                    Log.e(LogTags.NETWORK_STATUS, "No network connection: ${t.message}")
+                    Log.e(LogTags.NETWORK_STATUS, "No network connection: ${e.message}")
                 }
-            })
+            }
+        }
     }
 
     private fun handleTrackResponse(trackResponse: TrackResponse) {
