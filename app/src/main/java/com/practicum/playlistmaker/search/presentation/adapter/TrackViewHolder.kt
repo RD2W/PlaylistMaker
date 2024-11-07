@@ -1,8 +1,11 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.search.presentation.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.databinding.TrackItemBinding
+import com.practicum.playlistmaker.search.data.model.Track
 
 class TrackViewHolder(private val binding: TrackItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -10,7 +13,8 @@ class TrackViewHolder(private val binding: TrackItemBinding) : RecyclerView.View
 
         with (binding) {
             foundTrackName.text = track.trackName
-            foundTrackDetails.text = String.format("%s • %s", track.artistName, track.trackTime)
+            foundTrackDetails.text = String.format("%s • %s", track.artistName,
+                track.trackTime?.let { formatDurationToMMSS(it) } ?: "N/A")
         }
 
         Glide.with(binding.foundTrackCover.context)

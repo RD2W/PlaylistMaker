@@ -6,12 +6,14 @@
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/main"
     android:background="@color/background_main"
-    tools:context=".MainActivity">
+    tools:context=".main.presentation.view.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
+        style="@style/CustomToolbarStyle"
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="@dimen/value_24"
         app:title="@string/app_name"
         app:titleTextColor="@color/white"/>
 
@@ -20,7 +22,8 @@
         android:id="@+id/btSearch"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dp"
-        android:layout_marginTop="@dimen/value_16"
+        android:layout_marginHorizontal="@dimen/value_16"
+        android:layout_marginBottom="@dimen/value_16"
         android:layout_weight="1"
         android:text="@string/search_button"
         app:icon="@drawable/ic_search_button"/>
@@ -30,7 +33,8 @@
         android:id="@+id/btMediaLibrary"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dp"
-        android:layout_marginTop="@dimen/value_16"
+        android:layout_marginHorizontal="@dimen/value_16"
+        android:layout_marginBottom="@dimen/value_16"
         android:layout_weight="1"
         android:text="@string/media_library_button"
         app:icon="@drawable/ic_media_button"/>
@@ -40,7 +44,8 @@
         android:id="@+id/btSettings"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero_dp"
-        android:layout_marginTop="@dimen/value_16"
+        android:layout_marginHorizontal="@dimen/value_16"
+        android:layout_marginBottom="@dimen/value_24"
         android:layout_weight="1"
         android:text="@string/settings_button"
         app:icon="@drawable/ic_settings_button"/>

@@ -5,15 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/settings"
-    tools:context=".SettingsActivity">
+    tools:context=".settings.presentation.view.SettingsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
+        style="@style/CustomToolbarStyle"
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="@dimen/value_24"
         app:title="@string/settings_button"
-        app:navigationIcon="@drawable/ic_back"
-        app:titleTextColor="@color/text"/>
+        app:navigationIcon="@drawable/ic_back"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         style="@style/ItemSettingsStyle"
@@ -21,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
-        android:paddingHorizontal="@dimen/value_10"
+        android:paddingHorizontal="@dimen/value_16"
         android:gravity="center_vertical"
         android:text="@string/settings_dark_theme_item"
         app:thumbTint="@color/switch_thumb_color"
@@ -33,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
-        android:paddingHorizontal="@dimen/value_10"
+        android:paddingHorizontal="@dimen/value_16"
         android:drawableEnd="@drawable/ic_share"
         android:text="@string/settings_share_app_item"/>
 
@@ -43,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
-        android:paddingHorizontal="@dimen/value_10"
+        android:paddingHorizontal="@dimen/value_16"
         android:drawableEnd="@drawable/ic_support"
         android:text="@string/settings_support_item"/>
 
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
-        android:paddingHorizontal="@dimen/value_10"
+        android:paddingHorizontal="@dimen/value_16"
         android:drawableEnd="@drawable/ic_forward"
         android:text="@string/settings_user_agreement_item"/>
 

@@ -11,8 +11,11 @@
     <string name="app_share_msg">Поделиться приложением Playlist Maker</string>
     <string name="email_support_title">Сообщение разработчикам приложения Playlist Maker</string>
     <string name="email_support_msg">Спасибо разработчикам за крутое приложение!</string>
-    <string name="search_hint">Введите поисковой запрос</string>
+    <string name="search_hint">@string/search_button</string>
     <string name="ic_clear_description">Иконка для очистки текста поиского запроса</string>
     <string name="album_cover_description">Обложка альбома</string>
     <string name="track_selector_description">Кнопка выбора действий</string>
+    <string name="search_update_result">Обновить</string>
+    <string name="search_placeholder_not_found">Ничего не нашлось</string>
+    <string name="search_placeholder_network_error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету.</string>
 </resources>
