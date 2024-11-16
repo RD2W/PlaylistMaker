@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.app.App
+import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -21,8 +23,9 @@ class SettingsActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
             }
 
+            setThemeSwitcherState()
             themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-
+                (application as App).switchTheme(isChecked)
             }
 
             shareButtom.setOnClickListener {
@@ -37,6 +40,12 @@ class SettingsActivity : AppCompatActivity() {
                 openUserAgreement()
             }
         }
+    }
+
+    private fun setThemeSwitcherState() {
+        val sharedPreferences = getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+        val isDarkTheme = sharedPreferences.getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
+        binding.themeSwitcher.isChecked = isDarkTheme
     }
 
     private fun shareApp() {
