@@ -17,35 +17,27 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupUI()
+    }
 
+    private fun setupUI() {
+        setThemeSwitcherState()
         with(binding) {
-            topAppBar.setNavigationOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
-            }
-
-            setThemeSwitcherState()
+            topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
             themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
                 (application as App).switchTheme(isChecked)
             }
-
-            shareButtom.setOnClickListener {
-                shareApp()
-            }
-
-            supportButtom.setOnClickListener {
-                writeSupport()
-            }
-
-            agreementButtom.setOnClickListener {
-                openUserAgreement()
-            }
+            shareButtom.setOnClickListener { shareApp() }
+            supportButtom.setOnClickListener { writeSupport() }
+            agreementButtom.setOnClickListener { openUserAgreement() }
         }
     }
 
     private fun setThemeSwitcherState() {
-        val sharedPreferences = getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
-        val isDarkTheme = sharedPreferences.getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
-        binding.themeSwitcher.isChecked = isDarkTheme
+        val prefs = getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+        with(prefs) {
+            binding.themeSwitcher.isChecked = getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
+        }
     }
 
     private fun shareApp() {
@@ -54,20 +46,15 @@ class SettingsActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, getString(R.string.app_link))
         }
 
-        startActivity(
-            Intent.createChooser(
-                shareIntent,
-                getString(R.string.app_share_msg)
-            )
-        )
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.app_share_msg)))
     }
 
     private fun writeSupport() {
         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse(
-                "mailto:" + Uri.encode(getString(R.string.email)) +
-                        "?subject=" + Uri.encode(getString(R.string.email_support_title)) +
-                        "&body=" + Uri.encode(getString(R.string.email_support_msg))
+                "mailto:${Uri.encode(getString(R.string.email))}?subject=${
+                    Uri.encode(getString(R.string.email_support_title))
+                }&body=${Uri.encode(getString(R.string.email_support_msg))}"
             )
         }
 
@@ -75,10 +62,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun openUserAgreement() {
-        val agreementIntent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse(getString(R.string.user_agreement_link))
-        }
-
+        val agreementIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.user_agreement_link)))
         startActivity(agreementIntent)
     }
 }
