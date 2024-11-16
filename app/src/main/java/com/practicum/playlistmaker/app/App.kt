@@ -1,11 +1,14 @@
 package com.practicum.playlistmaker.app
 
 import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 
 class App : Application() {
+
+    private val sharedPreferences by lazy {
+        getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -19,15 +22,11 @@ class App : Application() {
     }
 
     private fun applyTheme() {
-        val sharedPreferences =
-            getSharedPreferences(PrefsConstants.PREFS_NAME, Context.MODE_PRIVATE)
         val isDarkTheme = sharedPreferences.getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
         setTheme(isDarkTheme)
     }
 
     fun switchTheme(isDark: Boolean) {
-        val sharedPreferences =
-            getSharedPreferences(PrefsConstants.PREFS_NAME, Context.MODE_PRIVATE)
         sharedPreferences.edit()
             .putBoolean(PrefsConstants.KEY_IS_DARK_THEME, isDark).apply()
         setTheme(isDark)

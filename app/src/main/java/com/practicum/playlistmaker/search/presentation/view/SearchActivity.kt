@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.search.data.model.Track
 import com.practicum.playlistmaker.search.data.model.TrackResponse
@@ -28,6 +29,9 @@ class SearchActivity : AppCompatActivity() {
     private val tracks: MutableList<Track> = mutableListOf()
     private var inputText: String = DEFAULT_INPUT_TEXT
     private var lastQuery: String = DEFAULT_INPUT_TEXT
+    private val sharedPreferences by lazy {
+        getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -12,6 +12,9 @@ import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
+    private val sharedPreferences by lazy {
+        getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +37,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setThemeSwitcherState() {
-        val prefs = getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
-        with(prefs) {
+        with(sharedPreferences) {
             binding.themeSwitcher.isChecked = getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
         }
     }
