@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 
 class App : Application() {
@@ -22,7 +23,10 @@ class App : Application() {
     }
 
     private fun applyTheme() {
-        val isDarkTheme = sharedPreferences.getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
+        val isDarkTheme = sharedPreferences.getBoolean(
+            PrefsConstants.KEY_IS_DARK_THEME,
+            AppConstants.DARK_THEME_DEF_STATE
+        )
         setTheme(isDarkTheme)
     }
 

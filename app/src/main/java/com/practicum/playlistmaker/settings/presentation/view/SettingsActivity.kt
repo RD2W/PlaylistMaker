@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.app.App
+import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
@@ -38,7 +39,10 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setThemeSwitcherState() {
         with(sharedPreferences) {
-            binding.themeSwitcher.isChecked = getBoolean(PrefsConstants.KEY_IS_DARK_THEME, false)
+            binding.themeSwitcher.isChecked = getBoolean(
+                PrefsConstants.KEY_IS_DARK_THEME,
+                AppConstants.DARK_THEME_DEF_STATE
+            )
         }
     }
 
