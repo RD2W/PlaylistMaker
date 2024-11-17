@@ -17,6 +17,7 @@
     <dimen name="value_24">24dp</dimen>
     <dimen name="value_28">28dp</dimen>
     <dimen name="value_45">45dp</dimen>
+    <dimen name="value_52">52dp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_medium_size">19sp</dimen>
     <dimen name="text_middle_size">14sp</dimen>
