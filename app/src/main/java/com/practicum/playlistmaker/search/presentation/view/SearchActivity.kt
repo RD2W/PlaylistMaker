@@ -58,9 +58,7 @@ class SearchActivity : AppCompatActivity() {
 
             clearIcon.setOnClickListener {
                 inputSearch.setText("")
-                searchPlaceholderImage.visibility = View.GONE
-                searchPlaceholderText.visibility = View.GONE
-                searchUpdateButton.visibility = View.GONE
+                searchPlaceholderViewGroup.visibility = View.GONE
                 hideKeyboard()
                 tracks.clear()
                 searchRecycler.adapter?.notifyDataSetChanged()
@@ -81,10 +79,8 @@ class SearchActivity : AppCompatActivity() {
                 with(binding) {
                     if (s.isNullOrEmpty()) {
                         clearIcon.visibility = View.GONE
-                        searchPlaceholderImage.visibility = View.GONE
-                        searchPlaceholderText.visibility = View.GONE
-                        searchUpdateButton.visibility = View.GONE
                         searchRecycler.visibility = View.GONE
+                        searchPlaceholderViewGroup.visibility = View.GONE
                     } else {
                         clearIcon.visibility = View.VISIBLE
                     }
@@ -152,9 +148,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         with(binding) {
-            searchPlaceholderImage.visibility = View.GONE
-            searchPlaceholderText.visibility = View.GONE
-            searchUpdateButton.visibility = View.GONE
+            searchPlaceholderViewGroup.visibility = View.GONE
             searchRecycler.visibility = View.VISIBLE
             searchRecycler.adapter?.notifyDataSetChanged()
         }
@@ -166,11 +160,10 @@ class SearchActivity : AppCompatActivity() {
         isUpdateButtonVisible: Boolean
     ) {
         with(binding) {
-            searchRecycler.visibility = View.GONE
             searchPlaceholderImage.setImageResource(placeholderImageResId)
             searchPlaceholderText.text = placeholderText
-            searchPlaceholderImage.visibility = View.VISIBLE
-            searchPlaceholderText.visibility = View.VISIBLE
+            searchRecycler.visibility = View.GONE
+            searchPlaceholderViewGroup.visibility = View.VISIBLE
             searchUpdateButton.visibility = if (isUpdateButtonVisible) View.VISIBLE else View.GONE
         }
     }

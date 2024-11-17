@@ -48,6 +48,7 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/searchHistoryViewGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="@dimen/value_16"
@@ -83,6 +84,42 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/searchPlaceholderViewGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/value_16"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/searchPlaceholderImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="102dp"
+            android:scaleType="centerCrop"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/SearchPlaceholderTextStyle"
+            android:id="@+id/searchPlaceholderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/value_16"/>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/SearchUpdateButtonStyle"
+            android:id="@+id/searchUpdateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/value_24"
+            android:text="@string/search_update_result"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecycler"
         android:layout_width="match_parent"
@@ -91,33 +128,5 @@
         android:paddingHorizontal="@dimen/value_16"
         tools:listitem="@layout/track_item"
         android:visibility="visible"/>
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/searchPlaceholderImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="102dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/SearchPlaceholderTextStyle"
-        android:id="@+id/searchPlaceholderText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/value_16"
-        android:visibility="gone"/>
-
-    <com.google.android.material.button.MaterialButton
-        style="@style/SearchUpdateButtonStyle"
-        android:id="@+id/searchUpdateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/value_24"
-        android:text="@string/search_update_result"
-        android:visibility="gone"/>
 
 </LinearLayout>
