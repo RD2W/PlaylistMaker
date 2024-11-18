@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.databinding.TrackItemBinding
 import com.practicum.playlistmaker.search.data.model.Track
 
 class SearchHistoryAdapter(
-    private val tracks: List<Track>,
+    private var tracks: List<Track>,
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -20,4 +20,9 @@ class SearchHistoryAdapter(
     }
 
     override fun getItemCount() = tracks.size
+
+    fun updateTracks(newTracks: List<Track>) {
+        tracks = newTracks
+        notifyDataSetChanged()
+    }
 }

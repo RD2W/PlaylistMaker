@@ -36,7 +36,7 @@
             tools:ignore="RtlSymmetry"/>
 
         <ImageView style="@style/IconClearStyle"
-            android:id="@+id/clearIcon"
+            android:id="@+id/clearInputButton"
             android:layout_width="@dimen/value_14"
             android:layout_height="@dimen/value_14"
             android:layout_gravity="end|center_vertical"
@@ -50,7 +50,7 @@
     <LinearLayout
         android:id="@+id/searchHistoryViewGroup"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/value_16"
         android:orientation="vertical"
         android:visibility="gone">

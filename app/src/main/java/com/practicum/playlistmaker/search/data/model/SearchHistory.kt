@@ -5,14 +5,20 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 object SearchHistory {
 
     private lateinit var sharedPrefs: SharedPreferences
     private val gson = Gson()
 
+    private val _historyFlow = MutableStateFlow<List<Track>>(emptyList())
+    val historyFlow: StateFlow<List<Track>> get() = _historyFlow
+
     fun init(sharedPreferences: SharedPreferences) {
         sharedPrefs = sharedPreferences
+        _historyFlow.value = getHistory()
     }
 
     fun getHistory(): List<Track> {
@@ -33,10 +39,12 @@ object SearchHistory {
             history.removeAt(history.size - 1)
         }
         saveHistory(history)
+        _historyFlow.value = history
     }
 
     fun clearHistory() {
         sharedPrefs.edit().remove(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY).apply()
+        _historyFlow.value = emptyList()
     }
 
     private fun saveHistory(history: List<Track>) {
