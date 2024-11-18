@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -180,7 +179,6 @@ class SearchActivity : AppCompatActivity() {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
         view?.let {
             inputMethodManager?.hideSoftInputFromWindow(it.windowToken, 0)
-            if (view is EditText) view.clearFocus()
         }
     }
 
