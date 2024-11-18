@@ -81,7 +81,6 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setupSearchInput() {
         binding.inputSearch.apply {
-            requestFocus()
             setText(inputText)
 
             setOnEditorActionListener { _, actionId, _ ->
