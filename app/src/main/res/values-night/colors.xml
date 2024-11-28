@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">@color/black</color>
-    <color name="background_main">@color/black</color>
+    <color name="background">@color/dark_gray</color>
+    <color name="background_main">@color/dark_gray</color>
     <color name="text">@color/white</color>
     <color name="icon">@color/white</color>
     <color name="button">@color/white</color>
     <color name="text_search_field">@color/dark_gray</color>
     <color name="icon_search_field">@color/dark_gray</color>
     <color name="background_search_field">@color/white</color>
-    <color name="background_track_placeholder">@color/black</color>
+    <color name="background_track_placeholder">@color/dark_gray</color>
     <color name="text_track_details">@color/white</color>
     <color name="switch_thumb_color_checked">@color/light_blue</color>
     <color name="switch_thumb_color_unchecked">@color/text_gray</color>

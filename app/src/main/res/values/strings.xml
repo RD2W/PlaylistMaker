@@ -20,4 +20,6 @@
     <string name="search_update_result">Update</string>
     <string name="search_placeholder_not_found">Nothing was found</string>
     <string name="search_placeholder_network_error">Network problems\n\nDownload failed. Check the Internet connection.</string>
+    <string name="search_history_title">You searched</string>
+    <string name="search_history_clear_button">Clear history</string>
 </resources>

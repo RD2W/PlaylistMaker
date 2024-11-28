@@ -18,4 +18,6 @@
     <string name="search_update_result">Обновить</string>
     <string name="search_placeholder_not_found">Ничего не нашлось</string>
     <string name="search_placeholder_network_error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету.</string>
+    <string name="search_history_title">Вы искали</string>
+    <string name="search_history_clear_button">Очистить историю</string>
 </resources>
