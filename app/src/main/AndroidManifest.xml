@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.practicum.playlistmaker.app.App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -33,6 +33,9 @@
             android:exported="false" />
         <activity
             android:name=".settings.presentation.view.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".player.presentation.view.PlayerActivity"
             android:exported="false" />
     </application>
 

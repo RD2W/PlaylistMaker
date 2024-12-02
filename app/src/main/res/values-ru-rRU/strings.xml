@@ -20,4 +20,12 @@
     <string name="search_placeholder_network_error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету.</string>
     <string name="search_history_title">Вы искали</string>
     <string name="search_history_clear_button">Очистить историю</string>
+    <string name="player_track_duration">Длительность</string>
+    <string name="player_album_name">Альбом</string>
+    <string name="player_year_of_track_release">Год</string>
+    <string name="player_music_genre">Жанр</string>
+    <string name="player_country_of_performer">Страна</string>
+    <string name="track_playlist_button_description">Кнопка добавления трека в плейлист</string>
+    <string name="track_favorites_button_description">Кнопка добавления трека в избранное</string>
+    <string name="track_play_button_description">Кнопка воспризведения или установки на паузу</string>
 </resources>
