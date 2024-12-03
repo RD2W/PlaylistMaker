@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
@@ -52,8 +53,10 @@ class SearchActivity : AppCompatActivity() {
         observeSearchHistory()
     }
 
-    private fun launchPlayer() {
-        startActivity(Intent(this@SearchActivity, PlayerActivity::class.java))
+    private fun launchPlayer(track: Track) {
+        val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
+        intent.putExtra(TRACK_SHARE_KEY, track)
+        startActivity(intent)
     }
 
     private fun observeSearchHistory() {
@@ -73,7 +76,7 @@ class SearchActivity : AppCompatActivity() {
             searchRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
             searchRecycler.adapter = TrackAdapter(tracks) { track ->
                 SearchHistory.addTrack(track)
-                launchPlayer()
+                launchPlayer(track)
             }
         }
     }
@@ -155,7 +158,7 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             searchHistoryRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
             searchHistoryRecycler.adapter = SearchHistoryAdapter(history) { track ->
-                launchPlayer()
+                launchPlayer(track)
             }
             searchHistoryViewGroup.visibility =
                 if (inputSearch.text.isNullOrEmpty() && inputSearch.hasFocus() && history.isNotEmpty()) View.VISIBLE else View.GONE
@@ -166,7 +169,7 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             if (!::searchHistoryAdapter.isInitialized) {
                 searchHistoryAdapter = SearchHistoryAdapter(history) { track ->
-                    launchPlayer()
+                    launchPlayer(track)
                 }
                 searchHistoryRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
                 searchHistoryRecycler.adapter = searchHistoryAdapter
