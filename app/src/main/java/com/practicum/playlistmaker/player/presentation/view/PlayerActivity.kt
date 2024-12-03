@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -107,23 +108,24 @@ class PlayerActivity : AppCompatActivity() {
                 playerArtistName.text = track.artistName
                 playerTrackDuration.text =
                     track.trackTime?.let { formatDurationToMMSS(it) } ?: NOT_AVAILABLE
-                playerTrackAlbum.text = track.collectionName ?: NOT_AVAILABLE
                 playerTrackYear.text =
                     track.releaseDate?.let { formatDateToYear(it) } ?: NOT_AVAILABLE
                 playerTrackGenre.text = track.primaryGenreName
                 playerTrackCountry.text = track.country
+
+                if (track.collectionName.isNullOrBlank()) {
+                    groupCollectionName.visibility = View.GONE
+                } else playerTrackAlbum.text = track.collectionName
+
+                Glide.with(playerTrackCover.context)
+                    .load(track.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
+                    .placeholder(R.drawable.ic_track_placeholder)
+                    .fitCenter()
+                    .centerCrop()
+                    .into(playerTrackCover)
             }
-
-            Glide.with(binding.playerTrackCover.context)
-                .load(track.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
-                .placeholder(R.drawable.ic_track_placeholder)
-                .fitCenter()
-                .centerCrop()
-                .into(binding.playerTrackCover)
-
             setupPlayer(track)
         }
-
         setupButtons()
     }
 
