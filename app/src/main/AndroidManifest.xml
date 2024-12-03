@@ -36,6 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".player.presentation.view.PlayerActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
     </application>
 
