@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
@@ -18,6 +19,9 @@ import com.practicum.playlistmaker.common.utils.formatDateToYear
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.search.data.model.Track
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -48,10 +52,14 @@ class PlayerActivity : AppCompatActivity() {
     private fun setupPlayer(track: Track) {
         exoPlayer = ExoPlayer.Builder(this).build()
 
-        val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
-        exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.prepare()
-        playTrack()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
+            withContext(Dispatchers.Main) {
+                exoPlayer.setMediaItem(mediaItem)
+                exoPlayer.prepare()
+                playTrack()
+            }
+        }
     }
 
     private fun setupPlayerListener() {
