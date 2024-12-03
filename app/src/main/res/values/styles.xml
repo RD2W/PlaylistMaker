@@ -55,7 +55,7 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textFontWeight">400</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -64,7 +64,7 @@
         <item name="android:textColor">@color/text_track_details</item>
         <item name="android:textSize">@dimen/text_small_size</item>
         <item name="android:textFontWeight">400</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -116,7 +116,7 @@
         <item name="android:textColor">@color/text_player_main</item>
         <item name="android:textSize">@dimen/text_title_size</item>
         <item name="android:textFontWeight">400</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -134,7 +134,7 @@
         <item name="android:textColor">@color/text_gray</item>
         <item name="android:textSize">@dimen/text_small_plus_size</item>
         <item name="android:textFontWeight">400</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
 
