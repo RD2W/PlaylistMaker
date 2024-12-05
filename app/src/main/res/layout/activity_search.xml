@@ -30,17 +30,15 @@
             android:contextClickable="true"
             android:hint="@string/search_hint"
             android:inputType="textCapSentences"
-            android:maxLines="1"
             android:imeOptions="actionSearch"
-            android:singleLine="true"
             tools:ignore="RtlSymmetry"/>
 
         <ImageView style="@style/IconClearStyle"
             android:id="@+id/clearInputButton"
-            android:layout_width="@dimen/value_14"
-            android:layout_height="@dimen/value_14"
+            android:layout_width="@dimen/value_16"
+            android:layout_height="@dimen/value_16"
             android:layout_gravity="end|center_vertical"
-            android:layout_margin="@dimen/value_10"
+            android:layout_margin="@dimen/value_12"
             android:contentDescription="@string/ic_clear_description"
             android:src="@drawable/ic_clear"
             android:visibility="gone"/>

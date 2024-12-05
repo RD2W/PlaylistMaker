@@ -3,23 +3,17 @@
     <dimen name="corner_radius_2">2dp</dimen>
     <dimen name="corner_radius_8">8dp</dimen>
     <dimen name="corner_radius_16">16dp</dimen>
-    <dimen name="corner_radius_54">54dp</dimen>
-    <dimen name="bt_text_size">20sp</dimen>
+    <dimen name="corner_radius_52">52dp</dimen>
     <dimen name="ic_padding">8dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="value_4">4dp</dimen>
     <dimen name="value_8">8dp</dimen>
-    <dimen name="value_10">10dp</dimen>
     <dimen name="value_12">12dp</dimen>
-    <dimen name="value_14">14dp</dimen>
     <dimen name="value_16">16dp</dimen>
-    <dimen name="value_18">18dp</dimen>
     <dimen name="value_20">20dp</dimen>
     <dimen name="value_24">24dp</dimen>
-    <dimen name="value_26">26dp</dimen>
     <dimen name="value_28">28dp</dimen>
-    <dimen name="value_30">30dp</dimen>
-    <dimen name="value_45">45dp</dimen>
+    <dimen name="value_48">48dp</dimen>
     <dimen name="value_52">52dp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_medium_size">19sp</dimen>
@@ -27,4 +21,5 @@
     <dimen name="text_small_size">12sp</dimen>
     <dimen name="text_small_plus_size">13sp</dimen>
     <dimen name="text_title_size">22sp</dimen>
+    <dimen name="text_bt_size">20sp</dimen>
 </resources>

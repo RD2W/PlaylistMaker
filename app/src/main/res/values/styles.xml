@@ -14,7 +14,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textSize">@dimen/bt_text_size</item>
+        <item name="android:textSize">@dimen/text_bt_size</item>
         <item name="android:textFontWeight">500</item>
         <item name="cornerRadius">@dimen/corner_radius_16</item>
         <item name="iconGravity">textStart</item>
@@ -48,6 +48,7 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/text_search_field</item>
         <item name="android:textCursorDrawable">@drawable/ic_cursor</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="FoundTrackName">
@@ -97,7 +98,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:textFontWeight">500</item>
-        <item name="cornerRadius">@dimen/corner_radius_54</item>
+        <item name="cornerRadius">@dimen/corner_radius_52</item>
     </style>
 
     <style name="CustomToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
