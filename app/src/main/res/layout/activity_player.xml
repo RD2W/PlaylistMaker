@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".player.presentation.view.PlayerActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftGuidLineBase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/value_24"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightGuidLineBase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/value_24"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftGuidLineTrackDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/value_16"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightGuidLineTrackDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/value_16"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/textsBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_tags="playerDuration, playerAlbum, playerYear, playerGenre, playerCountry"
+        app:barrierDirection="end"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupCollectionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="playerAlbum,playerTrackAlbum"
+        android:visibility="visible"/>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        style="@style/CustomToolbarStyle"
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/playerTrackCover"
+        style="@style/FoundTrackCover"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_20"
+        android:contentDescription="@string/album_cover_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_track_placeholder"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
+        app:layout_constraintBottom_toTopOf="@id/playerTrackName"
+        app:shapeAppearance="@style/PlayerTrackCover.CornerSize"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerTrackName"
+        style="@style/PlayerTrackNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_20"
+        tools:text="Группа крови"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/leftGuidLineBase"
+        app:layout_constraintEnd_toStartOf="@id/rightGuidLineBase"
+        app:layout_constraintTop_toBottomOf="@+id/playerTrackCover"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerArtistName"
+        style="@style/PlayerArtistNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_12"
+        tools:text="Кино"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/leftGuidLineBase"
+        app:layout_constraintEnd_toStartOf="@id/rightGuidLineBase"
+        app:layout_constraintTop_toBottomOf="@+id/playerTrackName"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/playerPlistButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/track_playlist_button_description"
+        android:src="@drawable/ic_player_add_plist_button"
+        app:layout_constraintBottom_toBottomOf="@+id/playerPlayButton"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/leftGuidLineBase"
+        app:layout_constraintTop_toTopOf="@+id/playerPlayButton"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/playerFavoritesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/track_favorites_button_description"
+        android:src="@drawable/ic_player_add_favs_button"
+        app:layout_constraintBottom_toBottomOf="@+id/playerPlayButton"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuidLineBase"
+        app:layout_constraintTop_toTopOf="@+id/playerPlayButton"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/playerPlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_24"
+        android:contentDescription="@string/track_play_button_description"
+        android:src="@drawable/ic_player_play_button"
+        app:layout_constraintEnd_toStartOf="@+id/playerFavoritesButton"
+        app:layout_constraintStart_toEndOf="@+id/playerPlistButton"
+        app:layout_constraintTop_toBottomOf="@+id/playerArtistName"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerListenedTrackTime"
+        style="@style/PlayerListenedTrackTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_4"
+        tools:text="00:30"
+        app:layout_constraintEnd_toEndOf="@+id/playerPlayButton"
+        app:layout_constraintStart_toStartOf="@+id/playerPlayButton"
+        app:layout_constraintTop_toBottomOf="@+id/playerPlayButton"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerDuration"
+        style="@style/PlayerTrackDetailsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_24"
+        android:text="@string/player_track_duration"
+        app:layout_constraintTag="playerDuration"
+        app:layout_constraintStart_toStartOf="@+id/leftGuidLineTrackDetails"
+        app:layout_constraintTop_toBottomOf="@+id/playerListenedTrackTime"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerTrackDuration"
+        style="@style/PlayerTrackDetailsInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_16"
+        tools:text="03:30"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/textsBarrier"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuidLineTrackDetails"
+        app:layout_constraintTop_toTopOf="@+id/playerDuration"
+        app:layout_constraintBottom_toBottomOf="@+id/playerDuration"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerAlbum"
+        style="@style/PlayerTrackDetailsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_16"
+        android:text="@string/player_album_name"
+        app:layout_constraintTag="playerAlbum"
+        app:layout_constraintStart_toEndOf="@+id/leftGuidLineTrackDetails"
+        app:layout_constraintTop_toBottomOf="@+id/playerDuration"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerTrackAlbum"
+        style="@style/PlayerTrackDetailsInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_16"
+        tools:text="Перемен"
+        app:layout_constraintTag="playerTrackAlbum"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/textsBarrier"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuidLineTrackDetails"
+        app:layout_constraintTop_toTopOf="@+id/playerAlbum"
+        app:layout_constraintBottom_toBottomOf="@+id/playerAlbum"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerYear"
+        style="@style/PlayerTrackDetailsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_16"
+        android:text="@string/player_year_of_track_release"
+        app:layout_constraintTag="playerYear"
+        app:layout_constraintStart_toEndOf="@+id/leftGuidLineTrackDetails"
+        app:layout_constraintTop_toBottomOf="@+id/playerAlbum"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerTrackYear"
+        style="@style/PlayerTrackDetailsInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_16"
+        tools:text="1990"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/textsBarrier"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuidLineTrackDetails"
+        app:layout_constraintTop_toTopOf="@+id/playerYear"
+        app:layout_constraintBottom_toBottomOf="@+id/playerYear"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerGenre"
+        style="@style/PlayerTrackDetailsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_16"
+        android:text="@string/player_music_genre"
+        app:layout_constraintTag="playerGenre"
+        app:layout_constraintStart_toEndOf="@+id/leftGuidLineTrackDetails"
+        app:layout_constraintTop_toBottomOf="@+id/playerYear"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerTrackGenre"
+        style="@style/PlayerTrackDetailsInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_16"
+        tools:text="Рок"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/textsBarrier"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuidLineTrackDetails"
+        app:layout_constraintTop_toTopOf="@+id/playerGenre"
+        app:layout_constraintBottom_toBottomOf="@+id/playerGenre"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerCountry"
+        style="@style/PlayerTrackDetailsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_16"
+        android:layout_marginBottom="@dimen/value_24"
+        android:text="@string/player_country_of_performer"
+        app:layout_constraintTag="playerCountry"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/leftGuidLineTrackDetails"
+        app:layout_constraintTop_toBottomOf="@+id/playerGenre"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/playerTrackCountry"
+        style="@style/PlayerTrackDetailsInfoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_16"
+        tools:text="СССР"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/textsBarrier"
+        app:layout_constraintEnd_toStartOf="@+id/rightGuidLineTrackDetails"
+        app:layout_constraintTop_toTopOf="@+id/playerCountry"
+        app:layout_constraintBottom_toBottomOf="@+id/playerCountry"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,4 +22,12 @@
     <string name="search_placeholder_network_error">Network problems\n\nDownload failed. Check the Internet connection.</string>
     <string name="search_history_title">You searched</string>
     <string name="search_history_clear_button">Clear history</string>
+    <string name="player_track_duration">Track time</string>
+    <string name="player_album_name">Album</string>
+    <string name="player_year_of_track_release">Year</string>
+    <string name="player_music_genre">Genre</string>
+    <string name="player_country_of_performer">Country</string>
+    <string name="track_playlist_button_description">Button to add a track to a playlist</string>
+    <string name="track_favorites_button_description">Button to add a track to favorites</string>
+    <string name="track_play_button_description">Play or pause button</string>
 </resources>

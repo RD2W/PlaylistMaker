@@ -10,8 +10,8 @@
     <com.google.android.material.imageview.ShapeableImageView
         style="@style/FoundTrackCover"
         android:id="@+id/foundTrackCover"
-        android:layout_width="@dimen/value_45"
-        android:layout_height="@dimen/value_45"
+        android:layout_width="@dimen/value_48"
+        android:layout_height="@dimen/value_48"
         android:contentDescription="@string/album_cover_description"
         android:src="@drawable/ic_track_placeholder"
         app:shapeAppearance="@style/FoundTrackCover.CornerSize"/>
@@ -31,8 +31,8 @@
             android:layout_width="wrap_content"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
