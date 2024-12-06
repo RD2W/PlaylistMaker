@@ -57,7 +57,6 @@ class PlayerActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 exoPlayer.setMediaItem(mediaItem)
                 exoPlayer.prepare()
-                playTrack()
             }
         }
     }
