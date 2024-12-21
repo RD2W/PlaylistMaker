@@ -30,7 +30,6 @@ import com.practicum.playlistmaker.search.data.model.TrackResponse
 import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
-import com.practicum.playlistmaker.settings.presentation.view.SettingsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,6 +59,14 @@ class SearchActivity : AppCompatActivity() {
         setupUI()
         loadSearchHistory()
         observeSearchHistory()
+    }
+
+    private fun showProgressBar() {
+        with(binding) {
+            pbSearchProgressBar.isVisible = true
+            searchRecycler.isVisible = false
+            searchPlaceholderViewGroup.isVisible = false
+        }
     }
 
     private fun searchDebounce(term: String) {
@@ -227,6 +234,7 @@ class SearchActivity : AppCompatActivity() {
     private fun searchForTracks(term: String) {
         if (term.isBlank()) return
         lastQuery = term
+        showProgressBar()
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val trackResponse = RetrofitClient.iTunesApiService.searchTracks(term)
@@ -257,6 +265,7 @@ class SearchActivity : AppCompatActivity() {
         tracks.addAll(trackResponse.results)
 
         with(binding) {
+            pbSearchProgressBar.isVisible = false
             searchPlaceholderViewGroup.visibility = View.GONE
             searchRecycler.visibility = View.VISIBLE
             searchRecycler.adapter?.notifyDataSetChanged()
@@ -271,6 +280,7 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             searchPlaceholderImage.setImageResource(placeholderImageResId)
             searchPlaceholderText.text = placeholderText
+            pbSearchProgressBar.isVisible = false
             searchRecycler.visibility = View.GONE
             searchPlaceholderViewGroup.visibility = View.VISIBLE
             searchUpdateButton.visibility = if (isUpdateButtonVisible) View.VISIBLE else View.GONE
