@@ -2,6 +2,8 @@ package com.practicum.playlistmaker.search.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -14,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
@@ -29,12 +32,15 @@ import com.practicum.playlistmaker.settings.presentation.view.SettingsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private val tracks: MutableList<Track> = mutableListOf()
+    private val handler = Handler(Looper.getMainLooper())
+    private val isClickAllowed = AtomicBoolean(true)
     private var inputText: String = DEFAULT_INPUT_TEXT
     private var lastQuery: String = DEFAULT_INPUT_TEXT
     private val sharedPreferences by lazy {
@@ -53,10 +59,20 @@ class SearchActivity : AppCompatActivity() {
         observeSearchHistory()
     }
 
+    private fun clickDebounce(): Boolean {
+        return if (isClickAllowed.get()) {
+            isClickAllowed.set(false)
+            handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY)
+            true
+        } else false
+    }
+
     private fun launchPlayer(track: Track) {
-        val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-        intent.putExtra(TRACK_SHARE_KEY, track)
-        startActivity(intent)
+        if (clickDebounce()) {
+            val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
+            intent.putExtra(TRACK_SHARE_KEY, track)
+            startActivity(intent)
+        }
     }
 
     private fun observeSearchHistory() {

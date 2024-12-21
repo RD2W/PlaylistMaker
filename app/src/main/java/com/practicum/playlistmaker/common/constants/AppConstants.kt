@@ -5,4 +5,5 @@ object AppConstants {
     const val MAX_TRACKS_HISTORY_SIZE = 10
     const val TRACK_SHARE_KEY = "track_key"
     const val NOT_AVAILABLE = "N/A"
+    const val CLICK_DEBOUNCE_DELAY = 1000L
 }
