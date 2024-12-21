@@ -6,4 +6,5 @@ object AppConstants {
     const val TRACK_SHARE_KEY = "track_key"
     const val NOT_AVAILABLE = "N/A"
     const val CLICK_DEBOUNCE_DELAY = 1000L
+    const val SEARCH_DEBOUNCE_DELAY = 2000L
 }

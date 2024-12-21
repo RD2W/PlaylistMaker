@@ -11,12 +11,14 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY
+import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
@@ -43,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
     private val isClickAllowed = AtomicBoolean(true)
     private var inputText: String = DEFAULT_INPUT_TEXT
     private var lastQuery: String = DEFAULT_INPUT_TEXT
+    private val searchRunnable = Runnable { searchForTracks(inputText) }
     private val sharedPreferences by lazy {
         getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
     }
@@ -57,6 +60,14 @@ class SearchActivity : AppCompatActivity() {
         setupUI()
         loadSearchHistory()
         observeSearchHistory()
+    }
+
+    private fun searchDebounce(term: String) {
+        if (term.isNotBlank()) {
+            handler.removeCallbacks(searchRunnable)
+            inputText = term
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
     private fun clickDebounce(): Boolean {
@@ -128,6 +139,7 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     updateUIForSearchInput(s)
+                    searchDebounce(s.toString())
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -144,6 +156,7 @@ class SearchActivity : AppCompatActivity() {
     private fun clearSearch() {
         with(binding) {
             inputSearch.text.clear()
+            inputText = ""
             searchPlaceholderViewGroup.visibility = View.GONE
             hideKeyboard()
             tracks.clear()
@@ -194,7 +207,6 @@ class SearchActivity : AppCompatActivity() {
             }
             updateSearchHistoryVisibility(history)
         }
-
     }
 
     private fun updateSearchHistoryVisibility(history: List<Track> = SearchHistory.getHistory()) {
@@ -213,6 +225,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchForTracks(term: String) {
+        if (term.isBlank()) return
         lastQuery = term
         lifecycleScope.launch(Dispatchers.IO) {
             try {
