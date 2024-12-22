@@ -17,8 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY
-import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY
+import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
+import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
@@ -73,14 +73,14 @@ class SearchActivity : AppCompatActivity() {
         if (term.isNotBlank()) {
             handler.removeCallbacks(searchRunnable)
             inputText = term
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
         }
     }
 
     private fun clickDebounce(): Boolean {
         return if (isClickAllowed.get()) {
             isClickAllowed.set(false)
-            handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY_MILLIS)
             true
         } else false
     }

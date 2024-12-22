@@ -18,6 +18,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.NOT_AVAILABLE
+import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.utils.formatDateToYear
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
@@ -36,7 +37,7 @@ class PlayerActivity : AppCompatActivity() {
     private val updateRunnable = object : Runnable {
         override fun run() {
             updateDuration()
-            handler.postDelayed(this, 500L)
+            handler.postDelayed(this, PROGRESS_BAR_DELAY_MILLIS)
         }
     }
 
