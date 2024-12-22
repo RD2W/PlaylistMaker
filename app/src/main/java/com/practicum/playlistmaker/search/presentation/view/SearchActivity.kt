@@ -315,6 +315,11 @@ class SearchActivity : AppCompatActivity() {
         lastQuery = savedInstanceState.getString(SAVED_LAST_QUERY, DEFAULT_INPUT_TEXT)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
+    }
+
     companion object {
         const val ZERO_NUM = 0
         const val DEFAULT_INPUT_TEXT = ""
