@@ -102,6 +102,11 @@ class PlayerActivity : AppCompatActivity() {
         binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
     }
 
+    private fun stopTrack() {
+        exoPlayer.stop()
+        binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
+    }
+
     private fun setupUI() {
         val track: Track? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(TRACK_SHARE_KEY, Track::class.java)
@@ -160,11 +165,13 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        pauseTrack()
         handler.removeCallbacks(updateRunnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        stopTrack()
         exoPlayer.release()
     }
 }
