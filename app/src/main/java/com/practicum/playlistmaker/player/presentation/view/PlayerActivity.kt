@@ -36,6 +36,8 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    private var isPlayerReady = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
@@ -75,6 +77,7 @@ class PlayerActivity : AppCompatActivity() {
                     }
 
                     Player.STATE_READY -> {
+                        isPlayerReady = true
                         if (exoPlayer.isPlaying) {
                             binding.playerPlayButton.setImageResource(R.drawable.ic_player_pause_button)
                         } else {
@@ -148,6 +151,7 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             playerPlayButton.setOnClickListener {
+                if (!isPlayerReady) return@setOnClickListener // Если плеер не готов, ничего не делаем
                 if (exoPlayer.isPlaying) {
                     pauseTrack()
                 } else {
