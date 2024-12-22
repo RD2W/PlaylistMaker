@@ -27,6 +27,7 @@
     <string name="player_year_of_track_release">Year</string>
     <string name="player_music_genre">Genre</string>
     <string name="player_country_of_performer">Country</string>
+    <string name="player_no_internet_connection_toast">No internet connection</string>
     <string name="track_playlist_button_description">Button to add a track to a playlist</string>
     <string name="track_favorites_button_description">Button to add a track to favorites</string>
     <string name="track_play_button_description">Play or pause button</string>

@@ -1,11 +1,15 @@
 package com.practicum.playlistmaker.player.presentation.view
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -32,8 +36,12 @@ class PlayerActivity : AppCompatActivity() {
     private val updateRunnable = object : Runnable {
         override fun run() {
             updateDuration()
-            handler.postDelayed(this, 1000)
+            handler.postDelayed(this, 500L)
         }
+    }
+
+    private val connectivityManager: ConnectivityManager by lazy {
+        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
     private var isPlayerReady = false
@@ -42,25 +50,22 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        exoPlayer = ExoPlayer.Builder(this).build()
         setupUI()
         setupPlayerListener()
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val activeNetwork = connectivityManager.activeNetwork
+        return activeNetwork?.let {
+            val networkCapabilities = connectivityManager.getNetworkCapabilities(it)
+            networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        } ?: false
     }
 
     private fun updateDuration() {
         val currentPosition = exoPlayer.currentPosition
         binding.playerListenedTrackTime.text = formatDurationToMMSS(currentPosition)
-    }
-
-    private fun setupPlayer(track: Track) {
-        exoPlayer = ExoPlayer.Builder(this).build()
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
-            withContext(Dispatchers.Main) {
-                exoPlayer.setMediaItem(mediaItem)
-                exoPlayer.prepare()
-            }
-        }
     }
 
     private fun setupPlayerListener() {
@@ -93,6 +98,25 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun preparePlayer(track: Track) {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(
+                this,
+                getString(R.string.player_no_internet_connection_toast),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
+            withContext(Dispatchers.Main) {
+                exoPlayer.setMediaItem(mediaItem)
+                exoPlayer.prepare()
+            }
+        }
     }
 
     private fun playTrack() {
@@ -139,7 +163,7 @@ class PlayerActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(playerTrackCover)
             }
-            setupPlayer(track)
+            preparePlayer(track)
         }
         setupButtons()
     }
