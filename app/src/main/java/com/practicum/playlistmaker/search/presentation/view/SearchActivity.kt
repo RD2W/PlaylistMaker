@@ -2,6 +2,8 @@ package com.practicum.playlistmaker.search.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -9,11 +11,14 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
+import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
@@ -25,18 +30,21 @@ import com.practicum.playlistmaker.search.data.model.TrackResponse
 import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
-import com.practicum.playlistmaker.settings.presentation.view.SettingsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private val tracks: MutableList<Track> = mutableListOf()
+    private val handler = Handler(Looper.getMainLooper())
+    private val isClickAllowed = AtomicBoolean(true)
     private var inputText: String = DEFAULT_INPUT_TEXT
     private var lastQuery: String = DEFAULT_INPUT_TEXT
+    private val searchRunnable = Runnable { searchForTracks(inputText) }
     private val sharedPreferences by lazy {
         getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
     }
@@ -53,10 +61,36 @@ class SearchActivity : AppCompatActivity() {
         observeSearchHistory()
     }
 
+    private fun showProgressBar() {
+        with(binding) {
+            pbSearchProgressBar.isVisible = true
+            searchRecycler.isVisible = false
+            searchPlaceholderViewGroup.isVisible = false
+        }
+    }
+
+    private fun searchDebounce(term: String) {
+        if (term.isNotBlank()) {
+            handler.removeCallbacks(searchRunnable)
+            inputText = term
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+        }
+    }
+
+    private fun clickDebounce(): Boolean {
+        return if (isClickAllowed.get()) {
+            isClickAllowed.set(false)
+            handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY_MILLIS)
+            true
+        } else false
+    }
+
     private fun launchPlayer(track: Track) {
-        val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-        intent.putExtra(TRACK_SHARE_KEY, track)
-        startActivity(intent)
+        if (clickDebounce()) {
+            val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
+            intent.putExtra(TRACK_SHARE_KEY, track)
+            startActivity(intent)
+        }
     }
 
     private fun observeSearchHistory() {
@@ -112,6 +146,7 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                     updateUIForSearchInput(s)
+                    searchDebounce(s.toString())
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -128,6 +163,7 @@ class SearchActivity : AppCompatActivity() {
     private fun clearSearch() {
         with(binding) {
             inputSearch.text.clear()
+            inputText = ""
             searchPlaceholderViewGroup.visibility = View.GONE
             hideKeyboard()
             tracks.clear()
@@ -178,7 +214,6 @@ class SearchActivity : AppCompatActivity() {
             }
             updateSearchHistoryVisibility(history)
         }
-
     }
 
     private fun updateSearchHistoryVisibility(history: List<Track> = SearchHistory.getHistory()) {
@@ -197,7 +232,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchForTracks(term: String) {
+        if (term.isBlank()) return
         lastQuery = term
+        showProgressBar()
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val trackResponse = RetrofitClient.iTunesApiService.searchTracks(term)
@@ -228,6 +265,7 @@ class SearchActivity : AppCompatActivity() {
         tracks.addAll(trackResponse.results)
 
         with(binding) {
+            pbSearchProgressBar.isVisible = false
             searchPlaceholderViewGroup.visibility = View.GONE
             searchRecycler.visibility = View.VISIBLE
             searchRecycler.adapter?.notifyDataSetChanged()
@@ -242,6 +280,7 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             searchPlaceholderImage.setImageResource(placeholderImageResId)
             searchPlaceholderText.text = placeholderText
+            pbSearchProgressBar.isVisible = false
             searchRecycler.visibility = View.GONE
             searchPlaceholderViewGroup.visibility = View.VISIBLE
             searchUpdateButton.visibility = if (isUpdateButtonVisible) View.VISIBLE else View.GONE
@@ -274,6 +313,11 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         inputText = savedInstanceState.getString(SAVED_INPUT_TEXT, DEFAULT_INPUT_TEXT)
         lastQuery = savedInstanceState.getString(SAVED_LAST_QUERY, DEFAULT_INPUT_TEXT)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {

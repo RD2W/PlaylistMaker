@@ -127,4 +127,13 @@
         tools:listitem="@layout/track_item"
         android:visibility="visible"/>
 
+    <ProgressBar
+        android:id="@+id/pbSearchProgressBar"
+        android:layout_width="@dimen/value_48"
+        android:layout_height="@dimen/value_48"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/value_136"
+        android:indeterminateTint="@color/light_blue"
+        android:visibility="gone"/>
+
 </LinearLayout>

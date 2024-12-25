@@ -25,6 +25,7 @@
     <string name="player_year_of_track_release">Год</string>
     <string name="player_music_genre">Жанр</string>
     <string name="player_country_of_performer">Страна</string>
+    <string name="player_no_internet_connection_toast">Нет интернет-соединения</string>
     <string name="track_playlist_button_description">Кнопка добавления трека в плейлист</string>
     <string name="track_favorites_button_description">Кнопка добавления трека в избранное</string>
     <string name="track_play_button_description">Кнопка воспризведения или установки на паузу</string>

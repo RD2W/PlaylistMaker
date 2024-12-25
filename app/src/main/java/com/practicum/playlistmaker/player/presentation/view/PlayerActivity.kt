@@ -1,11 +1,15 @@
 package com.practicum.playlistmaker.player.presentation.view
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
@@ -14,6 +18,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.NOT_AVAILABLE
+import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.utils.formatDateToYear
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
@@ -32,33 +37,36 @@ class PlayerActivity : AppCompatActivity() {
     private val updateRunnable = object : Runnable {
         override fun run() {
             updateDuration()
-            handler.postDelayed(this, 1000)
+            handler.postDelayed(this, PROGRESS_BAR_DELAY_MILLIS)
         }
     }
+
+    private val connectivityManager: ConnectivityManager by lazy {
+        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    private var isPlayerReady = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        exoPlayer = ExoPlayer.Builder(this).build()
         setupUI()
         setupPlayerListener()
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val activeNetwork = connectivityManager.activeNetwork
+        return activeNetwork?.let {
+            val networkCapabilities = connectivityManager.getNetworkCapabilities(it)
+            networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        } ?: false
     }
 
     private fun updateDuration() {
         val currentPosition = exoPlayer.currentPosition
         binding.playerListenedTrackTime.text = formatDurationToMMSS(currentPosition)
-    }
-
-    private fun setupPlayer(track: Track) {
-        exoPlayer = ExoPlayer.Builder(this).build()
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
-            withContext(Dispatchers.Main) {
-                exoPlayer.setMediaItem(mediaItem)
-                exoPlayer.prepare()
-            }
-        }
     }
 
     private fun setupPlayerListener() {
@@ -75,6 +83,7 @@ class PlayerActivity : AppCompatActivity() {
                     }
 
                     Player.STATE_READY -> {
+                        isPlayerReady = true
                         if (exoPlayer.isPlaying) {
                             binding.playerPlayButton.setImageResource(R.drawable.ic_player_pause_button)
                         } else {
@@ -92,6 +101,25 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
+    private fun preparePlayer(track: Track) {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(
+                this,
+                getString(R.string.player_no_internet_connection_toast),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
+            withContext(Dispatchers.Main) {
+                exoPlayer.setMediaItem(mediaItem)
+                exoPlayer.prepare()
+            }
+        }
+    }
+
     private fun playTrack() {
         exoPlayer.play()
         binding.playerPlayButton.setImageResource(R.drawable.ic_player_pause_button)
@@ -99,6 +127,11 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun pauseTrack() {
         exoPlayer.pause()
+        binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
+    }
+
+    private fun stopTrack() {
+        exoPlayer.stop()
         binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
     }
 
@@ -131,7 +164,7 @@ class PlayerActivity : AppCompatActivity() {
                     .centerCrop()
                     .into(playerTrackCover)
             }
-            setupPlayer(track)
+            preparePlayer(track)
         }
         setupButtons()
     }
@@ -143,6 +176,7 @@ class PlayerActivity : AppCompatActivity() {
             }
 
             playerPlayButton.setOnClickListener {
+                if (!isPlayerReady) return@setOnClickListener // Если плеер не готов, ничего не делаем
                 if (exoPlayer.isPlaying) {
                     pauseTrack()
                 } else {
@@ -160,11 +194,13 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        pauseTrack()
         handler.removeCallbacks(updateRunnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        stopTrack()
         exoPlayer.release()
     }
 }
