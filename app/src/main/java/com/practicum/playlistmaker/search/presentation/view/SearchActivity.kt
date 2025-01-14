@@ -25,14 +25,14 @@ import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.search.data.source.local.SearchHistory
-import com.practicum.playlistmaker.search.data.model.Track
-import com.practicum.playlistmaker.search.data.model.TrackResponse
-import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
+import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.utils.NetworkUtils
+import com.practicum.playlistmaker.search.di.SearchDependencyCreator
+import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchActivity : AppCompatActivity() {
@@ -47,6 +47,9 @@ class SearchActivity : AppCompatActivity() {
     private val searchRunnable = Runnable { searchForTracks(inputText) }
     private val sharedPreferences by lazy {
         getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+    }
+    private val tracksInteractor: TracksInteractor by lazy {
+        SearchDependencyCreator.provideTrackInteractor()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -235,34 +238,34 @@ class SearchActivity : AppCompatActivity() {
         if (term.isBlank()) return
         lastQuery = term
         showProgressBar()
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val trackResponse = RetrofitClient.iTunesApiService.searchTracks(term)
-                withContext(Dispatchers.Main) {
-                    handleTrackResponse(trackResponse)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    setNetworkErrorPlaceholder()
-                    Log.e(LogTags.NETWORK_STATUS, "No network connection: ${e.message}")
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                tracksInteractor.searchTracks(term) { foundTracks ->
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        handleTrackResponse(foundTracks)
+                    }
                 }
             }
+
+        } else {
+            setNetworkErrorPlaceholder()
+            Log.e(LogTags.NETWORK_STATUS, "No network connection")
         }
     }
 
-    private fun handleTrackResponse(trackResponse: TrackResponse) {
-        if (trackResponse.resultCount > ZERO_NUM) {
-            showFoundTracks(trackResponse)
-            Log.d(LogTags.API_RESPONSE, "Tracks found: ${trackResponse.resultCount}")
+    private fun handleTrackResponse(foundTracks: List<Track>) {
+        if (foundTracks.isNotEmpty()) {
+            showFoundTracks(foundTracks.toMutableList())
+            Log.d(LogTags.API_RESPONSE, "Tracks found: ${foundTracks.size}")
         } else {
             setNotFoundPlaceholder()
             Log.d(LogTags.API_RESPONSE, "No tracks found")
         }
     }
 
-    private fun showFoundTracks(trackResponse: TrackResponse) {
+    private fun showFoundTracks(foundTracks: MutableList<Track>) {
         tracks.clear()
-        tracks.addAll(trackResponse.results)
+        tracks.addAll(foundTracks)
 
         with(binding) {
             pbSearchProgressBar.isVisible = false
@@ -321,7 +324,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val ZERO_NUM = 0
         const val DEFAULT_INPUT_TEXT = ""
         const val SAVED_INPUT_TEXT = "SAVED_INPUT_TEXT"
         const val SAVED_LAST_QUERY = "SAVED_LAST_QUERY"

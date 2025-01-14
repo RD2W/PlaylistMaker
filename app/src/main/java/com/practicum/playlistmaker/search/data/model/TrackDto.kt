@@ -1,11 +1,8 @@
 package com.practicum.playlistmaker.search.data.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class Track(
+data class TrackDto(
     @SerializedName("trackId") val trackId: Int?,
     @SerializedName("trackName") val trackName: String?,
     @SerializedName("artistName") val artistName: String?,
@@ -16,4 +13,4 @@ data class Track(
     @SerializedName("primaryGenreName") val primaryGenreName: String?,
     @SerializedName("country") val country: String?,
     @SerializedName("previewUrl") val previewUrl: String?,
-) : Parcelable
+)

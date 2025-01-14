@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.TrackItemBinding
-import com.practicum.playlistmaker.search.data.model.Track
+import com.practicum.playlistmaker.common.data.model.Track
 
 class TrackAdapter(
     private val tracks: MutableList<Track>,

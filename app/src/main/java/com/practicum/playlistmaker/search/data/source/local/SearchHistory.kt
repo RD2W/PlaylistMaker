@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
-import com.practicum.playlistmaker.search.data.model.Track
+import com.practicum.playlistmaker.common.data.model.Track
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

@@ -1,8 +1,5 @@
 package com.practicum.playlistmaker.player.presentation.view
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -17,13 +14,12 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.AppConstants.NOT_AVAILABLE
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
-import com.practicum.playlistmaker.common.utils.formatDateToYear
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker.search.data.model.Track
+import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.utils.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,10 +37,6 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private val connectivityManager: ConnectivityManager by lazy {
-        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
-
     private var isPlayerReady = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,14 +46,6 @@ class PlayerActivity : AppCompatActivity() {
         exoPlayer = ExoPlayer.Builder(this).build()
         setupUI()
         setupPlayerListener()
-    }
-
-    private fun isNetworkAvailable(): Boolean {
-        val activeNetwork = connectivityManager.activeNetwork
-        return activeNetwork?.let {
-            val networkCapabilities = connectivityManager.getNetworkCapabilities(it)
-            networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-        } ?: false
     }
 
     private fun updateDuration() {
@@ -102,7 +86,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer(track: Track) {
-        if (!isNetworkAvailable()) {
+        if (!NetworkUtils.isNetworkAvailable(this)) {
             Toast.makeText(
                 this,
                 getString(R.string.player_no_internet_connection_toast),
@@ -146,10 +130,8 @@ class PlayerActivity : AppCompatActivity() {
             with(binding) {
                 playerTrackName.text = track.trackName
                 playerArtistName.text = track.artistName
-                playerTrackDuration.text =
-                    track.trackTime?.let { formatDurationToMMSS(it) } ?: NOT_AVAILABLE
-                playerTrackYear.text =
-                    track.releaseDate?.let { formatDateToYear(it) } ?: NOT_AVAILABLE
+                playerTrackDuration.text = track.trackTime
+                playerTrackYear.text = track.releaseDate
                 playerTrackGenre.text = track.primaryGenreName
                 playerTrackCountry.text = track.country
 
