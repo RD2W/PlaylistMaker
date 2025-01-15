@@ -24,10 +24,10 @@ import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
-import com.practicum.playlistmaker.search.data.source.local.SearchHistory
 import com.practicum.playlistmaker.common.data.model.Track
 import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.search.di.SearchDependencyCreator
+import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
@@ -45,11 +45,17 @@ class SearchActivity : AppCompatActivity() {
     private var inputText: String = DEFAULT_INPUT_TEXT
     private var lastQuery: String = DEFAULT_INPUT_TEXT
     private val searchRunnable = Runnable { searchForTracks(inputText) }
+
     private val sharedPreferences by lazy {
         getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
     }
+
     private val tracksInteractor: TracksInteractor by lazy {
         SearchDependencyCreator.provideTrackInteractor()
+    }
+
+    private val searchHistoryInteractor: SearchHistoryInteractor by lazy {
+        SearchDependencyCreator.provideSearchHistoryInteractor(sharedPreferences)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,10 +63,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        SearchHistory.init(sharedPreferences)
-
         setupUI()
-        loadSearchHistory()
         observeSearchHistory()
     }
 
@@ -99,8 +102,18 @@ class SearchActivity : AppCompatActivity() {
     private fun observeSearchHistory() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                SearchHistory.historyFlow.collect { history ->
+                searchHistoryInteractor.getHistory().collect { history ->
                     updateSearchHistoryAdapter(history)
+                }
+            }
+        }
+    }
+
+    private fun observeSearchHistoryVisibility() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchHistoryInteractor.getHistory().collect { history ->
+                    updateSearchHistoryVisibility(history)
                 }
             }
         }
@@ -112,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             searchRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
             searchRecycler.adapter = TrackAdapter(tracks) { track ->
-                SearchHistory.addTrack(track)
+                searchHistoryInteractor.addTrack(track)
                 launchPlayer(track)
             }
         }
@@ -158,7 +171,7 @@ class SearchActivity : AppCompatActivity() {
             })
 
             setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) updateSearchHistoryVisibility()
+                if (hasFocus) observeSearchHistoryVisibility()
             }
         }
     }
@@ -175,7 +188,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearSearchHistory() {
-        SearchHistory.clearHistory()
+        searchHistoryInteractor.clearHistory()
     }
 
     private fun updateUIForSearchInput(s: CharSequence?) {
@@ -184,23 +197,11 @@ class SearchActivity : AppCompatActivity() {
                 clearInputButton.visibility = View.GONE
                 searchRecycler.visibility = View.GONE
                 searchPlaceholderViewGroup.visibility = View.GONE
-                updateSearchHistoryVisibility()
+                observeSearchHistoryVisibility()
             } else {
                 clearInputButton.visibility = View.VISIBLE
                 searchHistoryViewGroup.visibility = View.GONE
             }
-        }
-    }
-
-    private fun loadSearchHistory() {
-        val history = SearchHistory.getHistory()
-        with(binding) {
-            searchHistoryRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
-            searchHistoryRecycler.adapter = SearchHistoryAdapter(history) { track ->
-                launchPlayer(track)
-            }
-            searchHistoryViewGroup.visibility =
-                if (inputSearch.text.isNullOrEmpty() && inputSearch.hasFocus() && history.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 
@@ -219,7 +220,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateSearchHistoryVisibility(history: List<Track> = SearchHistory.getHistory()) {
+    private fun updateSearchHistoryVisibility(history: List<Track>) {
         with(binding) {
             searchHistoryViewGroup.visibility =
                 if (inputSearch.text.isNullOrEmpty() && inputSearch.hasFocus() && history.isNotEmpty()) View.VISIBLE else View.GONE
