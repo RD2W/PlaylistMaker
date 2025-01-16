@@ -33,11 +33,11 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setThemeSwitcherState() {
-            binding.themeSwitcher.isChecked = (application as App).getCurrentTheme()
+            binding.themeSwitcher.isChecked = (application as App).getThemeManager().getCurrentTheme()
     }
 
     private fun onThemeSwitch(isChecked: Boolean) {
-        (application as App).switchTheme(isChecked)
+        (application as App).getThemeManager().switchTheme(isChecked)
     }
 
     private fun shareApp() {
