@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.common.data.manager
+package com.practicum.playlistmaker.common.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,12 +6,12 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
-import com.practicum.playlistmaker.common.domain.manager.AppThemeManager
+import com.practicum.playlistmaker.common.domain.repository.AppThemeRepository
 
-class AppThemeManagerImpl(
-    private val sharedPreferences: SharedPreferences,
+class AppThemeRepositoryImpl(
     private val context: Context,
-) : AppThemeManager {
+    private val sharedPreferences: SharedPreferences,
+) : AppThemeRepository {
 
     override fun switchTheme(isDark: Boolean) {
         sharedPreferences.edit()

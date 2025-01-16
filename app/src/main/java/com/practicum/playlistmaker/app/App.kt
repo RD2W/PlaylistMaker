@@ -1,30 +1,27 @@
 package com.practicum.playlistmaker.app
 
 import android.app.Application
-import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.common.di.AppDependencyCreator
-import com.practicum.playlistmaker.common.domain.manager.AppThemeManager
+import com.practicum.playlistmaker.common.domain.interactor.AppThemeInteractor
 
 class App : Application() {
 
-    private val sharedPreferences by lazy {
-        getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
-    }
-    private val appThemeManager: AppThemeManager by lazy {
-        AppDependencyCreator.provideThemeManager(sharedPreferences, this)
+    private val appThemeInteractor: AppThemeInteractor by lazy {
+        AppDependencyCreator.provideThemeInteractor()
     }
 
     override fun onCreate() {
         super.onCreate()
+        AppDependencyCreator.initApplication(this)
         applyTheme()
     }
 
     private fun applyTheme() {
-        val isDarkTheme = appThemeManager.getCurrentTheme()
-        appThemeManager.switchTheme(isDarkTheme)
+        val isDarkTheme = appThemeInteractor.getCurrentTheme()
+        appThemeInteractor.switchTheme(isDarkTheme)
     }
 
-    fun getThemeManager(): AppThemeManager {
-        return appThemeManager
+    fun getThemeInteractor(): AppThemeInteractor {
+        return appThemeInteractor
     }
 }
