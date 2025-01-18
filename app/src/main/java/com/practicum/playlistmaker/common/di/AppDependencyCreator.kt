@@ -20,12 +20,11 @@ object AppDependencyCreator {
         return application.getSharedPreferences(PrefsConstants.PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    private fun provideThemeRepository(): AppThemeRepository {
+    private fun getThemeRepository(): AppThemeRepository {
         return AppThemeRepositoryImpl(application, getSharedPreferences())
     }
 
     fun provideThemeInteractor(): AppThemeInteractor {
-        val repository = provideThemeRepository()
-        return AppThemeInteractorImpl(repository)
+        return AppThemeInteractorImpl(getThemeRepository())
     }
 }
