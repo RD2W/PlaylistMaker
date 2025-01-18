@@ -37,7 +37,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: ActivitySearchBinding? = null
+    private val binding: ActivitySearchBinding
+        get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
+
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private val tracks: MutableList<Track> = mutableListOf()
     private val handler = Handler(Looper.getMainLooper())
@@ -60,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        _binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupUI()
