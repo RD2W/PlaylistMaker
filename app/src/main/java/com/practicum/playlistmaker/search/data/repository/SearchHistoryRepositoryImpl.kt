@@ -8,9 +8,11 @@ import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.search.domain.repository.SearchHistoryRepository
 
-class SearchHistoryRepositoryImpl(private val sharedPreferences: SharedPreferences) :
+class SearchHistoryRepositoryImpl(
+    private val sharedPreferences: SharedPreferences,
+    private val gson: Gson,
+) :
     SearchHistoryRepository {
-    private val gson = Gson()
 
     override fun getHistory(): List<Track> {
         val json = sharedPreferences.getString(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY, null)

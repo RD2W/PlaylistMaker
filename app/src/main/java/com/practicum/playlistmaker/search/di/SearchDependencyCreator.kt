@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.search.di
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.practicum.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.repository.TracksRepositoryImpl
 import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
@@ -16,8 +17,8 @@ object SearchDependencyCreator {
         return TracksRepositoryImpl(RetrofitClient)
     }
 
-    private fun getSearchHistoryRepository(sharedPreferences: SharedPreferences): SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl(sharedPreferences)
+    private fun getSearchHistoryRepository(sharedPreferences: SharedPreferences, gson: Gson): SearchHistoryRepository {
+        return SearchHistoryRepositoryImpl(sharedPreferences, gson)
     }
 
     fun provideTrackInteractor(): TracksInteractor {
@@ -25,6 +26,7 @@ object SearchDependencyCreator {
     }
 
     fun provideSearchHistoryInteractor(sharedPreferences: SharedPreferences): SearchHistoryInteractor {
-        return SearchHistoryInteractorImpl(getSearchHistoryRepository(sharedPreferences))
+        val gson = Gson()
+        return SearchHistoryInteractorImpl(getSearchHistoryRepository(sharedPreferences, gson))
     }
 }
