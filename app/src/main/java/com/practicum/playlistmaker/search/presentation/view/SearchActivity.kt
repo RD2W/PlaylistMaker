@@ -21,13 +21,12 @@ import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_
 import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
-import com.practicum.playlistmaker.common.constants.PrefsConstants
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.utils.NetworkUtils
-import com.practicum.playlistmaker.search.di.SearchDependencyCreator
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
@@ -50,16 +49,12 @@ class SearchActivity : AppCompatActivity() {
     private var lastQuery: String = DEFAULT_INPUT_TEXT
     private val searchRunnable = Runnable { searchForTracks(inputText) }
 
-    private val sharedPreferences by lazy {
-        getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
-    }
-
     private val tracksInteractor: TracksInteractor by lazy {
-        SearchDependencyCreator.provideTrackInteractor()
+        AppDependencyCreator.provideTrackInteractor()
     }
 
     private val searchHistoryInteractor: SearchHistoryInteractor by lazy {
-        SearchDependencyCreator.provideSearchHistoryInteractor(sharedPreferences)
+        AppDependencyCreator.provideSearchHistoryInteractor()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -12,12 +12,12 @@ import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
-import com.practicum.playlistmaker.player.di.PlayerDependencyCreator
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 
 class PlayerActivity : AppCompatActivity() {
@@ -27,7 +27,7 @@ class PlayerActivity : AppCompatActivity() {
         get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
 
     private val playerInteractor: PlayerInteractor by lazy {
-        PlayerDependencyCreator.providePlayerInteractor(this)
+        AppDependencyCreator.providePlayerInteractor()
     }
 
     private val handler = Handler(Looper.getMainLooper())
@@ -85,7 +85,7 @@ class PlayerActivity : AppCompatActivity() {
         })
     }
 
-    private fun preparePlayer(track: Track) {
+        private fun preparePlayer(track: Track) {
         playerInteractor.preparePlayer(track, {
             isPlayerReady = true
         }, {
@@ -156,7 +156,9 @@ class PlayerActivity : AppCompatActivity() {
                 if (playerInteractor.isPlaying()) {
                     pauseTrack()
                 } else {
-                    if (playerInteractor.getPlaybackState() == Player.STATE_ENDED) playerInteractor.seekTo(0)
+                    if (playerInteractor.getPlaybackState() == Player.STATE_ENDED) playerInteractor.seekTo(
+                        0
+                    )
                     playTrack()
                 }
             }

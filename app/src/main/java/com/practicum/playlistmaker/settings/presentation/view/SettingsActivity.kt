@@ -1,10 +1,12 @@
 package com.practicum.playlistmaker.settings.presentation.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.app.App
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
-import com.practicum.playlistmaker.settings.di.SettingsDependencyCreator
 import com.practicum.playlistmaker.settings.domain.interactor.SettingsInteractor
 
 class SettingsActivity : AppCompatActivity() {
@@ -14,7 +16,7 @@ class SettingsActivity : AppCompatActivity() {
         get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
 
     private val settingsInteractor: SettingsInteractor by lazy {
-        SettingsDependencyCreator.provideSettingsInteractor(this)
+        AppDependencyCreator.provideSettingsInteractor()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,14 +33,29 @@ class SettingsActivity : AppCompatActivity() {
             themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
                 onThemeSwitch(isChecked)
             }
-            shareButtom.setOnClickListener { settingsInteractor.shareApp() }
-            supportButtom.setOnClickListener { settingsInteractor.writeSupport() }
-            agreementButtom.setOnClickListener { settingsInteractor.openUserAgreement() }
+            shareButtom.setOnClickListener {
+                startActivity(
+                    Intent.createChooser(
+                        settingsInteractor.shareApp(),
+                        getString(R.string.app_share_msg)
+                    )
+                )
+            }
+            supportButtom.setOnClickListener {
+                val intent = settingsInteractor.writeSupport()
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+            agreementButtom.setOnClickListener {
+                startActivity(settingsInteractor.openUserAgreement())
+            }
         }
     }
 
     private fun setThemeSwitcherState() {
-            binding.themeSwitcher.isChecked = (application as App).getThemeInteractor().getCurrentTheme()
+        binding.themeSwitcher.isChecked =
+            (application as App).getThemeInteractor().getCurrentTheme()
     }
 
     private fun onThemeSwitch(isChecked: Boolean) {
