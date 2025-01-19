@@ -12,9 +12,11 @@ import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
+import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.player.di.PlayerDependencyCreator
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 
@@ -111,13 +113,14 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        val track: Track? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK_SHARE_KEY, Track::class.java)
+        val trackParcel: TrackParcel? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(TRACK_SHARE_KEY, TrackParcel::class.java)
         } else {
             intent.getParcelableExtra(TRACK_SHARE_KEY)
         }
 
-        if (track != null) {
+        if (trackParcel != null) {
+            val track = TrackMapperImpl.toDomain(trackParcel)
             with(binding) {
                 playerTrackName.text = track.trackName
                 playerArtistName.text = track.artistName

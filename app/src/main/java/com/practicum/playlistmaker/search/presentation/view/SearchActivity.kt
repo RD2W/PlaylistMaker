@@ -22,6 +22,7 @@ import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
+import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.common.domain.model.Track
@@ -96,8 +97,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun launchPlayer(track: Track) {
         if (clickDebounce()) {
+            val trackParcel = TrackMapperImpl.toParcel(track)
             val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-            intent.putExtra(TRACK_SHARE_KEY, track)
+            intent.putExtra(TRACK_SHARE_KEY, trackParcel)
             startActivity(intent)
         }
     }

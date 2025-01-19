@@ -1,6 +1,10 @@
-package com.practicum.playlistmaker.common.domain.model
+package com.practicum.playlistmaker.common.presentation.model
 
-data class Track(
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class TrackParcel(
     val trackId: Int?,
     val trackName: String?,
     val artistName: String?,
@@ -11,4 +15,4 @@ data class Track(
     val primaryGenreName: String?,
     val country: String?,
     val previewUrl: String?,
-)
+) : Parcelable
