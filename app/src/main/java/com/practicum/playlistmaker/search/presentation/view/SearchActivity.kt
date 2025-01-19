@@ -24,7 +24,7 @@ import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
-import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.search.di.SearchDependencyCreator
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor

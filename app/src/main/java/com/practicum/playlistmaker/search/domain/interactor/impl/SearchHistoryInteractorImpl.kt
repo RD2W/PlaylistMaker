@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.search.domain.interactor.impl
 
 import android.util.Log
 import com.practicum.playlistmaker.common.constants.LogTags
-import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.repository.SearchHistoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow

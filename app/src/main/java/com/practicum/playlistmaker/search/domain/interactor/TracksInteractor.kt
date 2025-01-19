@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.search.domain.interactor
 
-import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 
 interface TracksInteractor {
     fun searchTracks(expression: String, consumer: TracksConsumer)

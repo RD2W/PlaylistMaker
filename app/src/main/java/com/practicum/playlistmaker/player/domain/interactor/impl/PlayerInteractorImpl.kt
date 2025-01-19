@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.player.domain.interactor.impl
 
 import androidx.media3.common.Player
-import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 

@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.player.domain.interactor
 
 import androidx.media3.common.Player
-import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 
 interface PlayerInteractor {
     fun preparePlayer(track: Track, onPrepared: () -> Unit, onError: () -> Unit)

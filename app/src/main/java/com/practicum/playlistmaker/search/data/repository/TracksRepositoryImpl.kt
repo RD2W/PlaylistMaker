@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.search.data.repository
 
 import com.practicum.playlistmaker.common.constants.AppConstants.NOT_AVAILABLE
 import com.practicum.playlistmaker.common.constants.ResponseCode.RESPONSE_OK
-import com.practicum.playlistmaker.common.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.utils.formatDateToYear
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.search.data.model.TracksSearchRequest
