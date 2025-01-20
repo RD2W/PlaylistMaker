@@ -1,9 +1,5 @@
 package com.practicum.playlistmaker.player.presentation.view
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -11,27 +7,28 @@ import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.AppConstants.NOT_AVAILABLE
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
-import com.practicum.playlistmaker.common.utils.formatDateToYear
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
+import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker.search.data.model.Track
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.presentation.model.TrackParcel
+import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPlayerBinding
-    private lateinit var exoPlayer: ExoPlayer
+    private var _binding: ActivityPlayerBinding? = null
+    private val binding: ActivityPlayerBinding
+        get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
+
+    private val playerInteractor: PlayerInteractor by lazy {
+        AppDependencyCreator.providePlayerInteractor()
+    }
 
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
@@ -41,36 +38,23 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private val connectivityManager: ConnectivityManager by lazy {
-        getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    }
-
     private var isPlayerReady = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        exoPlayer = ExoPlayer.Builder(this).build()
         setupUI()
         setupPlayerListener()
     }
 
-    private fun isNetworkAvailable(): Boolean {
-        val activeNetwork = connectivityManager.activeNetwork
-        return activeNetwork?.let {
-            val networkCapabilities = connectivityManager.getNetworkCapabilities(it)
-            networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-        } ?: false
-    }
-
     private fun updateDuration() {
-        val currentPosition = exoPlayer.currentPosition
+        val currentPosition = playerInteractor.getCurrentPosition()
         binding.playerListenedTrackTime.text = formatDurationToMMSS(currentPosition)
     }
 
     private fun setupPlayerListener() {
-        exoPlayer.addListener(object : Player.Listener {
+        playerInteractor.addPlayerListener(object : Player.Listener {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_IDLE -> {
@@ -84,7 +68,7 @@ class PlayerActivity : AppCompatActivity() {
 
                     Player.STATE_READY -> {
                         isPlayerReady = true
-                        if (exoPlayer.isPlaying) {
+                        if (playerInteractor.isPlaying()) {
                             binding.playerPlayButton.setImageResource(R.drawable.ic_player_pause_button)
                         } else {
                             binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
@@ -93,63 +77,55 @@ class PlayerActivity : AppCompatActivity() {
 
                     Player.STATE_ENDED -> {
                         binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
-                        exoPlayer.seekTo(0)
-                        exoPlayer.pause()
+                        playerInteractor.seekTo(0)
+                        playerInteractor.pause()
                     }
                 }
             }
         })
     }
 
-    private fun preparePlayer(track: Track) {
-        if (!isNetworkAvailable()) {
+        private fun preparePlayer(track: Track) {
+        playerInteractor.preparePlayer(track, {
+            isPlayerReady = true
+        }, {
             Toast.makeText(
                 this,
                 getString(R.string.player_no_internet_connection_toast),
                 Toast.LENGTH_SHORT
             ).show()
-            return
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
-            withContext(Dispatchers.Main) {
-                exoPlayer.setMediaItem(mediaItem)
-                exoPlayer.prepare()
-            }
-        }
+        })
     }
 
     private fun playTrack() {
-        exoPlayer.play()
+        playerInteractor.play()
         binding.playerPlayButton.setImageResource(R.drawable.ic_player_pause_button)
     }
 
     private fun pauseTrack() {
-        exoPlayer.pause()
+        playerInteractor.pause()
         binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
     }
 
     private fun stopTrack() {
-        exoPlayer.stop()
+        playerInteractor.stop()
         binding.playerPlayButton.setImageResource(R.drawable.ic_player_play_button)
     }
 
     private fun setupUI() {
-        val track: Track? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK_SHARE_KEY, Track::class.java)
+        val trackParcel: TrackParcel? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(TRACK_SHARE_KEY, TrackParcel::class.java)
         } else {
             intent.getParcelableExtra(TRACK_SHARE_KEY)
         }
 
-        if (track != null) {
+        if (trackParcel != null) {
+            val track = TrackMapperImpl.toDomain(trackParcel)
             with(binding) {
                 playerTrackName.text = track.trackName
                 playerArtistName.text = track.artistName
-                playerTrackDuration.text =
-                    track.trackTime?.let { formatDurationToMMSS(it) } ?: NOT_AVAILABLE
-                playerTrackYear.text =
-                    track.releaseDate?.let { formatDateToYear(it) } ?: NOT_AVAILABLE
+                playerTrackDuration.text = track.trackTime
+                playerTrackYear.text = track.releaseDate
                 playerTrackGenre.text = track.primaryGenreName
                 playerTrackCountry.text = track.country
 
@@ -177,30 +153,40 @@ class PlayerActivity : AppCompatActivity() {
 
             playerPlayButton.setOnClickListener {
                 if (!isPlayerReady) return@setOnClickListener // Если плеер не готов, ничего не делаем
-                if (exoPlayer.isPlaying) {
+                if (playerInteractor.isPlaying()) {
                     pauseTrack()
                 } else {
-                    if (exoPlayer.playbackState == Player.STATE_ENDED) exoPlayer.seekTo(0)
+                    if (playerInteractor.getPlaybackState() == Player.STATE_ENDED) playerInteractor.seekTo(
+                        0
+                    )
                     playTrack()
                 }
             }
         }
     }
 
+    private fun startUpdatingDuration() {
+        handler.post(updateRunnable)
+    }
+
+    private fun stopUpdatingDuration() {
+        handler.removeCallbacks(updateRunnable)
+    }
+
     override fun onStart() {
         super.onStart()
-        handler.post(updateRunnable)
+        startUpdatingDuration()
     }
 
     override fun onStop() {
         super.onStop()
         pauseTrack()
-        handler.removeCallbacks(updateRunnable)
+        stopUpdatingDuration()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         stopTrack()
-        exoPlayer.release()
+        playerInteractor.release()
     }
 }

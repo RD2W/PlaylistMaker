@@ -21,23 +21,26 @@ import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_
 import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.constants.LogTags
-import com.practicum.playlistmaker.common.constants.PrefsConstants
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
+import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
-import com.practicum.playlistmaker.search.data.source.local.SearchHistory
-import com.practicum.playlistmaker.search.data.model.Track
-import com.practicum.playlistmaker.search.data.model.TrackResponse
-import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
+import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.utils.NetworkUtils
+import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
+import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: ActivitySearchBinding? = null
+    private val binding: ActivitySearchBinding
+        get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
+
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private val tracks: MutableList<Track> = mutableListOf()
     private val handler = Handler(Looper.getMainLooper())
@@ -45,19 +48,21 @@ class SearchActivity : AppCompatActivity() {
     private var inputText: String = DEFAULT_INPUT_TEXT
     private var lastQuery: String = DEFAULT_INPUT_TEXT
     private val searchRunnable = Runnable { searchForTracks(inputText) }
-    private val sharedPreferences by lazy {
-        getSharedPreferences(PrefsConstants.PREFS_NAME, MODE_PRIVATE)
+
+    private val tracksInteractor: TracksInteractor by lazy {
+        AppDependencyCreator.provideTrackInteractor()
+    }
+
+    private val searchHistoryInteractor: SearchHistoryInteractor by lazy {
+        AppDependencyCreator.provideSearchHistoryInteractor()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        _binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        SearchHistory.init(sharedPreferences)
-
         setupUI()
-        loadSearchHistory()
         observeSearchHistory()
     }
 
@@ -87,8 +92,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun launchPlayer(track: Track) {
         if (clickDebounce()) {
+            val trackParcel = TrackMapperImpl.toParcel(track)
             val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-            intent.putExtra(TRACK_SHARE_KEY, track)
+            intent.putExtra(TRACK_SHARE_KEY, trackParcel)
             startActivity(intent)
         }
     }
@@ -96,8 +102,18 @@ class SearchActivity : AppCompatActivity() {
     private fun observeSearchHistory() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                SearchHistory.historyFlow.collect { history ->
+                searchHistoryInteractor.getHistory().collect { history ->
                     updateSearchHistoryAdapter(history)
+                }
+            }
+        }
+    }
+
+    private fun observeSearchHistoryVisibility() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchHistoryInteractor.getHistory().collect { history ->
+                    updateSearchHistoryVisibility(history)
                 }
             }
         }
@@ -109,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             searchRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
             searchRecycler.adapter = TrackAdapter(tracks) { track ->
-                SearchHistory.addTrack(track)
+                searchHistoryInteractor.addTrack(track)
                 launchPlayer(track)
             }
         }
@@ -155,7 +171,7 @@ class SearchActivity : AppCompatActivity() {
             })
 
             setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) updateSearchHistoryVisibility()
+                if (hasFocus) observeSearchHistoryVisibility()
             }
         }
     }
@@ -172,7 +188,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearSearchHistory() {
-        SearchHistory.clearHistory()
+        searchHistoryInteractor.clearHistory()
     }
 
     private fun updateUIForSearchInput(s: CharSequence?) {
@@ -181,23 +197,11 @@ class SearchActivity : AppCompatActivity() {
                 clearInputButton.visibility = View.GONE
                 searchRecycler.visibility = View.GONE
                 searchPlaceholderViewGroup.visibility = View.GONE
-                updateSearchHistoryVisibility()
+                observeSearchHistoryVisibility()
             } else {
                 clearInputButton.visibility = View.VISIBLE
                 searchHistoryViewGroup.visibility = View.GONE
             }
-        }
-    }
-
-    private fun loadSearchHistory() {
-        val history = SearchHistory.getHistory()
-        with(binding) {
-            searchHistoryRecycler.layoutManager = LinearLayoutManager(this@SearchActivity)
-            searchHistoryRecycler.adapter = SearchHistoryAdapter(history) { track ->
-                launchPlayer(track)
-            }
-            searchHistoryViewGroup.visibility =
-                if (inputSearch.text.isNullOrEmpty() && inputSearch.hasFocus() && history.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 
@@ -216,7 +220,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateSearchHistoryVisibility(history: List<Track> = SearchHistory.getHistory()) {
+    private fun updateSearchHistoryVisibility(history: List<Track>) {
         with(binding) {
             searchHistoryViewGroup.visibility =
                 if (inputSearch.text.isNullOrEmpty() && inputSearch.hasFocus() && history.isNotEmpty()) View.VISIBLE else View.GONE
@@ -235,34 +239,34 @@ class SearchActivity : AppCompatActivity() {
         if (term.isBlank()) return
         lastQuery = term
         showProgressBar()
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val trackResponse = RetrofitClient.iTunesApiService.searchTracks(term)
-                withContext(Dispatchers.Main) {
-                    handleTrackResponse(trackResponse)
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    setNetworkErrorPlaceholder()
-                    Log.e(LogTags.NETWORK_STATUS, "No network connection: ${e.message}")
+        if (NetworkUtils.isNetworkAvailable(this)) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                tracksInteractor.searchTracks(term) { foundTracks ->
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        handleTrackResponse(foundTracks)
+                    }
                 }
             }
+
+        } else {
+            setNetworkErrorPlaceholder()
+            Log.e(LogTags.NETWORK_STATUS, "No network connection")
         }
     }
 
-    private fun handleTrackResponse(trackResponse: TrackResponse) {
-        if (trackResponse.resultCount > ZERO_NUM) {
-            showFoundTracks(trackResponse)
-            Log.d(LogTags.API_RESPONSE, "Tracks found: ${trackResponse.resultCount}")
+    private fun handleTrackResponse(foundTracks: List<Track>) {
+        if (foundTracks.isNotEmpty()) {
+            showFoundTracks(foundTracks.toMutableList())
+            Log.d(LogTags.API_RESPONSE, "Tracks found: ${foundTracks.size}")
         } else {
             setNotFoundPlaceholder()
             Log.d(LogTags.API_RESPONSE, "No tracks found")
         }
     }
 
-    private fun showFoundTracks(trackResponse: TrackResponse) {
+    private fun showFoundTracks(foundTracks: MutableList<Track>) {
         tracks.clear()
-        tracks.addAll(trackResponse.results)
+        tracks.addAll(foundTracks)
 
         with(binding) {
             pbSearchProgressBar.isVisible = false
@@ -321,7 +325,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val ZERO_NUM = 0
         const val DEFAULT_INPUT_TEXT = ""
         const val SAVED_INPUT_TEXT = "SAVED_INPUT_TEXT"
         const val SAVED_LAST_QUERY = "SAVED_LAST_QUERY"

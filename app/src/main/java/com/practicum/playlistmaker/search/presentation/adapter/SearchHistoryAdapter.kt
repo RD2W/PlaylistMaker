@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.TrackItemBinding
-import com.practicum.playlistmaker.search.data.model.Track
+import com.practicum.playlistmaker.common.domain.model.Track
 
 class SearchHistoryAdapter(
     private var tracks: List<Track>,
