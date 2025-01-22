@@ -1,9 +1,7 @@
 package com.practicum.playlistmaker.settings.presentation.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.app.App
 import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
@@ -33,23 +31,9 @@ class SettingsActivity : AppCompatActivity() {
             themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
                 onThemeSwitch(isChecked)
             }
-            shareButtom.setOnClickListener {
-                startActivity(
-                    Intent.createChooser(
-                        settingsInteractor.shareApp(),
-                        getString(R.string.app_share_msg)
-                    )
-                )
-            }
-            supportButtom.setOnClickListener {
-                val intent = settingsInteractor.writeSupport()
-                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-                }
-            }
-            agreementButtom.setOnClickListener {
-                startActivity(settingsInteractor.openUserAgreement())
-            }
+            shareButtom.setOnClickListener { settingsInteractor.shareApp() }
+            supportButtom.setOnClickListener { settingsInteractor.writeSupport() }
+            agreementButtom.setOnClickListener { settingsInteractor.openUserAgreement() }
         }
     }
 
