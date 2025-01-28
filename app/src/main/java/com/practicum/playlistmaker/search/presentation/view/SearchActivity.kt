@@ -26,7 +26,6 @@ import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.common.domain.model.Track
-import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
@@ -239,18 +238,17 @@ class SearchActivity : AppCompatActivity() {
         if (term.isBlank()) return
         lastQuery = term
         showProgressBar()
-        if (NetworkUtils.isNetworkAvailable(this)) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                tracksInteractor.searchTracks(term) { foundTracks ->
-                    lifecycleScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            tracksInteractor.searchTracks(term) { foundTracks, _, isConnected ->
+                lifecycleScope.launch(Dispatchers.Main) {
+                    if (isConnected) {
                         handleTrackResponse(foundTracks)
+                    } else {
+                        setNetworkErrorPlaceholder()
+                        Log.e(LogTags.NETWORK_STATUS, "No network connection")
                     }
                 }
             }
-
-        } else {
-            setNetworkErrorPlaceholder()
-            Log.e(LogTags.NETWORK_STATUS, "No network connection")
         }
     }
 

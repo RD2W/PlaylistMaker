@@ -52,7 +52,7 @@ object AppDependencyCreator {
     }
 
     private fun getTracksRepository(): TracksRepository {
-        return TracksRepositoryImpl(RetrofitClient)
+        return TracksRepositoryImpl(application, RetrofitClient)
     }
 
     private fun getSearchHistoryRepository(): SearchHistoryRepository {

@@ -17,7 +17,7 @@ object RetrofitClient : NetworkClient {
             .build()
     }
 
-    val iTunesApiService: ITunesApiService by lazy {
+    private val iTunesApiService: ITunesApiService by lazy {
         retrofit.create(ITunesApiService::class.java)
     }
 
