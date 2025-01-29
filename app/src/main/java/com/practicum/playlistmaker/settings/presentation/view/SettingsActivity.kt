@@ -1,11 +1,16 @@
 package com.practicum.playlistmaker.settings.presentation.view
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.app.App
+import androidx.lifecycle.Observer
 import com.practicum.playlistmaker.common.di.AppDependencyCreator
+import com.practicum.playlistmaker.common.domain.interactor.AppThemeInteractor
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.settings.domain.interactor.SettingsInteractor
+import com.practicum.playlistmaker.settings.presentation.state.SettingsScreenState
+import com.practicum.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
+import com.practicum.playlistmaker.settings.presentation.viewmodel.SettingsViewModelFactory
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -13,8 +18,16 @@ class SettingsActivity : AppCompatActivity() {
     private val binding: ActivitySettingsBinding
         get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
 
+    private val appThemeInteractor: AppThemeInteractor by lazy {
+        AppDependencyCreator.provideThemeInteractor()
+    }
+
     private val settingsInteractor: SettingsInteractor by lazy {
         AppDependencyCreator.provideSettingsInteractor()
+    }
+
+    private val viewModel: SettingsViewModel by viewModels {
+        SettingsViewModelFactory(appThemeInteractor, settingsInteractor)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,24 +38,28 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        setThemeSwitcherState()
+        observeThemeSwitcherState()
         with(binding) {
             topAppBar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
             themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-                onThemeSwitch(isChecked)
+                viewModel.switchTheme(isChecked)
             }
-            shareButtom.setOnClickListener { settingsInteractor.shareApp() }
-            supportButtom.setOnClickListener { settingsInteractor.writeSupport() }
-            agreementButtom.setOnClickListener { settingsInteractor.openUserAgreement() }
+            shareButtom.setOnClickListener { viewModel.shareApp() }
+            supportButtom.setOnClickListener { viewModel.writeSupport() }
+            agreementButtom.setOnClickListener { viewModel.openUserAgreement() }
         }
     }
 
-    private fun setThemeSwitcherState() {
-        binding.themeSwitcher.isChecked =
-            (application as App).getThemeInteractor().getCurrentTheme()
-    }
-
-    private fun onThemeSwitch(isChecked: Boolean) {
-        (application as App).getThemeInteractor().switchTheme(isChecked)
+    private fun observeThemeSwitcherState() {
+        viewModel.screenState.observe(this, Observer { state ->
+            when (state) {
+                is SettingsScreenState.ThemeSwitcherState -> {
+                    binding.themeSwitcher.isChecked = state.isThemeChecked
+                }
+                is SettingsScreenState.Error -> {
+                    // Здесь можно обработать состояние ошибки, если необходимо.
+                }
+            }
+        })
     }
 }
