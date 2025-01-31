@@ -112,6 +112,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
                     Player.STATE_ENDED -> {
                         playerInteractor.seekTo(0)
                         playerInteractor.pause()
+                        lastTrackPosition = playerInteractor.getCurrentPosition()
                         _screenState.value = PlayerScreenState.Stopped
                     }
                 }
