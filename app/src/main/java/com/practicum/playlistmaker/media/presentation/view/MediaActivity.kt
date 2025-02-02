@@ -19,4 +19,9 @@ class MediaActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
