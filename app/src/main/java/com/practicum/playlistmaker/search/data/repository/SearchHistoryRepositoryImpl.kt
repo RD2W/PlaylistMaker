@@ -11,8 +11,7 @@ import com.practicum.playlistmaker.search.domain.repository.SearchHistoryReposit
 class SearchHistoryRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
     private val gson: Gson,
-) :
-    SearchHistoryRepository {
+) : SearchHistoryRepository {
 
     override fun getHistory(): List<Track> {
         val json = sharedPreferences.getString(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY, null)
