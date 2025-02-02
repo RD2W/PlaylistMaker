@@ -1,11 +1,11 @@
 package com.practicum.playlistmaker.player.presentation.view
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.START_TRACK_POSITION
@@ -125,11 +125,11 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun getTrack(): Track {
-        val trackParcel: TrackParcel? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK_SHARE_KEY, TrackParcel::class.java)
-        } else {
-            intent.getParcelableExtra(TRACK_SHARE_KEY)
-        }
+        val trackParcel: TrackParcel? = IntentCompat.getParcelableExtra(
+            intent,
+            TRACK_SHARE_KEY,
+            TrackParcel::class.java
+        )
         return trackParcel?.let { TrackMapperImpl.toDomain(it) }
             ?: throw IllegalArgumentException("TrackParcel is null")
     }
