@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.search.domain.interactor.impl
 
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
-import com.practicum.playlistmaker.search.domain.model.Resource
+import com.practicum.playlistmaker.search.domain.model.NetworkRequestResult
 import com.practicum.playlistmaker.search.domain.repository.TracksRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,19 +11,19 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
     override fun searchTracks(expression: String, consumer: TracksInteractor.TracksConsumer) {
         CoroutineScope(Dispatchers.IO).launch {
             when (val resource = repository.searchTracks(expression)) {
-                is Resource.Success -> consumer.consume(
+                is NetworkRequestResult.Success -> consumer.consume(
                     resource.data,
                     null,
                     resource.isConnected
                 )
 
-                is Resource.Error -> consumer.consume(
+                is NetworkRequestResult.Error -> consumer.consume(
                     resource.data,
                     resource.message,
                     resource.isConnected
                 )
 
-                is Resource.NoConnection -> consumer.consume(
+                is NetworkRequestResult.NoConnection -> consumer.consume(
                     resource.data,
                     resource.message,
                     resource.isConnected

@@ -11,7 +11,7 @@ import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.search.data.model.TracksSearchRequest
 import com.practicum.playlistmaker.search.data.model.TracksSearchResponse
 import com.practicum.playlistmaker.search.data.source.remote.NetworkClient
-import com.practicum.playlistmaker.search.domain.model.Resource
+import com.practicum.playlistmaker.search.domain.model.NetworkRequestResult
 import com.practicum.playlistmaker.search.domain.repository.TracksRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,8 +20,8 @@ class TracksRepositoryImpl(
     private val context: Context,
     private val networkClient: NetworkClient,
 ) : TracksRepository {
-    override suspend fun searchTracks(expression: String): Resource<List<Track>> {
-        if (!NetworkUtils.isNetworkAvailable(context)) return Resource.NoConnection(
+    override suspend fun searchTracks(expression: String): NetworkRequestResult<List<Track>> {
+        if (!NetworkUtils.isNetworkAvailable(context)) return NetworkRequestResult.NoConnection(
             emptyList(),
             context.getString(R.string.no_internet_connection),
             false
@@ -44,9 +44,9 @@ class TracksRepositoryImpl(
                         it.previewUrl,
                     )
                 }
-                Resource.Success(trackList)
+                NetworkRequestResult.Success(trackList)
             } else {
-                Resource.Error(
+                NetworkRequestResult.Error(
                     emptyList(),
                     context.getString(R.string.server_error)
                 )
