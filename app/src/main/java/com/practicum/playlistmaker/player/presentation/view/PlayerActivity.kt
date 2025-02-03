@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.AppConstants.START_TRACK_POSITION
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
@@ -142,5 +141,9 @@ class PlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        const val START_TRACK_POSITION = "00:00"
     }
 }
