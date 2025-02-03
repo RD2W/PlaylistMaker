@@ -6,10 +6,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
@@ -111,5 +115,12 @@ class SearchViewModel(
 
     companion object {
         const val DEFAULT_INPUT_TEXT = ""
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val tracksInteractor = AppDependencyCreator.provideTrackInteractor()
+                val searchHistoryInteractor = AppDependencyCreator.provideSearchHistoryInteractor()
+                SearchViewModel(tracksInteractor, searchHistoryInteractor)
+            }
+        }
     }
 }

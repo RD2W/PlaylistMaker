@@ -13,18 +13,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
-import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.common.domain.model.Track
-import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
-import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
 import com.practicum.playlistmaker.search.presentation.viewmodel.SearchViewModel
-import com.practicum.playlistmaker.search.presentation.viewmodel.SearchViewModelFactory
 
 class SearchActivity : AppCompatActivity() {
 
@@ -35,17 +31,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private lateinit var foundTrackAdapter: TrackAdapter
 
-    private val tracksInteractor: TracksInteractor by lazy {
-        AppDependencyCreator.provideTrackInteractor()
-    }
-
-    private val searchHistoryInteractor: SearchHistoryInteractor by lazy {
-        AppDependencyCreator.provideSearchHistoryInteractor()
-    }
-
-    private val searchViewModel: SearchViewModel by viewModels {
-        SearchViewModelFactory(tracksInteractor, searchHistoryInteractor)
-    }
+    private val searchViewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
                 is SearchScreenState.Idle -> {
                     // Ничего не делать, начальное состояние
                 }
+
                 is SearchScreenState.Loading -> showProgressBar()
                 is SearchScreenState.Content -> showFoundTracks(state.tracks)
                 is SearchScreenState.NotFound -> showNotFoundPlaceholder()

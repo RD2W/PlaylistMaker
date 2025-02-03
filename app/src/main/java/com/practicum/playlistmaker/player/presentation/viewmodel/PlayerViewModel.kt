@@ -5,12 +5,17 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.Player
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
+import com.practicum.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
 
 class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
 
@@ -136,5 +141,14 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     override fun onCleared() {
         super.onCleared()
         releasePlayer()
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val playerInteractor = AppDependencyCreator.providePlayerInteractor()
+                PlayerViewModel(playerInteractor)
+            }
+        }
     }
 }

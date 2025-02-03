@@ -3,6 +3,10 @@ package com.practicum.playlistmaker.settings.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.interactor.AppThemeInteractor
 import com.practicum.playlistmaker.settings.domain.interactor.SettingsInteractor
 import com.practicum.playlistmaker.settings.presentation.state.SettingsScreenState
@@ -39,5 +43,15 @@ class SettingsViewModel(
 
     fun openUserAgreement() {
         settingsInteractor.openUserAgreement()
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val appThemeInteractor = AppDependencyCreator.provideThemeInteractor()
+                val settingsInteractor = AppDependencyCreator.provideSettingsInteractor()
+                SettingsViewModel(appThemeInteractor, settingsInteractor)
+            }
+        }
     }
 }

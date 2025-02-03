@@ -9,15 +9,12 @@ import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
-import com.practicum.playlistmaker.common.di.AppDependencyCreator
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
-import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.viewmodel.PlayerViewModel
-import com.practicum.playlistmaker.player.presentation.viewmodel.PlayerViewModelFactory
 import kotlin.getValue
 
 class PlayerActivity : AppCompatActivity() {
@@ -26,13 +23,7 @@ class PlayerActivity : AppCompatActivity() {
     private val binding: ActivityPlayerBinding
         get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
 
-    private val playerInteractor: PlayerInteractor by lazy {
-        AppDependencyCreator.providePlayerInteractor()
-    }
-
-    private val viewModel: PlayerViewModel by viewModels {
-        PlayerViewModelFactory(playerInteractor)
-    }
+    private val viewModel: PlayerViewModel by viewModels { PlayerViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
