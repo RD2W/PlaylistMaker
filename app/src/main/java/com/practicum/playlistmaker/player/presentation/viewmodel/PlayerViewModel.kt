@@ -15,7 +15,6 @@ import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
-import com.practicum.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
 
 class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
 
