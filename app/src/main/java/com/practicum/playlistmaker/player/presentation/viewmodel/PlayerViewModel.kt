@@ -1,7 +1,9 @@
 package com.practicum.playlistmaker.player.presentation.viewmodel
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.core.content.IntentCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,13 +12,19 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.media3.common.Player
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
+import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.di.AppDependencyCreator
+import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 
 class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
+
+    private val _track = MutableLiveData<Track>()
+    val track: LiveData<Track> get() = _track
 
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> get() = _screenState
@@ -57,7 +65,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         }
     }
 
-    fun playTrack() {
+    private fun playTrack() {
         if (isPlayerReady) {
             playerInteractor.seekTo(lastTrackPosition)
             playerInteractor.play()
@@ -73,7 +81,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         stopUpdatingDuration()
     }
 
-    fun stopTrack() {
+    private fun stopTrack() {
         playerInteractor.stop()
         _screenState.value = PlayerScreenState.Stopped
         stopUpdatingDuration()
@@ -81,6 +89,18 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private fun getCurrentPosition(): String {
         return formatDurationToMMSS(playerInteractor.getCurrentPosition())
+    }
+
+    fun getTrack(intent: Intent) {
+        val trackParcel: TrackParcel? = IntentCompat.getParcelableExtra(
+            intent,
+            TRACK_SHARE_KEY,
+            TrackParcel::class.java
+        )
+        val trackValue = trackParcel?.let { TrackMapperImpl.toDomain(it) }
+            ?: throw IllegalArgumentException("TrackParcel is null")
+
+        _track.value = trackValue
     }
 
     private fun isPlaying(): Boolean {

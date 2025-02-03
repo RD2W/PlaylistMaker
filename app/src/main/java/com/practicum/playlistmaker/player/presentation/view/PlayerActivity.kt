@@ -5,14 +5,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.IntentCompat
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
-import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
-import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.viewmodel.PlayerViewModel
 import kotlin.getValue
@@ -29,8 +25,15 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupUI()
+        viewModel.getTrack(intent)
+        observeTrack()
         observePlayerState()
+    }
+
+    private fun observeTrack() {
+        viewModel.track.observe(this) { track ->
+            updateUIWithTrack(track)
+        }
     }
 
     private fun observePlayerState() {
@@ -74,8 +77,7 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupUI() {
-        val track = getTrack()
+    private fun updateUIWithTrack(track: Track) {
         with(binding) {
             playerTrackName.text = track.trackName
             playerArtistName.text = track.artistName
@@ -112,16 +114,6 @@ class PlayerActivity : AppCompatActivity() {
                 viewModel.controlPlayer()
             }
         }
-    }
-
-    private fun getTrack(): Track {
-        val trackParcel: TrackParcel? = IntentCompat.getParcelableExtra(
-            intent,
-            TRACK_SHARE_KEY,
-            TrackParcel::class.java
-        )
-        return trackParcel?.let { TrackMapperImpl.toDomain(it) }
-            ?: throw IllegalArgumentException("TrackParcel is null")
     }
 
     override fun onStop() {
