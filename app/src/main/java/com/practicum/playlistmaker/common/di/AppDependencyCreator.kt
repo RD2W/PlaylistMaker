@@ -16,6 +16,7 @@ import com.practicum.playlistmaker.player.domain.interactor.impl.PlayerInteracto
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 import com.practicum.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
 import com.practicum.playlistmaker.search.data.repository.TracksRepositoryImpl
+import com.practicum.playlistmaker.search.data.source.local.sprefs.SharedPreferencesClient
 import com.practicum.playlistmaker.search.data.source.remote.RetrofitClient
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
@@ -52,11 +53,15 @@ object AppDependencyCreator {
     }
 
     private fun getTracksRepository(): TracksRepository {
-        return TracksRepositoryImpl(RetrofitClient)
+        return TracksRepositoryImpl(application, RetrofitClient)
+    }
+
+    private fun getSharedPreferencesClient(): SharedPreferencesClient {
+        return SharedPreferencesClient(getSharedPreferences(), getGson())
     }
 
     private fun getSearchHistoryRepository(): SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl(getSharedPreferences(), getGson())
+        return SearchHistoryRepositoryImpl(getSharedPreferencesClient())
     }
 
     private fun getSettingsRepository(): SettingsRepository {

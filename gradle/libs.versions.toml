@@ -7,7 +7,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.9.3"
+activity = "1.10.0"
 constraintlayout = "2.2.0"
 preference = "1.2.1"
 glide = "4.16.0"
@@ -16,9 +16,12 @@ ksp = "2.0.21-1.0.25"
 gson = "2.11.0"
 retrofit = "2.11.0"
 retrofit-converter-gson = "2.11.0"
-media3Exoplayer = "1.5.0"
+media3Exoplayer = "1.5.1"
+viewModelKtx = "2.8.7"
 
 [libraries]
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewModelKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

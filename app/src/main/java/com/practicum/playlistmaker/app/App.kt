@@ -20,8 +20,4 @@ class App : Application() {
         val isDarkTheme = appThemeInteractor.getCurrentTheme()
         appThemeInteractor.switchTheme(isDarkTheme)
     }
-
-    fun getThemeInteractor(): AppThemeInteractor {
-        return appThemeInteractor
-    }
 }

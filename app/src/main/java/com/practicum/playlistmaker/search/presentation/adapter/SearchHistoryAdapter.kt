@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.databinding.TrackItemBinding
 import com.practicum.playlistmaker.common.domain.model.Track
 
 class SearchHistoryAdapter(
-    private var tracks: List<Track>,
+    private var tracks: List<Track> = emptyList(),
     private val onTrackClick: (Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -29,5 +29,9 @@ class SearchHistoryAdapter(
     fun updateTracks(newTracks: List<Track>) {
         tracks = newTracks
         notifyDataSetChanged()
+    }
+
+    fun getCurrentHistory(): List<Track> {
+        return tracks
     }
 }

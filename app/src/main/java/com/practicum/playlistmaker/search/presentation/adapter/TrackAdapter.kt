@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.databinding.TrackItemBinding
 import com.practicum.playlistmaker.common.domain.model.Track
 
 class TrackAdapter(
-    private val tracks: MutableList<Track>,
+    private var tracks: List<Track> = emptyList(),
     private val onTrackClick: (Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -25,4 +25,14 @@ class TrackAdapter(
     }
 
     override fun getItemCount() = tracks.size
+
+    fun updateTracks(newTracks: List<Track>) {
+        tracks = newTracks
+        notifyDataSetChanged()
+    }
+
+    fun clearTracks() {
+        tracks = emptyList()
+        notifyDataSetChanged()
+    }
 }
