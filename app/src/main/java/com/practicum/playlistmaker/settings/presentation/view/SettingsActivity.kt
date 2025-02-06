@@ -1,12 +1,12 @@
 package com.practicum.playlistmaker.settings.presentation.view
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.settings.presentation.state.SettingsScreenState
 import com.practicum.playlistmaker.settings.presentation.viewmodel.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -14,7 +14,7 @@ class SettingsActivity : AppCompatActivity() {
     private val binding: ActivitySettingsBinding
         get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
 
-    private val viewModel: SettingsViewModel by viewModels { SettingsViewModel.Factory }
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
