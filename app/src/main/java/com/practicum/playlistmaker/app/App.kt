@@ -4,6 +4,7 @@ import android.app.Application
 import com.practicum.playlistmaker.common.di.appModule
 import com.practicum.playlistmaker.common.di.dataModule
 import com.practicum.playlistmaker.common.di.domainModule
+import com.practicum.playlistmaker.common.di.sourceModule
 import com.practicum.playlistmaker.common.domain.interactor.AppThemeInteractor
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -24,6 +25,7 @@ class App : Application() {
                 appModule,
                 dataModule,
                 domainModule,
+                sourceModule,
             )
         }
         applyTheme()
