@@ -1,26 +1,11 @@
 package com.practicum.playlistmaker.search.data.source.remote
 
-import com.practicum.playlistmaker.common.constants.ApiConstants
 import com.practicum.playlistmaker.search.data.model.Response
 import com.practicum.playlistmaker.search.data.model.TracksSearchRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitClient : NetworkClient {
-
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(ApiConstants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private val iTunesApiService: ITunesApiService by lazy {
-        retrofit.create(ITunesApiService::class.java)
-    }
-
+class RetrofitClient(private val iTunesApiService: ITunesApiService) : NetworkClient {
     override suspend fun doRequest(dto: Any): Response {
         return withContext(Dispatchers.IO) {
             if (dto is TracksSearchRequest) {

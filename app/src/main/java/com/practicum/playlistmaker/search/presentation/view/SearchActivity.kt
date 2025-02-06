@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +20,7 @@ import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdap
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
 import com.practicum.playlistmaker.search.presentation.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -31,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private lateinit var foundTrackAdapter: TrackAdapter
 
-    private val searchViewModel: SearchViewModel by viewModels { SearchViewModel.Factory }
+    private val searchViewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
