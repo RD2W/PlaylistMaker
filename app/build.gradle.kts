@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.practicum.playlistmaker"
-        minSdk = 29
+        minSdk = 31
         targetSdk = 35
         versionCode = 10
         versionName = "1.0.10"
@@ -45,10 +45,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.material)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.preference)
+    implementation(libs.material)
     implementation(libs.glide)
     implementation(libs.gson)
     implementation(libs.retrofit)
