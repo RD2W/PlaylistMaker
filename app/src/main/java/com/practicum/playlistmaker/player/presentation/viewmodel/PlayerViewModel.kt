@@ -46,8 +46,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         playerInteractor.preparePlayer(track, {
             isPlayerReady = true
             _screenState.value = PlayerScreenState.Ready
-        }, {
-            _screenState.value = PlayerScreenState.NotReady
+        }, { error ->
+            _screenState.value = PlayerScreenState.NotReady(error)
         })
     }
 

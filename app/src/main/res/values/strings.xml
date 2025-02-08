@@ -33,4 +33,6 @@
     <string name="track_playlist_button_description">Button to add a track to a playlist</string>
     <string name="track_favorites_button_description">Button to add a track to favorites</string>
     <string name="track_play_button_description">Play or pause button</string>
+    <string name="player_error_exception_toast">Error preparing player for playback</string>
+    <string name="player_error_unknown_toast">Unknown error of the player</string>
 </resources>

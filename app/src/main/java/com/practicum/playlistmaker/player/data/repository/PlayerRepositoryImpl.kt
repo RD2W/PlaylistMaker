@@ -2,28 +2,39 @@ package com.practicum.playlistmaker.player.data.repository
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.player.domain.model.ErrorType
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 
 class PlayerRepositoryImpl(
     private val context: Context,
     private val exoPlayer: ExoPlayer,
 ) : PlayerRepository {
-
-    override fun preparePlayer(track: Track, onPrepared: () -> Unit, onError: () -> Unit) {
+    override fun preparePlayer(
+        track: Track,
+        onPrepared: () -> Unit,
+        onError: (ErrorType) -> Unit,
+    ) {
         if (!NetworkUtils.isNetworkAvailable(context)) {
-            onError()
+            Log.e(LogTags.NETWORK_UTILS, "No internet connection")
+            onError(ErrorType.NoInternet)
             return
         }
-
-        val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
-        exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.prepare()
-        onPrepared()
+        try {
+            val mediaItem = MediaItem.fromUri(Uri.parse(track.previewUrl))
+            exoPlayer.setMediaItem(mediaItem)
+            exoPlayer.prepare()
+            onPrepared()
+        } catch (e: Exception) {
+            Log.e(LogTags.EXO_PLAYER, "Exception during preparePlayer: ${e.message}", e)
+            onError(ErrorType.PlayerException)
+        }
     }
 
     override fun play() {
