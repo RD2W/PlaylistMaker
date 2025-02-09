@@ -15,47 +15,39 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
 class PlayerActivity : AppCompatActivity() {
-
     private var _binding: ActivityPlayerBinding? = null
     private val binding: ActivityPlayerBinding
-        get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
-
+        get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
     private val viewModel: PlayerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel.getTrack(intent)
-        observeTrack()
-        observePlayerState()
-    }
 
-    private fun observeTrack() {
-        viewModel.track.observe(this) { track ->
-            updateUIWithTrack(track)
-        }
+        viewModel.getTrack(intent)
+        observePlayerState()
+        setupButtons()
     }
 
     private fun observePlayerState() {
-        viewModel.screenState.observe(this) { state ->
-            when (state) {
-                is PlayerScreenState.NotReady -> {
-                    disablePlayButton()
-                    showToast(state)
-                }
-
-                is PlayerScreenState.Ready -> showPlayButton()
-                is PlayerScreenState.Playing -> showPauseButton()
-                is PlayerScreenState.Paused -> showPlayButton()
-                is PlayerScreenState.Stopped -> showPlayButton()
+        viewModel.state.observe(this) { state ->
+            state.track?.let { track ->
+                updateUIWithTrack(track)
             }
-        }
-    }
-
-    private fun observeCurrentPosition() {
-        viewModel.currentPosition.observe(this) { position ->
-            binding.playerListenedTrackTime.text = position
+            state.screenState.let { screenState ->
+                when (screenState) {
+                    is PlayerScreenState.NotReady -> {
+                        disablePlayButton()
+                        showToast(screenState)
+                    }
+                    is PlayerScreenState.Ready -> showPlayButton()
+                    is PlayerScreenState.Playing -> showPauseButton()
+                    is PlayerScreenState.Paused -> showPlayButton()
+                    is PlayerScreenState.Stopped -> showPlayButton()
+                }
+            }
+            binding.playerListenedTrackTime.text = state.currentPosition
         }
     }
 
@@ -67,12 +59,9 @@ class PlayerActivity : AppCompatActivity() {
             playerTrackYear.text = track.releaseDate
             playerTrackGenre.text = track.primaryGenreName
             playerTrackCountry.text = track.country
-
             if (track.collectionName.isNullOrBlank()) {
                 groupCollectionName.visibility = View.GONE
             } else playerTrackAlbum.text = track.collectionName
-
-            playerListenedTrackTime.text = START_TRACK_POSITION
 
             Glide.with(playerTrackCover.context)
                 .load(track.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
@@ -81,8 +70,6 @@ class PlayerActivity : AppCompatActivity() {
                 .centerCrop()
                 .into(playerTrackCover)
         }
-        observeCurrentPosition()
-        setupButtons()
     }
 
     private fun showPlayButton() {
@@ -120,7 +107,6 @@ class PlayerActivity : AppCompatActivity() {
             topAppBar.setNavigationOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
             }
-
             playerPlayButton.setOnClickListener {
                 viewModel.controlPlayer()
             }
@@ -135,9 +121,5 @@ class PlayerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-        const val START_TRACK_POSITION = "00:00"
     }
 }
