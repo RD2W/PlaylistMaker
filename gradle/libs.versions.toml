@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.0"
+agp = "8.8.1"
 kotlin = "2.0.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -20,13 +20,15 @@ media3Exoplayer = "1.5.1"
 viewModelKtx = "2.8.7"
 koin = "4.0.2"
 coreSplashScreen = "1.0.1"
-fragmentKtx = "1.8.5"
-navigationFragment = "2.8.6"
+fragmentKtx = "1.8.6"
+navigationFragment = "2.8.7"
 viewPager2 = "1.1.0"
+lifecycleLivedataKtx = "2.8.7"
 
 [libraries]
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "viewModelKtx" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashScreen" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
