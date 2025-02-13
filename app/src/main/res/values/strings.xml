@@ -35,4 +35,10 @@
     <string name="track_play_button_description">Play or pause button</string>
     <string name="player_error_exception_toast">Error preparing player for playback</string>
     <string name="player_error_unknown_toast">Unknown error of the player</string>
+    <string name="media_favorite_tab">Favorites</string>
+    <string name="media_playlists_tab">Playlists</string>
+    <string name="media_tab_layout_description">Tabs for selecting favorite tracks or playlists</string>
+    <string name="media_favorite_tab_empty">Your media library is empty</string>
+    <string name="media_playlists_tab_empty">You have not\n created any playlists</string>
+    <string name="media_add_playlist_button">New Playlist</string>
 </resources>

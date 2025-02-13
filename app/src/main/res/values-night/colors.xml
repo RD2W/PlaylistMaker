@@ -7,6 +7,7 @@
     <color name="ic_launcher">@color/white</color>
     <color name="ic_launcher_background">@color/black</color>
     <color name="button">@color/white</color>
+    <color name="text_tab_layout">@color/white</color>
     <color name="text_search_field">@color/dark_gray</color>
     <color name="icon_search_field">@color/dark_gray</color>
     <color name="background_search_field">@color/white</color>

@@ -15,4 +15,16 @@
         app:title="@string/media_library_button"
         app:navigationIcon="@drawable/ic_back"/>
 
+    <com.google.android.material.tabs.TabLayout
+        style="@style/CustomTabLayoutStyle"
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/media_tab_layout_description"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

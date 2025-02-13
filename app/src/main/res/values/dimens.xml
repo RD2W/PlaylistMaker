@@ -6,6 +6,7 @@
     <dimen name="corner_radius_52">52dp</dimen>
     <dimen name="ic_padding">8dp</dimen>
     <dimen name="zero_dp">0dp</dimen>
+    <dimen name="value_2">2dp</dimen>
     <dimen name="value_4">4dp</dimen>
     <dimen name="value_8">8dp</dimen>
     <dimen name="value_12">12dp</dimen>
@@ -15,6 +16,7 @@
     <dimen name="value_28">28dp</dimen>
     <dimen name="value_48">48dp</dimen>
     <dimen name="value_52">52dp</dimen>
+    <dimen name="value_108">108dp</dimen>
     <dimen name="value_136">136dp</dimen>
     <dimen name="text_size">16sp</dimen>
     <dimen name="text_medium_size">19sp</dimen>
