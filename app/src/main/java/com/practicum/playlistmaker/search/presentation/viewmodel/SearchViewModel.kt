@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
@@ -32,8 +33,8 @@ class SearchViewModel(
     private val _clickEvent = MutableSharedFlow<TrackParcel>()
     val clickEvent: SharedFlow<TrackParcel> get() = _clickEvent
 
-    private var isClickAllowed = true
     private var latestSearchText: String = DEFAULT_INPUT_TEXT
+    private val isClickAllowed = AtomicBoolean(true)
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchForTracks(latestSearchText) }
 
@@ -81,12 +82,17 @@ class SearchViewModel(
     }
 
     fun clickDebounce(track: Track) {
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
-            viewModelScope.launch {
-                val trackParcel = TrackMapperImpl.toParcel(track)
-                _clickEvent.emit(trackParcel)
+        if (isClickAllowed.get()) {
+            if (isClickAllowed.compareAndSet(true, false)) {
+                handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY_MILLIS)
+                viewModelScope.launch {
+                    try {
+                        val trackParcel = TrackMapperImpl.toParcel(track)
+                        _clickEvent.emit(trackParcel)
+                    } catch (e: Exception) {
+                        Log.e(LogTags.CLICK_DEBOUNCE, "ClickEvent error: $e")
+                    }
+                }
             }
         }
     }
