@@ -10,13 +10,16 @@ import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
@@ -26,9 +29,12 @@ class SearchViewModel(
     private val _searchScreenState = MutableLiveData<SearchScreenState>(SearchScreenState.Idle)
     val searchScreenState: LiveData<SearchScreenState> get() = _searchScreenState
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val isClickAllowed = AtomicBoolean(true)
+    private val _clickEvent = MutableSharedFlow<TrackParcel>()
+    val clickEvent: SharedFlow<TrackParcel> get() = _clickEvent
+
+    private var isClickAllowed = true
     private var latestSearchText: String = DEFAULT_INPUT_TEXT
+    private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { searchForTracks(latestSearchText) }
 
     init {
@@ -74,12 +80,15 @@ class SearchViewModel(
         }
     }
 
-    fun clickDebounce(): Boolean {
-        return if (isClickAllowed.get()) {
-            isClickAllowed.set(false)
-            handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY_MILLIS)
-            true
-        } else false
+    fun clickDebounce(track: Track) {
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
+            viewModelScope.launch {
+                val trackParcel = TrackMapperImpl.toParcel(track)
+                _clickEvent.emit(trackParcel)
+            }
+        }
     }
 
     fun addTrackToHistory(track: Track) {

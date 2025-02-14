@@ -9,10 +9,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
-import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.common.domain.model.Track
@@ -20,6 +20,7 @@ import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdap
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
 import com.practicum.playlistmaker.search.presentation.viewmodel.SearchViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
@@ -39,20 +40,28 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupUI()
         observeViewModel()
+        observeClickEvent()
     }
 
     private fun observeViewModel() {
         searchViewModel.searchScreenState.observe(this) { state ->
             when (state) {
-                is SearchScreenState.Idle -> {
-                    // Ничего не делать, начальное состояние
-                }
-
+                is SearchScreenState.Idle -> { /* Ничего не делать, начальное состояние */ }
                 is SearchScreenState.Loading -> showProgressBar()
                 is SearchScreenState.Content -> showFoundTracks(state.tracks)
                 is SearchScreenState.NotFound -> showNotFoundPlaceholder()
                 is SearchScreenState.NetworkError -> showNetworkErrorPlaceholder()
                 is SearchScreenState.SearchHistory -> showSearchHistory(state.history)
+            }
+        }
+    }
+
+    private fun observeClickEvent() {
+        lifecycleScope.launch {
+            searchViewModel.clickEvent.collect { trackParcel ->
+                val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
+                intent.putExtra(TRACK_SHARE_KEY, trackParcel)
+                startActivity(intent)
             }
         }
     }
@@ -111,12 +120,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun launchPlayer(track: Track) {
-        if (searchViewModel.clickDebounce()) {
-            val trackParcel = TrackMapperImpl.toParcel(track)
-            val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-            intent.putExtra(TRACK_SHARE_KEY, trackParcel)
-            startActivity(intent)
-        }
+        searchViewModel.clickDebounce(track)
     }
 
     private fun setupUI() {
