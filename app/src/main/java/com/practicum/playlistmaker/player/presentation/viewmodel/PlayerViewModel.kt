@@ -16,16 +16,11 @@ import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
+import com.practicum.playlistmaker.player.presentation.state.PlayerState
 
 class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
-    private val _track = MutableLiveData<Track>()
-    val track: LiveData<Track> get() = _track
-
-    private val _screenState = MutableLiveData<PlayerScreenState>()
-    val screenState: LiveData<PlayerScreenState> get() = _screenState
-
-    private val _currentPosition = MutableLiveData<String>()
-    val currentPosition: LiveData<String> get() = _currentPosition
+    private val _state = MutableLiveData(PlayerState())
+    val state: LiveData<PlayerState> get() = _state
 
     init {
         setupPlayerListener()
@@ -33,11 +28,10 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private var isPlayerReady = false
     private var lastTrackPosition = 0L
-
     private val handler = Handler(Looper.getMainLooper())
     private val updateRunnable = object : Runnable {
         override fun run() {
-            _currentPosition.value = getCurrentPosition()
+            updateCurrentPosition()
             handler.postDelayed(this, PROGRESS_BAR_DELAY_MILLIS)
         }
     }
@@ -45,9 +39,9 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private fun preparePlayer(track: Track) {
         playerInteractor.preparePlayer(track, {
             isPlayerReady = true
-            _screenState.value = PlayerScreenState.Ready
-        }, {
-            _screenState.value = PlayerScreenState.NotReady
+            updateState { it.copy(screenState = PlayerScreenState.Ready) }
+        }, { error ->
+            updateState { it.copy(screenState = PlayerScreenState.NotReady(error)) }
         })
     }
 
@@ -64,21 +58,21 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         if (isPlayerReady) {
             playerInteractor.seekTo(lastTrackPosition)
             playerInteractor.play()
-            _screenState.value = PlayerScreenState.Playing
+            updateState { it.copy(screenState = PlayerScreenState.Playing) }
             startUpdatingDuration()
         }
     }
 
     fun pauseTrack() {
         playerInteractor.pause()
-        _screenState.value = PlayerScreenState.Paused
+        updateState { it.copy(screenState = PlayerScreenState.Paused) }
         lastTrackPosition = playerInteractor.getCurrentPosition()
         stopUpdatingDuration()
     }
 
     private fun stopTrack() {
         playerInteractor.stop()
-        _screenState.value = PlayerScreenState.Stopped
+        updateState { it.copy(screenState = PlayerScreenState.Stopped) }
         stopUpdatingDuration()
     }
 
@@ -94,8 +88,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         )
         val trackValue = trackParcel?.let { TrackMapperImpl.toDomain(it) }
             ?: throw IllegalArgumentException("TrackParcel is null")
-
-        _track.value = trackValue
+        updateState { it.copy(track = trackValue) }
         preparePlayer(trackValue)
     }
 
@@ -112,28 +105,24 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
             override fun onPlaybackStateChanged(playbackState: Int) {
                 when (playbackState) {
                     Player.STATE_IDLE -> {
-                        // Здесь можно обработать состояние, когда плеер не готов к воспроизведению
+                        // Обработка состояния, когда плеер не готов к воспроизведению.
                     }
-
                     Player.STATE_BUFFERING -> {
-                        // Здесь можно обработать состояние буферизации
-                        // Например, можно показать индикатор загрузки
+                        // Обработка состояния буферизации (можно показать индикатор загрузк).
                     }
-
                     Player.STATE_READY -> {
                         isPlayerReady = true
                         if (playerInteractor.isPlaying()) {
-                            _screenState.value = PlayerScreenState.Playing
+                            updateState { it.copy(screenState = PlayerScreenState.Playing) }
                         } else {
-                            _screenState.value = PlayerScreenState.Paused
+                            updateState { it.copy(screenState = PlayerScreenState.Paused) }
                         }
                     }
-
                     Player.STATE_ENDED -> {
                         playerInteractor.seekTo(0)
                         playerInteractor.pause()
                         lastTrackPosition = playerInteractor.getCurrentPosition()
-                        _screenState.value = PlayerScreenState.Stopped
+                        updateState { it.copy(screenState = PlayerScreenState.Stopped) }
                     }
                 }
             }
@@ -151,6 +140,15 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private fun stopUpdatingDuration() {
         handler.removeCallbacks(updateRunnable)
+    }
+
+    private fun updateCurrentPosition() {
+        updateState { it.copy(currentPosition = getCurrentPosition()) }
+    }
+
+    private fun updateState(block: (PlayerState) -> PlayerState) {
+        val currentState = _state.value ?: PlayerState()
+        _state.value = block(currentState)
     }
 
     override fun onCleared() {

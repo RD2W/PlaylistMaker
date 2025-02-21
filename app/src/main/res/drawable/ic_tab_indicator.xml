@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="@dimen/value_16"
+    android:insetRight="@dimen/value_16">
+    <shape android:shape="rectangle">
+        <solid android:color="@color/text_tab_layout" />
+        <size android:height="@dimen/value_2" />
+        <corners android:radius="@dimen/corner_radius_2" />
+    </shape>
+</inset>

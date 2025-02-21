@@ -3,11 +3,12 @@ package com.practicum.playlistmaker.player.domain.interactor.impl
 import androidx.media3.common.Player
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
+import com.practicum.playlistmaker.player.domain.model.ErrorType
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 
 class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : PlayerInteractor {
 
-    override fun preparePlayer(track: Track, onPrepared: () -> Unit, onError: () -> Unit) {
+    override fun preparePlayer(track: Track, onPrepared: () -> Unit, onError: (ErrorType) -> Unit) {
         playerRepository.preparePlayer(track, onPrepared, onError)
     }
 

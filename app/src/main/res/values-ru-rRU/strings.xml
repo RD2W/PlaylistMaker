@@ -31,4 +31,12 @@
     <string name="track_playlist_button_description">Кнопка добавления трека в плейлист</string>
     <string name="track_favorites_button_description">Кнопка добавления трека в избранное</string>
     <string name="track_play_button_description">Кнопка воспризведения или установки на паузу</string>
+    <string name="player_error_exception_toast">Ошибка подготовки плеера к воспроизведению</string>
+    <string name="player_error_unknown_toast">Неизвестная ошибка плеера</string>
+    <string name="media_favorite_tab">Избранные треки</string>
+    <string name="media_playlists_tab">Плейлисты</string>
+    <string name="media_tab_layout_description">Вкладки выбора избранных треков или плейлистов</string>
+    <string name="media_favorite_tab_empty">Ваша медиатека пуста</string>
+    <string name="media_playlists_tab_empty">Вы не создали\n ни одного плейлиста</string>
+    <string name="media_add_playlist_button">Новый плейлист</string>
 </resources>
