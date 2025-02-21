@@ -20,6 +20,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         android:contentDescription="@string/media_tab_layout_description"/>
 
     <androidx.viewpager2.widget.ViewPager2
