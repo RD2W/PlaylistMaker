@@ -24,21 +24,13 @@
         <activity
             android:name=".main.presentation.view.MainActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".search.presentation.view.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".media.presentation.view.MediaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".settings.presentation.view.SettingsActivity"
-            android:exported="false" />
         <activity
             android:name=".player.presentation.view.PlayerActivity"
             android:exported="false" />
