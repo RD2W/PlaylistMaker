@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/settings"
-    tools:context=".settings.presentation.view.SettingsActivity">
+    tools:context=".settings.presentation.view.SettingsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         style="@style/CustomToolbarStyle"
@@ -13,12 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginBottom="@dimen/value_24"
-        app:title="@string/settings_button"
-        app:navigationIcon="@drawable/ic_back"/>
+        app:title="@string/settings_button"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         style="@style/ItemSettingsStyle"
-        android:id="@+id/themeSwitcher"
+        android:id="@+id/switcherTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
@@ -30,7 +29,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
-        android:id="@+id/shareButtom"
+        android:id="@+id/btnShare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
@@ -40,7 +39,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
-        android:id="@+id/supportButtom"
+        android:id="@+id/btnSupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
@@ -50,7 +49,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/ItemSettingsStyle"
-        android:id="@+id/agreementButtom"
+        android:id="@+id/btnAgreement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/value_20"
