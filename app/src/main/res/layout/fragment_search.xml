@@ -5,15 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/search"
-    tools:context=".search.presentation.view.SearchActivity">
+    tools:context=".search.presentation.view.SearchFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-       style="@style/CustomToolbarStyle"
-       android:id="@+id/topAppBar"
-       android:layout_width="match_parent"
-       android:layout_height="?attr/actionBarSize"
-       app:title="@string/search_button"
-       app:navigationIcon="@drawable/ic_back"/>
+        style="@style/CustomToolbarStyle"
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/search_button"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -21,7 +20,7 @@
         android:paddingHorizontal="@dimen/value_16">
 
         <EditText style="@style/SearchFieldStyle"
-            android:id="@+id/inputSearch"
+            android:id="@+id/etvInputSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -34,7 +33,7 @@
             tools:ignore="RtlSymmetry"/>
 
         <ImageView style="@style/IconClearStyle"
-            android:id="@+id/clearInputButton"
+            android:id="@+id/btnClearInput"
             android:layout_width="@dimen/value_16"
             android:layout_height="@dimen/value_16"
             android:layout_gravity="end|center_vertical"
@@ -55,7 +54,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/SearchPlaceholderTextStyle"
-            android:id="@+id/searchHistoryTitle"
+            android:id="@+id/tvSearchHistoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/value_52"
             android:layout_marginTop="@dimen/value_24"
@@ -64,7 +63,7 @@
             android:text="@string/search_history_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchHistoryRecycler"
+            android:id="@+id/rvSearchHistory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/value_8"
@@ -73,7 +72,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/SearchUpdateButtonStyle"
-            android:id="@+id/clearHistoryButton"
+            android:id="@+id/btnClearHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -91,7 +90,7 @@
         android:visibility="gone">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/searchPlaceholderImage"
+            android:id="@+id/ivSearchPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -100,7 +99,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/SearchPlaceholderTextStyle"
-            android:id="@+id/searchPlaceholderText"
+            android:id="@+id/tvSearchPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -108,7 +107,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/SearchUpdateButtonStyle"
-            android:id="@+id/searchUpdateButton"
+            android:id="@+id/btnSearchUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -119,7 +118,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchRecycler"
+        android:id="@+id/rvSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/value_16"
