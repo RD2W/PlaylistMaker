@@ -7,4 +7,5 @@ object LogTags {
     const val SEARCH_HISTORY = "SearchHistory"
     const val EXTERNAL_NAVIGATIONS = "ExternalNavigations"
     const val CLICK_DEBOUNCE = "ClickDebounce"
+    const val NAVIGATION = "Navigation"
 }

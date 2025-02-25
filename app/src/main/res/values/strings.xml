@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Playlist Maker</string>
-    <string name="media_library_button">Media Library</string>
-    <string name="search_button">Search</string>
-    <string name="settings_button">Settings</string>
+    <string name="media_library_tab">Media Library</string>
+    <string name="search_tab">Search</string>
+    <string name="settings_tab">Settings</string>
     <string name="settings_dark_theme_item">Dark theme</string>
     <string name="settings_share_app_item">Share the app</string>
     <string name="settings_support_item">Write to support</string>
@@ -13,7 +13,7 @@
     <string name="email_support_msg">Thanks to the developers for a cool app!</string>
     <string name="email" translatable="false">putin@kremlin.ru</string>
     <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="search_hint">@string/search_button</string>
+    <string name="search_hint">@string/search_tab</string>
     <string name="ic_clear_description">Icon for clearing search query text</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="album_cover_description">Album cover</string>

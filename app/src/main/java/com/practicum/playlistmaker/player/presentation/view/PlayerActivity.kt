@@ -105,7 +105,8 @@ class PlayerActivity : AppCompatActivity() {
     private fun setupButtons() {
         with(binding) {
             topAppBar.setNavigationOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
+//                onBackPressedDispatcher.onBackPressed()
+                finish()
             }
             playerPlayButton.setOnClickListener {
                 viewModel.controlPlayer()

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_tab_search"
+        android:title="@string/search_tab" />
+    <item
+        android:id="@+id/mediaFragment"
+        android:icon="@drawable/ic_tab_media"
+        android:title="@string/media_library_tab" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_tab_settings"
+        android:title="@string/settings_tab" />
+</menu>

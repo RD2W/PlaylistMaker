@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">@color/dark_gray</color>
-    <color name="background_main">@color/dark_gray</color>
     <color name="text">@color/white</color>
     <color name="icon">@color/white</color>
     <color name="ic_launcher">@color/white</color>

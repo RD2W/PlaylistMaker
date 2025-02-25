@@ -12,7 +12,7 @@
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:title="@string/media_library_button"/>
+        app:title="@string/media_library_tab"/>
 
     <com.google.android.material.tabs.TabLayout
         style="@style/CustomTabLayoutStyle"

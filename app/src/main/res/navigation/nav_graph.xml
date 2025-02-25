@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mediaFragment">
+
+    <!-- SearchFragment -->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.practicum.playlistmaker.search.presentation.view.SearchFragment"
+        android:label="@string/search_tab"
+        tools:layout="@layout/fragment_search">
+
+        <!-- Переход из SearchFragment в MediaFragment -->
+        <action
+            android:id="@+id/action_search_to_media"
+            app:destination="@id/mediaFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Переход из SearchFragment в SettingsFragment -->
+        <action
+            android:id="@+id/action_search_to_settings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- MediaFragment -->
+    <fragment
+        android:id="@+id/mediaFragment"
+        android:name="com.practicum.playlistmaker.media.presentation.view.MediaFragment"
+        android:label="@string/media_library_tab"
+        tools:layout="@layout/fragment_media">
+
+        <!-- Переход из MediaFragment в SearchFragment -->
+        <action
+            android:id="@+id/action_media_to_search"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Переход из MediaFragment в SettingsFragment -->
+        <action
+            android:id="@+id/action_media_to_settings"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- SettingsFragment -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.practicum.playlistmaker.settings.presentation.view.SettingsFragment"
+        android:label="@string/settings_tab"
+        tools:layout="@layout/fragment_settings">
+
+        <!-- Переход из SettingsFragment в SearchFragment -->
+        <action
+            android:id="@+id/action_settings_to_search"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Переход из SettingsFragment в MediaFragment -->
+        <action
+            android:id="@+id/action_settings_to_media"
+            app:destination="@id/mediaFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+</navigation>
