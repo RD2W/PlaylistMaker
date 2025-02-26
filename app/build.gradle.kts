@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -51,7 +52,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.preference)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.viewpager2)
     implementation(libs.material)
