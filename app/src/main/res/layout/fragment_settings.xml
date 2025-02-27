@@ -7,14 +7,6 @@
     android:id="@+id/settings"
     tools:context=".settings.presentation.view.SettingsFragment">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        style="@style/CustomToolbarStyle"
-        android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="@dimen/value_24"
-        app:title="@string/settings_tab"/>
-
     <com.google.android.material.switchmaterial.SwitchMaterial
         style="@style/ItemSettingsStyle"
         android:id="@+id/switcherTheme"

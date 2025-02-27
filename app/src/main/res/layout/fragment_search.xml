@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLinearLayoutStyle"
     android:id="@+id/search"
     tools:context=".search.presentation.view.SearchFragment">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        style="@style/CustomToolbarStyle"
-        android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/search_tab"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -65,7 +57,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchHistory"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="@dimen/value_8"
             android:layout_weight="1"
             tools:listitem="@layout/track_item"/>
