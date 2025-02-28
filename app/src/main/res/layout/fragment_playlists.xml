@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLayoutStyle"
     android:id="@+id/playlists"
-    tools:context=".media.presentation.view.PlaylistFragment">
+    tools:context=".media.presentation.view.PlaylistsFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuidLineBase"
@@ -21,13 +21,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/value_16"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/centerGuidLineBase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50"/>
-
     <androidx.constraintlayout.widget.Group
         android:id="@+id/grEmptyPlaylistsPlaceholder"
         android:layout_width="wrap_content"
@@ -41,23 +34,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/value_24"
         android:text="@string/media_add_playlist_button"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-        app:layout_constraintStart_toEndOf="@id/tvEmptyPlaylists"/>
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivEmptyPlaylists"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/value_48"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_not_found_placeholder"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tvEmptyPlaylists"
+        app:layout_constraintTop_toBottomOf="@id/btAddPlaylists"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
     <com.google.android.material.textview.MaterialTextView
@@ -66,10 +60,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/value_16"
         android:text="@string/media_playlists_tab_empty"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/centerGuidLineBase"
-        app:layout_constraintStart_toStartOf="@id/centerGuidLineBase"/>
+        app:layout_constraintTop_toBottomOf="@id/ivEmptyPlaylists"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

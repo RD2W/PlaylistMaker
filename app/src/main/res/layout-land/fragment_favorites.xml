@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLayoutStyle"
     android:id="@+id/favorites"
-    tools:context=".media.presentation.view.FavoriteFragment">
+    tools:context=".media.presentation.view.FavoritesFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuidLineBase"
@@ -33,13 +33,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/value_108"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_not_found_placeholder"
-        app:layout_constraintVertical_bias="0"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvEmptyFavorites"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
     <com.google.android.material.textview.MaterialTextView
@@ -48,10 +47,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/value_16"
+
         android:text="@string/media_favorite_tab_empty"
-        app:layout_constraintTop_toBottomOf="@id/ivEmptyFavorites"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
+        app:layout_constraintStart_toEndOf="@id/ivEmptyFavorites"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

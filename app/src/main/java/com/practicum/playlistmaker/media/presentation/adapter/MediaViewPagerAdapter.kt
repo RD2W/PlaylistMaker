@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.practicum.playlistmaker.media.presentation.view.FavoriteFragment
-import com.practicum.playlistmaker.media.presentation.view.PlaylistFragment
+import com.practicum.playlistmaker.media.presentation.view.FavoritesFragment
+import com.practicum.playlistmaker.media.presentation.view.PlaylistsFragment
 
 class MediaViewPagerAdapter(
     fragmentManager: FragmentManager,
@@ -16,8 +16,8 @@ class MediaViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> FavoriteFragment.newInstance()
-            1 -> PlaylistFragment.newInstance()
+            0 -> FavoritesFragment.newInstance()
+            1 -> PlaylistsFragment.newInstance()
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }
