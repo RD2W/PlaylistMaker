@@ -14,6 +14,7 @@
     <dimen name="value_20">20dp</dimen>
     <dimen name="value_24">24dp</dimen>
     <dimen name="value_28">28dp</dimen>
+    <dimen name="value_32">32dp</dimen>
     <dimen name="value_48">48dp</dimen>
     <dimen name="value_52">52dp</dimen>
     <dimen name="value_108">108dp</dimen>

@@ -2,6 +2,6 @@ package com.practicum.playlistmaker.media.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 
-class FavoriteViewModel : ViewModel() {
+class PlaylistsViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

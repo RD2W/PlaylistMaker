@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">@color/dark_gray</color>
+    <color name="box_stroke_color">@color/white</color>
     <color name="text">@color/white</color>
     <color name="icon">@color/white</color>
     <color name="ic_launcher">@color/white</color>
     <color name="ic_launcher_background">@color/black</color>
     <color name="button">@color/white</color>
+    <color name="text_input">@color/white</color>
     <color name="text_tab_layout">@color/white</color>
     <color name="text_search_field">@color/dark_gray</color>
     <color name="icon_search_field">@color/dark_gray</color>

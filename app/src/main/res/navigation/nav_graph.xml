@@ -14,7 +14,7 @@
 
         <!-- Переход из SearchFragment в MediaFragment -->
         <action
-            android:id="@+id/action_search_to_media"
+            android:id="@+id/action_searchFragment_to_mediaFragment"
             app:destination="@id/mediaFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -23,7 +23,7 @@
 
         <!-- Переход из SearchFragment в SettingsFragment -->
         <action
-            android:id="@+id/action_search_to_settings"
+            android:id="@+id/action_searchFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -40,7 +40,7 @@
 
         <!-- Переход из MediaFragment в SearchFragment -->
         <action
-            android:id="@+id/action_media_to_search"
+            android:id="@+id/action_mediaFragment_to_searchFragment"
             app:destination="@id/searchFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -49,12 +49,17 @@
 
         <!-- Переход из MediaFragment в SettingsFragment -->
         <action
-            android:id="@+id/action_media_to_settings"
+            android:id="@+id/action_mediaFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Переход из MediaFragment в AddPlaylistFragment -->
+        <action
+            android:id="@+id/action_mediaFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
     </fragment>
 
     <!-- SettingsFragment -->
@@ -66,7 +71,7 @@
 
         <!-- Переход из SettingsFragment в SearchFragment -->
         <action
-            android:id="@+id/action_settings_to_search"
+            android:id="@+id/action_settingsFragment_to_searchFragment"
             app:destination="@id/searchFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -75,12 +80,25 @@
 
         <!-- Переход из SettingsFragment в MediaFragment -->
         <action
-            android:id="@+id/action_settings_to_media"
+            android:id="@+id/action_settingsFragment_to_mediaFragment"
             app:destination="@id/mediaFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- AddPlaylistFragment -->
+    <fragment
+        android:id="@+id/addPlaylistFragment"
+        android:name="com.practicum.playlistmaker.media.presentation.view.AddPlaylistFragment"
+        android:label="@string/add_new_playlist_title"
+        tools:layout="@layout/fragment_add_playlist" >
+
+        <!-- Переход из AddPlaylistFragment в MediaFragment -->
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
     </fragment>
 
 </navigation>

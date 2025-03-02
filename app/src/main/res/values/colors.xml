@@ -10,11 +10,14 @@
     <color name="light_gray">#FFE6E8EB</color>
     <color name="dark_gray">#FF1A1B22</color>
     <color name="background">@color/white</color>
+    <color name="box_stroke_color">@color/text_gray</color>
     <color name="text">@color/black</color>
+    <color name="text_input">@color/dark_gray</color>
     <color name="icon">@color/text_gray</color>
     <color name="ic_launcher">@color/black</color>
     <color name="ic_launcher_background">@color/white</color>
     <color name="button">@color/dark_gray</color>
+    <color name="button_gray">@color/text_gray</color>
     <color name="text_tab_layout">@color/dark_gray</color>
     <color name="text_search_field">@color/text_gray</color>
     <color name="icon_search_field">@color/text_gray</color>

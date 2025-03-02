@@ -41,4 +41,8 @@
     <string name="media_favorite_tab_empty">Your media library is empty</string>
     <string name="media_playlists_tab_empty">You have not\n created any playlists</string>
     <string name="media_add_playlist_button">New Playlist</string>
+    <string name="add_new_playlist_title">@string/media_add_playlist_button</string>
+    <string name="new_playlist_name">Name*</string>
+    <string name="new_playlist_description">Description</string>
+    <string name="new_playlist_create_button">Create</string>
 </resources>
