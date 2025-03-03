@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/playlistLinearItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/value_4"
+    android:background="@color/background">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        style="@style/FoundTrackCover"
+        android:id="@+id/ivPlaylistCover"
+        android:layout_width="@dimen/value_48"
+        android:layout_height="@dimen/value_48"
+        android:contentDescription="@string/album_cover_description"
+        android:src="@drawable/ic_track_placeholder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:srcCompat="@tools:sample/avatars"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/FoundTrackName"
+        android:id="@+id/tvPlaylistName"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_8"
+        app:layout_constraintTop_toTopOf="@id/ivPlaylistCover"
+        app:layout_constraintBottom_toTopOf="@id/tvPlaylistCount"
+        app:layout_constraintStart_toEndOf="@id/ivPlaylistCover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/media_tab_layout_description"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/FoundTrackDetails"
+        android:id="@+id/tvPlaylistCount"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_2"
+        android:layout_marginStart="@dimen/value_8"
+        app:layout_constraintTop_toBottomOf="@id/tvPlaylistName"
+        app:layout_constraintStart_toEndOf="@id/ivPlaylistCover"
+        app:layout_constraintBottom_toBottomOf="@id/ivPlaylistCover"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="@string/media_tab_layout_description"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

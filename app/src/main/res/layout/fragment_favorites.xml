@@ -32,7 +32,6 @@
         android:id="@+id/ivEmptyFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/value_108"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_not_found_placeholder"
@@ -47,11 +46,25 @@
         android:id="@+id/tvEmptyFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/value_16"
         android:text="@string/media_favorite_tab_empty"
         app:layout_constraintTop_toBottomOf="@id/ivEmptyFavorites"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavoritesTracks"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_16"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"
+        tools:listitem="@layout/track_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@
     <string name="ic_clear_description">Icon for clearing search query text</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="album_cover_description">Album cover</string>
+    <string name="playlist_cover_description">Playlist cover</string>
     <string name="track_selector_description">Action selection button</string>
     <string name="search_update_result">Update</string>
     <string name="search_placeholder_not_found">Nothing was found</string>

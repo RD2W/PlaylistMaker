@@ -15,6 +15,7 @@
     <string name="ic_clear_description">Иконка для очистки текста поиского запроса</string>
     <string name="no_internet_connection">Нет интернет-соединения</string>
     <string name="album_cover_description">Обложка альбома</string>
+    <string name="playlist_cover_description">Обложка плейлиста</string>
     <string name="track_selector_description">Кнопка выбора действий</string>
     <string name="search_update_result">Обновить</string>
     <string name="search_placeholder_not_found">Ничего не нашлось</string>

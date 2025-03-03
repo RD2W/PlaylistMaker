@@ -60,11 +60,31 @@
 
     <style name="FoundTrackCover">
         <item name="android:background">@color/background_track_placeholder</item>
+        <item name="shapeAppearance">@style/FoundTrackCover.CornerSize</item>
     </style>
 
     <style name="FoundTrackCover.CornerSize">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/corner_radius_2</item>
+    </style>
+
+    <style name="PlaylistCoverStyle">
+        <item name="android:background">@color/background_track_placeholder</item>
+        <item name="shapeAppearance">@style/PlaylistCoverStyle.CornerSize</item>
+    </style>
+
+    <style name="PlaylistCoverStyle.CornerSize">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_radius_8</item>
+    </style>
+
+    <style name="PlaylistTextStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_small_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="SearchPlaceholderTextStyle">
