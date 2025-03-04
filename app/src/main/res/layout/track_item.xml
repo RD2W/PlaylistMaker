@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/foundTrackItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="@dimen/value_8"
-    android:orientation="horizontal">
+    android:background="@color/background">
 
+    <!-- Обложка трека -->
     <com.google.android.material.imageview.ShapeableImageView
         style="@style/FoundTrackCover"
         android:id="@+id/foundTrackCover"
@@ -14,50 +17,63 @@
         android:layout_height="@dimen/value_48"
         android:contentDescription="@string/album_cover_description"
         android:src="@drawable/ic_track_placeholder"
-        app:shapeAppearance="@style/FoundTrackCover.CornerSize"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:layout_marginHorizontal="@dimen/value_8"
-        android:layout_weight="1"
-        android:orientation="vertical">
+    <!-- Название трека -->
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/FoundTrackName"
+        android:id="@+id/foundTrackName"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_8"
+        android:layout_marginEnd="@dimen/value_8"
+        app:layout_constraintTop_toTopOf="@id/foundTrackCover"
+        app:layout_constraintStart_toEndOf="@id/foundTrackCover"
+        app:layout_constraintEnd_toStartOf="@id/forwardIcon"
+        app:layout_constraintBottom_toTopOf="@id/foundArtistName"
+        tools:text="Track Name"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            style="@style/FoundTrackName"
-            android:id="@+id/foundTrackName"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+    <!-- Имя исполнителя -->
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/FoundTrackDetails"
+        android:id="@+id/foundArtistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_8"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toBottomOf="@id/foundTrackName"
+        app:layout_constraintStart_toEndOf="@id/foundTrackCover"
+        app:layout_constraintEnd_toStartOf="@id/foundTrackTime"
+        app:layout_constraintBottom_toBottomOf="@id/foundTrackCover"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        tools:text="Artist Name"/>
 
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+    <!-- Время трека -->
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/FoundTrackDetails"
+        android:id="@+id/foundTrackTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/value_4"
+        android:layout_marginEnd="@dimen/value_8"
+        app:layout_constraintTop_toBottomOf="@id/foundTrackName"
+        app:layout_constraintStart_toEndOf="@id/foundArtistName"
+        app:layout_constraintEnd_toStartOf="@id/forwardIcon"
+        app:layout_constraintBottom_toBottomOf="@id/foundTrackCover"
+        tools:text="3:45"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/FoundTrackDetails"
-                android:id="@+id/foundArtistName"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:maxWidth="210dp"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/FoundTrackDetails"
-                android:id="@+id/foundTrackTime"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    <!-- Иконка "вперед" -->
     <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/forwardIcon"
         android:layout_width="@dimen/value_24"
         android:layout_height="@dimen/value_24"
-        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="@dimen/value_8"
         android:src="@drawable/ic_forward"
-        android:contentDescription="@string/track_selector_description"/>
+        android:contentDescription="@string/track_selector_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

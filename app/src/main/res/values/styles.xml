@@ -49,13 +49,9 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="FoundTrackDetails">
-        <item name="android:fontFamily">@font/ys_display_regular</item>
+    <style name="FoundTrackDetails" parent="FoundTrackName">
         <item name="android:textColor">@color/text_track_details</item>
         <item name="android:textSize">@dimen/text_small_size</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="FoundTrackCover">
