@@ -1,48 +1,36 @@
 package com.practicum.playlistmaker.main.presentation.view
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.practicum.playlistmaker.settings.presentation.view.SettingsActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
-import com.practicum.playlistmaker.media.presentation.view.MediaActivity
-import com.practicum.playlistmaker.search.presentation.view.SearchActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding: ActivityMainBinding
-        get() = requireNotNull(_binding) { "Binding wasn't initiliazed!" }
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
-        keepSplashScreen(splashScreen,true)
+        keepSplashScreen(splashScreen, true)
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupButtons()
+        setSupportActionBar(binding.topAppBar)
+        setupNavigation()
         lifecycleScope.launch {
             delay(SPLASH_SCREEN_DURATION_MILLIS)
-            keepSplashScreen(splashScreen,false)
-        }
-    }
-
-    private fun setupButtons() {
-        with(binding) {
-            btSearch.setOnClickListener {
-                startActivity(Intent(this@MainActivity, SearchActivity::class.java))
-            }
-            btMediaLibrary.setOnClickListener {
-                startActivity(Intent(this@MainActivity, MediaActivity::class.java))
-            }
-            btSettings.setOnClickListener {
-                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-            }
+            keepSplashScreen(splashScreen, false)
         }
     }
 
@@ -50,9 +38,41 @@ class MainActivity : AppCompatActivity() {
         splashScreen.setKeepOnScreenCondition { keep }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    private fun setupNavigation() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
+
+        // Устанавливаем заголовок TopAppBar при старте приложения
+        binding.root.post {
+            val currentDestination = navController.currentDestination
+            Log.d(LogTags.NAVIGATION, "Current destination is ${currentDestination?.label}")
+            binding.topAppBar.title = currentDestination?.label ?: getString(R.string.app_name)
+        }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            Log.d(LogTags.NAVIGATION, "Navigated to ${destination.label}")
+            binding.topAppBar.title = destination.label
+
+            when (destination.id) {
+                R.id.searchFragment, R.id.mediaFragment, R.id.settingsFragment -> {
+                    showNavBarHideBackButton(true)
+                }
+
+                else -> {
+                    showNavBarHideBackButton(false)
+                    binding.topAppBar.setNavigationOnClickListener {
+                        navController.navigateUp()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showNavBarHideBackButton(isVisible: Boolean) {
+        binding.grNavigationView.isVisible = isVisible
+        supportActionBar?.setDisplayHomeAsUpEnabled(!isVisible)
     }
 
     companion object {

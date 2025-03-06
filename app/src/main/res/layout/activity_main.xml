@@ -1,53 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/PrimeLinearLayoutStyle"
+    style="@style/PrimeLayoutStyle"
     android:id="@+id/main"
-    android:background="@color/background_main"
     tools:context=".main.presentation.view.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         style="@style/CustomToolbarStyle"
         android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginBottom="@dimen/value_24"
-        app:title="@string/app_name"
-        app:titleTextColor="@color/white"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:title="TopAppBar"/>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/ButtonMainStyle"
-        android:id="@+id/btSearch"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"
+        app:layout_constraintTop_toBottomOf="@id/topAppBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/grNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="dividerNavigation,bottomNavigation"
+        android:visibility="visible"/>
+
+    <!-- Разделительная линия -->
+    <View
+        android:id="@+id/dividerNavigation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_dp"
-        android:layout_marginHorizontal="@dimen/value_16"
-        android:layout_marginBottom="@dimen/value_16"
-        android:layout_weight="1"
-        android:text="@string/search_button"
-        app:icon="@drawable/ic_search_button"/>
+        android:layout_height="0.5dp"
+        android:background="@color/divider_navigation_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"/>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/ButtonMainStyle"
-        android:id="@+id/btMediaLibrary"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_dp"
-        android:layout_marginHorizontal="@dimen/value_16"
-        android:layout_marginBottom="@dimen/value_16"
-        android:layout_weight="1"
-        android:text="@string/media_library_button"
-        app:icon="@drawable/ic_media_button"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        style="@style/CustomBottomNavigationStyle"
+        android:id="@+id/bottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/ButtonMainStyle"
-        android:id="@+id/btSettings"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/zero_dp"
-        android:layout_marginHorizontal="@dimen/value_16"
-        android:layout_marginBottom="@dimen/value_24"
-        android:layout_weight="1"
-        android:text="@string/settings_button"
-        app:icon="@drawable/ic_settings_button"/>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Playlist Maker</string>
-    <string name="media_library_button">Медиатека</string>
-    <string name="search_button">Поиск</string>
-    <string name="settings_button">Настройки</string>
+    <string name="media_library_tab">Медиатека</string>
+    <string name="search_tab">Поиск</string>
+    <string name="settings_tab">Настройки</string>
     <string name="settings_dark_theme_item">Тёмная тема</string>
     <string name="settings_share_app_item">Поделиться приложением</string>
     <string name="settings_support_item">Написать в поддержку</string>
@@ -11,10 +11,11 @@
     <string name="app_share_msg">Поделиться приложением Playlist Maker</string>
     <string name="email_support_title">Сообщение разработчикам приложения Playlist Maker</string>
     <string name="email_support_msg">Спасибо разработчикам за крутое приложение!</string>
-    <string name="search_hint">@string/search_button</string>
+    <string name="search_hint">@string/search_tab</string>
     <string name="ic_clear_description">Иконка для очистки текста поиского запроса</string>
     <string name="no_internet_connection">Нет интернет-соединения</string>
     <string name="album_cover_description">Обложка альбома</string>
+    <string name="playlist_cover_description">Обложка плейлиста</string>
     <string name="track_selector_description">Кнопка выбора действий</string>
     <string name="search_update_result">Обновить</string>
     <string name="search_placeholder_not_found">Ничего не нашлось</string>
@@ -39,4 +40,8 @@
     <string name="media_favorite_tab_empty">Ваша медиатека пуста</string>
     <string name="media_playlists_tab_empty">Вы не создали\n ни одного плейлиста</string>
     <string name="media_add_playlist_button">Новый плейлист</string>
+    <string name="add_new_playlist_title">@string/media_add_playlist_button</string>
+    <string name="new_playlist_name">Название*</string>
+    <string name="new_playlist_description">Описание</string>
+    <string name="new_playlist_create_button">Создать</string>
 </resources>

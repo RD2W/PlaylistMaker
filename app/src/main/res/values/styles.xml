@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="PrimeLinearLayoutStyle">
+    <style name="PrimeLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:orientation">vertical</item>
         <item name="android:background">@color/background</item>
     </style>
 
-    <style name="ButtonMainStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:letterSpacing">0</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/dark_gray</item>
-        <item name="android:textSize">@dimen/text_bt_size</item>
-        <item name="android:textFontWeight">500</item>
-        <item name="cornerRadius">@dimen/corner_radius_16</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconPadding">@dimen/ic_padding</item>
-        <item name="iconTint">@color/dark_gray</item>
+    <style name="PrimeLinearLayoutStyle" parent="PrimeLayoutStyle">
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="ItemSettingsStyle" parent="Widget.MaterialComponents.TextView">
@@ -39,7 +28,7 @@
         <item name="android:background">@drawable/ic_search_field</item>
         <item name="android:backgroundTint">@color/background_search_field</item>
         <item name="android:paddingStart">@dimen/value_8</item>
-        <item name="android:drawableStart">@drawable/ic_search_button</item>
+        <item name="android:drawableStart">@drawable/ic_tab_search</item>
         <item name="android:drawableTint">@color/icon_search_field</item>
         <item name="android:drawablePadding">@dimen/ic_padding</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
@@ -60,22 +49,38 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="FoundTrackDetails">
-        <item name="android:fontFamily">@font/ys_display_regular</item>
+    <style name="FoundTrackDetails" parent="FoundTrackName">
         <item name="android:textColor">@color/text_track_details</item>
         <item name="android:textSize">@dimen/text_small_size</item>
-        <item name="android:textFontWeight">400</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="FoundTrackCover">
         <item name="android:background">@color/background_track_placeholder</item>
+        <item name="shapeAppearance">@style/FoundTrackCover.CornerSize</item>
     </style>
 
     <style name="FoundTrackCover.CornerSize">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/corner_radius_2</item>
+    </style>
+
+    <style name="PlaylistCoverStyle">
+        <item name="android:background">@color/background_track_placeholder</item>
+        <item name="shapeAppearance">@style/PlaylistCoverStyle.CornerSize</item>
+    </style>
+
+    <style name="PlaylistCoverStyle.CornerSize">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_radius_8</item>
+    </style>
+
+    <style name="PlaylistTextStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_small_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="SearchPlaceholderTextStyle">
@@ -105,14 +110,29 @@
         <item name="cornerRadius">@dimen/corner_radius_52</item>
     </style>
 
+    <style name="CreatePlaylistButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">@color/button_gray</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/text_middle_plus_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:paddingTop">@dimen/value_12</item>
+        <item name="android:paddingBottom">@dimen/value_12</item>
+        <item name="cornerRadius">@dimen/corner_radius_8</item>
+    </style>
+
     <style name="CustomToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/background</item>
+        <item name="navigationIconTint">@color/button</item>
         <item name="titleTextAppearance">@style/CustomToolbarTitleText</item>
     </style>
 
     <style name="CustomToolbarTitleText">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/text_title_size</item>
-        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textColor">@color/text_tab_layout</item>
         <item name="android:textFontWeight">500</item>
     </style>
 
@@ -169,10 +189,51 @@
 
     <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textSize">@dimen/value_16</item>
+        <item name="android:textSize">@dimen/text_middle_plus_size</item>
         <item name="android:textColor">@color/text_tab_layout</item>
         <item name="android:textFontWeight">500</item>
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="CustomBottomNavigationStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">@color/background</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_small_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="itemTextColor">@drawable/bottom_nav_text_color_selector</item>
+        <item name="itemIconTint">@drawable/bottom_nav_icon_color_selector</item>
+    </style>
+
+    <style name="OutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxStrokeColor">@color/input_box_stroke_color</item>
+        <item name="hintTextColor">@color/light_blue</item>
+        <item name="hintTextAppearance">@style/CustomHintTextAppearance</item>
+        <item name="android:textColorHint">@color/text_input</item>
+    </style>
+
+    <style name="CustomHintTextAppearance" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">@dimen/text_small_size</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="CustomTextInputEditTextStyle" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/text_input</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textCursorDrawable">@drawable/ic_cursor</item>
+        <item name="android:inputType">textCapSentences</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -180,7 +241,7 @@
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="android:windowSplashScreenAnimationDuration">250</item>
         <item name="android:windowSplashScreenIconBackgroundColor">@color/ic_launcher_background</item>
-        <item name="postSplashScreenTheme">@style/Theme.MaterialComponents.DayNight.NoActionBar</item>
+        <item name="postSplashScreenTheme">@style/Theme.PlaylistMaker</item>
     </style>
 
 </resources>

@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".media.presentation.view.FavoriteFragment">
+    style="@style/PrimeLayoutStyle"
+    android:id="@+id/playlists"
+    tools:context=".media.presentation.view.PlaylistsFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuidLineBase"
@@ -23,36 +22,61 @@
         app:layout_constraintGuide_end="@dimen/value_16"/>
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/grEmptyFavoritesPlaceholder"
+        android:id="@+id/grEmptyPlaylistsPlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="ivEmptyFavorites,tvEmptyFavorites"
+        app:constraint_referenced_ids="ivEmptyPlaylists,tvEmptyPlaylists"
         android:visibility="visible"/>
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivEmptyFavorites"
+    <com.google.android.material.button.MaterialButton
+        style="@style/SearchUpdateButtonStyle"
+        android:id="@+id/btnAddPlaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/value_108"
+        android:layout_marginTop="@dimen/value_24"
+        android:text="@string/media_add_playlist_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivEmptyPlaylists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/value_48"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_not_found_placeholder"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAddPlaylist"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/TabPlaceholderTextStyle"
-        android:id="@+id/tvEmptyFavorites"
+        android:id="@+id/tvEmptyPlaylists"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/value_16"
-        android:text="@string/media_favorite_tab_empty"
-        app:layout_constraintTop_toBottomOf="@id/ivEmptyFavorites"
+        android:text="@string/media_playlists_tab_empty"
+        app:layout_constraintTop_toBottomOf="@id/ivEmptyPlaylists"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlaylists"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_16"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toBottomOf="@id/btnAddPlaylist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"
+        tools:listitem="@layout/item_playlist_grid"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

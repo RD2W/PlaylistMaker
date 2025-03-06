@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".media.presentation.view.PlaylistFragment">
+    style="@style/PrimeLayoutStyle"
+    android:id="@+id/favorites"
+    tools:context=".media.presentation.view.FavoritesFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuidLineBase"
@@ -22,55 +21,49 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/value_16"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/centerGuidLineBase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50"/>
-
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/grEmptyPlaylistsPlaceholder"
+        android:id="@+id/grEmptyFavoritesPlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="ivEmptyPlaylists,tvEmptyPlaylists"
+        app:constraint_referenced_ids="ivEmptyFavorites,tvEmptyFavorites"
         android:visibility="visible"/>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/SearchUpdateButtonStyle"
-        android:id="@+id/btAddPlaylists"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/media_add_playlist_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-        app:layout_constraintStart_toEndOf="@id/tvEmptyPlaylists"/>
-
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/ivEmptyPlaylists"
+        android:id="@+id/ivEmptyFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_not_found_placeholder"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tvEmptyPlaylists"
+        app:layout_constraintEnd_toStartOf="@id/tvEmptyFavorites"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/TabPlaceholderTextStyle"
-        android:id="@+id/tvEmptyPlaylists"
+        android:id="@+id/tvEmptyFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/media_playlists_tab_empty"
+        android:text="@string/media_favorite_tab_empty"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/centerGuidLineBase"
-        app:layout_constraintStart_toStartOf="@id/centerGuidLineBase"/>
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toEndOf="@id/ivEmptyFavorites"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavoritesTracks"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="@dimen/zero_dp"
+        android:layout_marginTop="@dimen/value_8"
+        android:layout_weight="1"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"
+        tools:listitem="@layout/track_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
