@@ -2,7 +2,9 @@ package com.practicum.playlistmaker.main.presentation.view
 
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
@@ -60,6 +62,15 @@ class MainActivity : AppCompatActivity() {
                     showNavBarHideBackButton(true)
                 }
 
+                R.id.playlistFragment -> {
+                    with(binding.topAppBar) {
+                        setNavigationOnClickListener {
+                            navController.navigateUp()
+                        }
+                    }
+                    showNavBarHideBackButton(false)
+                }
+
                 else -> {
                     showNavBarHideBackButton(false)
                     binding.topAppBar.setNavigationOnClickListener {
@@ -68,6 +79,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun setTopAppBarBackgroundColor(@ColorRes colorRes: Int) {
+        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this@MainActivity, colorRes))
     }
 
     private fun showNavBarHideBackButton(isVisible: Boolean) {

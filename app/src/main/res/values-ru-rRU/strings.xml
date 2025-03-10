@@ -44,4 +44,8 @@
     <string name="new_playlist_name">Название*</string>
     <string name="new_playlist_description">Описание</string>
     <string name="new_playlist_create_button">Создать</string>
+    <string name="playlist_title">Плейлист</string>
+    <string name="playlist_more_share_item">Поделиться</string>
+    <string name="playlist_more_edit_item">Редактировать информацию</string>
+    <string name="playlist_more_delete_item">Удалить плейлист</string>
 </resources>

@@ -91,13 +91,29 @@
     <!-- AddPlaylistFragment -->
     <fragment
         android:id="@+id/addPlaylistFragment"
-        android:name="com.practicum.playlistmaker.media.presentation.view.AddPlaylistFragment"
+        android:name="com.practicum.playlistmaker.listmaker.presentation.view.AddPlaylistFragment"
         android:label="@string/add_new_playlist_title"
         tools:layout="@layout/fragment_add_playlist" >
 
         <!-- Переход из AddPlaylistFragment в MediaFragment -->
         <action
             android:id="@+id/action_addPlaylistFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
+    </fragment>
+
+    <!-- PlaylistFragment -->
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.practicum.playlistmaker.playlist.presentation.view.PlaylistFragment"
+        android:label="@string/playlist_title"
+        tools:layout="@layout/fragment_playlist" >
+
+        <!-- Переход из PlaylistFragment в MediaFragment -->
+        <action
+            android:id="@+id/action_playlistFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
     </fragment>
 
