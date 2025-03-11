@@ -29,9 +29,26 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             switcherTheme.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.switchTheme(isChecked)
             }
-            btnShare.setOnClickListener { viewModel.shareApp() }
-            btnSupport.setOnClickListener { viewModel.writeSupport() }
-            btnAgreement.setOnClickListener { viewModel.openUserAgreement() }
+            btnShare.setOnClickListener {
+                viewModel.shareApp(
+                    appLink = getString(R.string.app_link),
+                    appShareMsg = getString(R.string.app_share_msg)
+                )
+            }
+            btnSupport.setOnClickListener {
+                viewModel.writeSupport(
+                    email = getString(R.string.email),
+                    emailSupportTitle = getString(R.string.email_support_title),
+                    emailSupportMsg = getString(R.string.email_support_msg)
+                )
+            }
+            btnAgreement.setOnClickListener {
+                viewModel.openUserAgreement(
+                    userAgreementLink = getString(
+                        R.string.user_agreement_link
+                    )
+                )
+            }
         }
     }
 
