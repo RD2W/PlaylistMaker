@@ -1,15 +1,12 @@
 package com.practicum.playlistmaker.player.presentation.viewmodel
 
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import androidx.core.content.IntentCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.media3.common.Player
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
-import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
@@ -80,14 +77,8 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
         return formatDurationToMMSS(playerInteractor.getCurrentPosition())
     }
 
-    fun getTrack(intent: Intent) {
-        val trackParcel: TrackParcel? = IntentCompat.getParcelableExtra(
-            intent,
-            TRACK_SHARE_KEY,
-            TrackParcel::class.java
-        )
-        val trackValue = trackParcel?.let { TrackMapperImpl.toDomain(it) }
-            ?: throw IllegalArgumentException("TrackParcel is null")
+    fun getTrack(trackParcel: TrackParcel) {
+        val trackValue = trackParcel.let { TrackMapperImpl.toDomain(it) }
         updateState { it.copy(track = trackValue) }
         preparePlayer(trackValue)
     }

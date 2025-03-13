@@ -2,9 +2,7 @@ package com.practicum.playlistmaker.main.presentation.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
@@ -55,23 +53,26 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d(LogTags.NAVIGATION, "Navigated to ${destination.label}")
-            binding.topAppBar.title = destination.label
+
+            // Обновляем заголовок Toolbar
+            binding.topAppBar.title = when (destination.id) {
+                R.id.playerFragment, R.id.playlistFragment -> ""
+                else -> destination.label ?: getString(R.string.app_name)
+            }
 
             when (destination.id) {
                 R.id.searchFragment, R.id.mediaFragment, R.id.settingsFragment -> {
+                    showMainToolBar(true)
                     showNavBarHideBackButton(true)
                 }
 
-                R.id.playlistFragment -> {
-                    with(binding.topAppBar) {
-                        setNavigationOnClickListener {
-                            navController.navigateUp()
-                        }
-                    }
+                R.id.playlistFragment, R.id.playerFragment -> {
+                    showMainToolBar(false)
                     showNavBarHideBackButton(false)
                 }
 
                 else -> {
+                    showMainToolBar(true)
                     showNavBarHideBackButton(false)
                     binding.topAppBar.setNavigationOnClickListener {
                         navController.navigateUp()
@@ -81,8 +82,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTopAppBarBackgroundColor(@ColorRes colorRes: Int) {
-        binding.topAppBar.setBackgroundColor(ContextCompat.getColor(this@MainActivity, colorRes))
+    private fun showMainToolBar(isVisible: Boolean) {
+        binding.topAppBar.isVisible = isVisible
     }
 
     private fun showNavBarHideBackButton(isVisible: Boolean) {

@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.presentation.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,12 +8,13 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.AppConstants.TRACK_SHARE_KEY
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-import com.practicum.playlistmaker.player.presentation.view.PlayerActivity
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
@@ -56,11 +56,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun observeClickEvent() {
-        lifecycleScope.launch {
-            searchViewModel.clickEvent.collect { trackParcel ->
-                val intent = Intent(requireContext(), PlayerActivity::class.java)
-                intent.putExtra(TRACK_SHARE_KEY, trackParcel)
-                startActivity(intent)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchViewModel.clickEvent.collect { trackParcel ->
+                    val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(trackParcel)
+                    findNavController().navigate(action)
+                }
             }
         }
     }
