@@ -150,7 +150,13 @@
     <style name="CustomToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">@color/background</item>
         <item name="navigationIconTint">@color/button</item>
+        <item name="navigationIcon">@drawable/ic_back</item>
         <item name="titleTextAppearance">@style/CustomToolbarTitleText</item>
+    </style>
+
+    <style name="PlaylistToolbarStyle" parent="CustomToolbarStyle">
+        <item name="android:background">@color/light_gray</item>
+        <item name="navigationIconTint">@color/dark_gray</item>
     </style>
 
     <style name="CustomToolbarTitleText">

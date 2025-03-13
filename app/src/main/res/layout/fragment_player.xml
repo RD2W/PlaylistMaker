@@ -53,14 +53,13 @@
             android:visibility="visible"/>
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
             style="@style/CustomToolbarStyle"
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_back"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/playerTrackCover"

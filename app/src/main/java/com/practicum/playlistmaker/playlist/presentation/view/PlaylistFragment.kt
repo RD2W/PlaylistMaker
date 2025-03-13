@@ -4,6 +4,7 @@ import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBinding
@@ -36,9 +37,8 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         setMockUI()
 
         setupInitialBottomSheetState()
-        setupMoreActionsButton()
+        setupButtons()
         setupBottomSheetMoreCallback()
-        setupOverlayClickListener()
     }
 
     private fun setupInitialBottomSheetState() {
@@ -46,9 +46,23 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    private fun setupMoreActionsButton() {
-        binding.btnMoreActions.setOnClickListener {
-            toggleBottomSheetMoreState()
+    private fun setupButtons() {
+        with(binding) {
+            topAppBar.setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            btnSharePlaylist.setOnClickListener {
+                //
+            }
+
+            btnMoreActions.setOnClickListener {
+                toggleBottomSheetMoreState()
+            }
+
+            overlay.setOnClickListener {
+                bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
+            }
         }
     }
 
@@ -114,12 +128,6 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun hideOverlay() {
         binding.overlay.visibility = View.GONE
-    }
-
-    private fun setupOverlayClickListener() {
-        binding.overlay.setOnClickListener {
-            bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
-        }
     }
 
     private fun setMockUI() {
