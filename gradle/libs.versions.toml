@@ -21,7 +21,7 @@ viewModelKtx = "2.8.7"
 koin = "4.0.2"
 coreSplashScreen = "1.0.1"
 fragmentKtx = "1.8.6"
-navigationFragment = "2.8.8"
+navigationFragment = "2.8.9"
 viewPager2 = "1.1.0"
 lifecycleLivedataKtx = "2.8.7"
 
