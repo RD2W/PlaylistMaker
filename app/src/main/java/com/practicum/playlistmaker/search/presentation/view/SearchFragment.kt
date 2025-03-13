@@ -1,12 +1,11 @@
 package com.practicum.playlistmaker.search.presentation.view
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -59,7 +58,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchViewModel.clickEvent.collect { trackParcel ->
-                    val action = SearchFragmentDirections.actionSearchFragmentToPlayerFragment(trackParcel)
+                    val action =
+                        SearchFragmentDirections.actionSearchFragmentToPlayerFragment(trackParcel)
                     findNavController().navigate(action)
                 }
             }
@@ -172,23 +172,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 } else false
             }
 
-            addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    updateUIForSearchInput(s)
-                    searchViewModel.searchDebounce(s.toString())
-                }
-
-                override fun afterTextChanged(s: Editable?) {
-                }
-            })
+            addTextChangedListener(
+                onTextChanged = { charSequence, _, _, _ ->
+                    updateUIForSearchInput(charSequence)
+                    searchViewModel.searchDebounce(charSequence.toString())
+                })
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) updateSearchHistoryVisibility(searchHistoryAdapter.getCurrentHistory())
