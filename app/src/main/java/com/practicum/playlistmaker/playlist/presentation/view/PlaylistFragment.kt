@@ -84,6 +84,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 // Обработка анимации скольжения
+                binding.overlay.alpha = slideOffset + 1f
             }
         })
     }

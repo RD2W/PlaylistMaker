@@ -153,6 +153,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 // Обработка анимации скольжения
+                binding.overlay.alpha = slideOffset + 1f
             }
         })
     }
