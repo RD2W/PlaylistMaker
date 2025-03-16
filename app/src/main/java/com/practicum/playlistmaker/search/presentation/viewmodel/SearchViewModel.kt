@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.search.presentation.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +11,7 @@ import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
+import com.practicum.playlistmaker.common.utils.debounce
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
@@ -35,8 +34,22 @@ class SearchViewModel(
 
     private var latestSearchText: String = DEFAULT_INPUT_TEXT
     private val isClickAllowed = AtomicBoolean(true)
-    private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { searchForTracks(latestSearchText) }
+
+    private val searchDebounced = debounce<String>(
+        delayMillis = SEARCH_DEBOUNCE_DELAY_MILLIS,
+        coroutineScope = viewModelScope,
+        useLastParam = true
+    ) { term ->
+        searchForTracks(term)
+    }
+
+    private val clickDebounced = debounce<Unit>(
+        delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
+        coroutineScope = viewModelScope,
+        useLastParam = false
+    ) {
+        isClickAllowed.set(true)
+    }
 
     init {
         observeSearchHistory()
@@ -70,30 +83,26 @@ class SearchViewModel(
         if (latestSearchText == changedText) return
 
         latestSearchText = changedText
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+        searchDebounced(changedText)
     }
 
     fun researchDebounce() {
         if (latestSearchText.isNotBlank()) {
-            handler.removeCallbacks(searchRunnable)
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
+            searchDebounced(latestSearchText)
         }
     }
 
     fun clickDebounce(track: Track) {
-        if (isClickAllowed.get()) {
-            if (isClickAllowed.compareAndSet(true, false)) {
-                handler.postDelayed({ isClickAllowed.set(true) }, CLICK_DEBOUNCE_DELAY_MILLIS)
-                viewModelScope.launch {
-                    try {
-                        val trackParcel = TrackMapperImpl.toParcel(track)
-                        _clickEvent.emit(trackParcel)
-                    } catch (e: Exception) {
-                        Log.e(LogTags.CLICK_DEBOUNCE, "ClickEvent error: $e")
-                    }
+        if (isClickAllowed.compareAndSet(true, false)) {
+            viewModelScope.launch {
+                try {
+                    val trackParcel = TrackMapperImpl.toParcel(track)
+                    _clickEvent.emit(trackParcel)
+                } catch (e: Exception) {
+                    Log.e(LogTags.CLICK_DEBOUNCE, "ClickEvent error: $e")
                 }
             }
+            clickDebounced(Unit) // Используем debounce для сброса флага isClickAllowed
         }
     }
 
@@ -117,11 +126,6 @@ class SearchViewModel(
             _searchScreenState.value = SearchScreenState.NotFound
             Log.d(LogTags.API_RESPONSE, "No tracks found")
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacks(searchRunnable)
     }
 
     companion object {

@@ -1,19 +1,22 @@
 package com.practicum.playlistmaker.player.presentation.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.media3.common.Player
 import com.practicum.playlistmaker.common.constants.AppConstants.PROGRESS_BAR_DELAY_MILLIS
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
+import com.practicum.playlistmaker.common.utils.debounce
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.state.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _state = MutableLiveData(PlayerState())
@@ -25,12 +28,14 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     private var isPlayerReady = false
     private var lastTrackPosition = 0L
-    private val handler = Handler(Looper.getMainLooper())
-    private val updateRunnable = object : Runnable {
-        override fun run() {
-            updateCurrentPosition()
-            handler.postDelayed(this, PROGRESS_BAR_DELAY_MILLIS)
-        }
+
+    private var updateJob: Job? = null
+    private val updatePositionDebounced = debounce<String>(
+        delayMillis = PROGRESS_BAR_DELAY_MILLIS,
+        coroutineScope = viewModelScope,
+        useLastParam = true
+    ) { position ->
+        updateState { it.copy(currentPosition = position) }
     }
 
     private fun preparePlayer(track: Track) {
@@ -126,15 +131,18 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     }
 
     private fun startUpdatingDuration() {
-        handler.post(updateRunnable)
+        updateJob = viewModelScope.launch {
+            while (true) {
+                val currentPosition = getCurrentPosition()
+                updatePositionDebounced(currentPosition)
+                delay(PROGRESS_BAR_DELAY_MILLIS)
+            }
+        }
     }
 
     private fun stopUpdatingDuration() {
-        handler.removeCallbacks(updateRunnable)
-    }
-
-    private fun updateCurrentPosition() {
-        updateState { it.copy(currentPosition = getCurrentPosition()) }
+        updateJob?.cancel()
+        updateJob = null
     }
 
     private fun updateState(block: (PlayerState) -> PlayerState) {
