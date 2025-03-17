@@ -14,11 +14,13 @@ import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.common.utils.debounce
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.interactor.TracksInteractor
+import com.practicum.playlistmaker.search.domain.model.NetworkRequestResult
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchViewModel(
@@ -67,12 +69,12 @@ class SearchViewModel(
         if (term.isBlank()) return
         _searchScreenState.value = SearchScreenState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            tracksInteractor.searchTracks(term) { foundTracks, _, isConnected ->
-                viewModelScope.launch(Dispatchers.Main) {
-                    if (isConnected) {
-                        handleTrackResponse(foundTracks)
-                    } else {
-                        _searchScreenState.value = SearchScreenState.NetworkError
+            tracksInteractor.searchTracks(term).collect { result ->
+                withContext(Dispatchers.Main) {
+                    when (result) {
+                        is NetworkRequestResult.Success -> handleTrackResponse(result.data)
+                        is NetworkRequestResult.Error -> _searchScreenState.value = SearchScreenState.NetworkError
+                        is NetworkRequestResult.NoConnection -> _searchScreenState.value = SearchScreenState.NetworkError
                     }
                 }
             }
