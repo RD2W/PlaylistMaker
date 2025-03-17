@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.R
@@ -26,14 +27,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         BottomSheetBehavior.from(binding.bottomSheetAddToPlaylist)
     }
 
+    private val args: PlayerFragmentArgs by navArgs()
     private val viewModel: PlayerViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPlayerBinding.bind(view)
 
-        val trackParcel = PlayerFragmentArgs.fromBundle(requireArguments()).trackParcel
-        viewModel.getTrack(trackParcel)
+        viewModel.getTrack(args.trackParcel)
         observePlayerState()
         setupUI()
         setupButtons()
