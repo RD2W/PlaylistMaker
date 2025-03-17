@@ -47,11 +47,11 @@ class SettingsRepositoryImpl(private val context: Context) : SettingsRepository 
             try {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Log.e(LogTags.EXTERNAL_NAVIGATIONS, "No activity found to handle intent", e)
+                Log.e(LogTags.EXTERNAL_NAVIGATION, "No activity found to handle intent", e)
             }
         } else {
             Log.e(
-                LogTags.EXTERNAL_NAVIGATIONS,
+                LogTags.EXTERNAL_NAVIGATION,
                 "No activity found to handle intent: ${intent.action}"
             )
         }
