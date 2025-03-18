@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/light_blue</item>
         <item name="android:statusBarColor">@color/dark_gray</item> <!-- Тёмный фон системного статус бара -->
         <item name="android:windowLightStatusBar">false</item> <!-- Светлые иконки в системном статус баре-->
         <item name="cursorColor">@color/light_blue</item>

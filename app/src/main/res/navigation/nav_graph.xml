@@ -29,6 +29,12 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Переход из SearchFragment в PlayerFragment -->
+        <action
+            android:id="@+id/action_searchFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+
     </fragment>
 
     <!-- MediaFragment -->
@@ -91,7 +97,7 @@
     <!-- AddPlaylistFragment -->
     <fragment
         android:id="@+id/addPlaylistFragment"
-        android:name="com.practicum.playlistmaker.media.presentation.view.AddPlaylistFragment"
+        android:name="com.practicum.playlistmaker.listmaker.presentation.view.AddPlaylistFragment"
         android:label="@string/add_new_playlist_title"
         tools:layout="@layout/fragment_add_playlist" >
 
@@ -99,6 +105,44 @@
         <action
             android:id="@+id/action_addPlaylistFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
+        <action
+            android:id="@+id/action_addPlaylistFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
+    </fragment>
+
+    <!-- PlaylistFragment -->
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.practicum.playlistmaker.playlist.presentation.view.PlaylistFragment"
+        android:label="@string/playlist_title"
+        tools:layout="@layout/fragment_playlist" >
+
+        <!-- Переход из PlaylistFragment в MediaFragment -->
+        <action
+            android:id="@+id/action_playlistFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.practicum.playlistmaker.player.presentation.view.PlayerFragment"
+        android:label="@string/player_title"
+        tools:layout="@layout/fragment_player">
+
+        <argument
+            android:name="trackParcel"
+            app:argType="com.practicum.playlistmaker.common.presentation.model.TrackParcel" />
+
+        <!-- Переход из PlayerFragment в SearchFragment -->
+        <action
+            android:id="@+id/action_playerFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+
+        <!-- Переход из PlayerFragment в AddPlaylistFragment -->
+        <action
+            android:id="@+id/action_playerFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
+
     </fragment>
 
 </navigation>

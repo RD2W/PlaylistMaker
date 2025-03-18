@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.common.domain.repository.AppThemeRepository
+import androidx.core.content.edit
 
 class AppThemeRepositoryImpl(
     private val context: Context,
@@ -14,8 +15,9 @@ class AppThemeRepositoryImpl(
 ) : AppThemeRepository {
 
     override fun switchTheme(isDark: Boolean) {
-        sharedPreferences.edit()
-            .putBoolean(PrefsConstants.KEY_IS_DARK_THEME, isDark).apply()
+        sharedPreferences.edit() {
+            putBoolean(PrefsConstants.KEY_IS_DARK_THEME, isDark)
+        }
         setTheme(isDark)
     }
 

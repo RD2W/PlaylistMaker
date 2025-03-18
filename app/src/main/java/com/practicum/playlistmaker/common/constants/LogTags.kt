@@ -5,7 +5,7 @@ object LogTags {
     const val EXO_PLAYER = "ExoPlayer"
     const val NETWORK_UTILS = "NetworkUtils"
     const val SEARCH_HISTORY = "SearchHistory"
-    const val EXTERNAL_NAVIGATIONS = "ExternalNavigations"
+    const val EXTERNAL_NAVIGATION = "ExternalNavigation"
     const val CLICK_DEBOUNCE = "ClickDebounce"
     const val NAVIGATION = "Navigation"
 }

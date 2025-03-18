@@ -21,4 +21,5 @@
     <color name="switch_track_color_unchecked">@color/light_gray</color>
     <color name="search_placeholder">@color/white</color>
     <color name="search_update_button">@color/dark_gray</color>
+    <color name="icon_drag_indicator">@color/white</color>
 </resources>

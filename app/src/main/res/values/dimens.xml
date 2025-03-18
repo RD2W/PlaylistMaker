@@ -20,12 +20,15 @@
     <dimen name="value_108">108dp</dimen>
     <dimen name="value_136">136dp</dimen>
     <dimen name="value_160">160dp</dimen>
+    <dimen name="value_320">320dp</dimen>
+    <dimen name="value_480">480dp</dimen>
     <dimen name="text_size">16sp</dimen>
-    <dimen name="text_medium_size">19sp</dimen>
+    <dimen name="text_medium_size">18sp</dimen>
     <dimen name="text_middle_plus_size">16sp</dimen>
     <dimen name="text_middle_size">14sp</dimen>
     <dimen name="text_small_size">12sp</dimen>
     <dimen name="text_small_plus_size">13sp</dimen>
     <dimen name="text_title_size">22sp</dimen>
+    <dimen name="text_title_plus_size">24sp</dimen>
     <dimen name="text_bt_size">20sp</dimen>
 </resources>

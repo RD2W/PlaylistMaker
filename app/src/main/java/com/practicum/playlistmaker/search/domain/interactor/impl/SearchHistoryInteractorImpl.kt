@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) :
     SearchHistoryInteractor {
-    private val _historyFlow = MutableStateFlow<List<Track>>(emptyList())
-    val historyFlow: StateFlow<List<Track>> get() = _historyFlow
+    private val historyFlow = MutableStateFlow<List<Track>>(emptyList())
 
     init {
         loadHistory()
@@ -19,15 +18,13 @@ class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepositor
 
     private fun loadHistory() {
         try {
-            _historyFlow.value = repository.getHistory()
+            historyFlow.value = repository.getHistory()
         } catch (e: Exception) {
             Log.e(LogTags.SEARCH_HISTORY, "Error loading history: ${e.message}", e)
         }
     }
 
-    override fun getHistory(): StateFlow<List<Track>> {
-        return historyFlow
-    }
+    override fun getHistory(): StateFlow<List<Track>> = historyFlow
 
     override fun addTrack(track: Track) {
         try {
@@ -41,7 +38,7 @@ class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepositor
     override fun clearHistory() {
         try {
             repository.clearHistory()
-            _historyFlow.value = emptyList()
+            historyFlow.value = emptyList()
         } catch (e: Exception) {
             Log.e(LogTags.SEARCH_HISTORY, "Error clearing history: ${e.message}", e)
         }

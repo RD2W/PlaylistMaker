@@ -7,6 +7,7 @@ import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.search.data.source.local.LocalClient
+import androidx.core.content.edit
 
 class SharedPreferencesClient(
     private val sharedPreferences: SharedPreferences,
@@ -33,11 +34,11 @@ class SharedPreferencesClient(
     }
 
     override fun clearHistory() {
-        sharedPreferences.edit().remove(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY).apply()
+        sharedPreferences.edit() { remove(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY) }
     }
 
     private fun saveHistory(history: List<Track>) {
         val json = gson.toJson(history)
-        sharedPreferences.edit().putString(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY, json).apply()
+        sharedPreferences.edit() { putString(PrefsConstants.KEY_TRACKS_SEARCH_HISTORY, json) }
     }
 }

@@ -1,12 +1,13 @@
-package com.practicum.playlistmaker.media.presentation.view
+package com.practicum.playlistmaker.listmaker.presentation.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.widget.doOnTextChanged
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentAddPlaylistBinding
-import com.practicum.playlistmaker.media.presentation.viewmodel.AddPlaylistViewModel
+import com.practicum.playlistmaker.listmaker.presentation.viewmodel.AddPlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
@@ -41,6 +42,10 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
                     )
                 }
             }
+        }
+
+        binding.btnCreatePlaylist.setOnClickListener {
+            findNavController().navigate(R.id.action_addPlaylistFragment_to_playlistFragment)
         }
     }
 

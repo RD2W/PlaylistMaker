@@ -29,15 +29,15 @@ class SettingsViewModel(
         _screenState.value = SettingsScreenState.ThemeSwitcherState(isChecked)
     }
 
-    fun shareApp() {
-        settingsInteractor.shareApp()
+    fun shareApp(appLink: String, appShareMsg: String) {
+        settingsInteractor.shareApp(appLink, appShareMsg)
     }
 
-    fun writeSupport() {
-        settingsInteractor.writeSupport()
+    fun writeSupport(email: String, emailSupportTitle: String, emailSupportMsg: String) {
+        settingsInteractor.writeSupport(email, emailSupportTitle, emailSupportMsg)
     }
 
-    fun openUserAgreement() {
-        settingsInteractor.openUserAgreement()
+    fun openUserAgreement(userAgreementLink: String) {
+        settingsInteractor.openUserAgreement(userAgreementLink)
     }
 }
