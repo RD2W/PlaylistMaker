@@ -11,7 +11,6 @@ activity = "1.10.1"
 constraintlayout = "2.2.1"
 preference = "1.2.1"
 glide = "4.16.0"
-compiler = "4.16.0"
 ksp = "2.1.10-1.0.31"
 gson = "2.11.0"
 retrofit = "2.11.0"
@@ -24,6 +23,7 @@ fragmentKtx = "1.8.6"
 navigationFragment = "2.8.9"
 viewPager2 = "1.1.0"
 lifecycleLivedataKtx = "2.8.7"
+room = "2.6.1"
 
 [libraries]
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
@@ -43,7 +43,7 @@ androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplaye
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
-compiler = { module = "com.github.bumptech.glide:ksp", version.ref = "compiler" }
+glide-compiler = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit-converter-gson" }
@@ -51,6 +51,9 @@ androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", ve
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragment" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationFragment" }
 androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewPager2" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

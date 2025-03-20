@@ -63,9 +63,12 @@ dependencies {
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    ksp(libs.compiler)
+    ksp(libs.glide.compiler)
+    ksp(libs.room.compiler)
 }
