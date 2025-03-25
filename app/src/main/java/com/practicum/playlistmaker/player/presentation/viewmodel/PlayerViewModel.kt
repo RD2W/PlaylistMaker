@@ -11,16 +11,27 @@ import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
 import com.practicum.playlistmaker.common.utils.debounce
 import com.practicum.playlistmaker.common.utils.formatDurationToMMSS
+import com.practicum.playlistmaker.media.domain.usecase.AddTrackToFavoritesUseCase
+import com.practicum.playlistmaker.media.domain.usecase.IsTrackFavoriteUseCase
+import com.practicum.playlistmaker.media.domain.usecase.RemoveTrackFromFavoritesUseCase
 import com.practicum.playlistmaker.player.domain.interactor.PlayerInteractor
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.state.PlayerState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(
+    private val playerInteractor: PlayerInteractor,
+    private val addToFavoritesUseCase : AddTrackToFavoritesUseCase,
+    private val removeFromFavoritesUseCase : RemoveTrackFromFavoritesUseCase,
+    private val isFavoriteUseCase : IsTrackFavoriteUseCase,
+) : ViewModel() {
     private val _state = MutableLiveData(PlayerState())
     val state: LiveData<PlayerState> get() = _state
+
+    private var currentTrack : Track? = null
 
     init {
         setupPlayerListener()
@@ -84,8 +95,18 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
 
     fun getTrack(trackParcel: TrackParcel) {
         val trackValue = trackParcel.let { TrackMapperImpl.toDomain(it) }
+        currentTrack = trackValue
         updateState { it.copy(track = trackValue) }
         preparePlayer(trackValue)
+        checkIfTrackIsFavorite(trackValue.trackId) // Подписываемся на Flow
+    }
+
+    private fun checkIfTrackIsFavorite(trackId: Int) {
+        viewModelScope.launch {
+            isFavoriteUseCase(trackId).collect { isFavorite ->
+                updateState { it.copy(isFavorite = isFavorite) }
+            }
+        }
     }
 
     private fun isPlaying(): Boolean {
@@ -104,7 +125,7 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
                         // Обработка состояния, когда плеер не готов к воспроизведению.
                     }
                     Player.STATE_BUFFERING -> {
-                        // Обработка состояния буферизации (можно показать индикатор загрузк).
+                        // Обработка состояния буферизации (можно показать индикатор загрузки).
                     }
                     Player.STATE_READY -> {
                         isPlayerReady = true
@@ -148,6 +169,17 @@ class PlayerViewModel(private val playerInteractor: PlayerInteractor) : ViewMode
     private fun updateState(block: (PlayerState) -> PlayerState) {
         val currentState = _state.value ?: PlayerState()
         _state.value = block(currentState)
+    }
+
+    fun onFavoriteClicked() {
+        viewModelScope.launch {
+            val isFavorite = currentTrack?.trackId?.let { isFavoriteUseCase(it).first() } == true
+            if (isFavorite) {
+                currentTrack?.trackId?.let { removeFromFavoritesUseCase(it) }
+            } else {
+                currentTrack?.let { addToFavoritesUseCase(it) }
+            }
+        }
     }
 
     override fun onCleared() {

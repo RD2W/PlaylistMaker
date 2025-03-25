@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.player.presentation.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -58,7 +59,37 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 }
             }
             binding.playerListenedTrackTime.text = state.currentPosition
+            updateFavoriteButton(state.isFavorite)
+            updatePlaylistButton(state.isInPlaylist)
         }
+    }
+
+    private fun updateFavoriteButton(isFavorite: Boolean) {
+        updateButtonIcon(
+            view = binding.btnAddToFavorites,
+            isActive = isFavorite,
+            activeIconRes = R.drawable.ic_player_add_favs_button_active,
+            inactiveIconRes = R.drawable.ic_player_add_favs_button
+        )
+    }
+
+    private fun updatePlaylistButton(isInPlaylist: Boolean) {
+        updateButtonIcon(
+            view = binding.btnAddToPlaylist,
+            isActive = isInPlaylist,
+            activeIconRes = R.drawable.ic_player_add_plist_button_active,
+            inactiveIconRes = R.drawable.ic_player_add_plist_button
+        )
+    }
+
+    private fun updateButtonIcon(
+        view: ImageView,
+        isActive: Boolean,
+        activeIconRes: Int,
+        inactiveIconRes: Int
+    ) {
+        val iconRes = if (isActive) activeIconRes else inactiveIconRes
+        view.setImageResource(iconRes)
     }
 
     private fun updateUIWithTrack(track: Track) {
@@ -127,7 +158,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
 
             btnAddToFavorites.setOnClickListener {
-                // Добавление трека в избранное
+                viewModel.onFavoriteClicked()
             }
 
             btnAddToPlaylist.setOnClickListener {

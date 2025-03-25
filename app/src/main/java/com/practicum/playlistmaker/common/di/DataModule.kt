@@ -3,6 +3,10 @@ package com.practicum.playlistmaker.common.di
 import androidx.media3.exoplayer.ExoPlayer
 import com.practicum.playlistmaker.common.data.repository.AppThemeRepositoryImpl
 import com.practicum.playlistmaker.common.domain.repository.AppThemeRepository
+import com.practicum.playlistmaker.media.data.repository.FavoriteTracksRepositoryImpl
+import com.practicum.playlistmaker.media.data.repository.PlaylistsRepositoryImpl
+import com.practicum.playlistmaker.media.domain.repository.FavoriteTracksRepository
+import com.practicum.playlistmaker.media.domain.repository.PlaylistsRepository
 import com.practicum.playlistmaker.player.data.repository.PlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 import com.practicum.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
@@ -24,4 +28,6 @@ val dataModule = module {
     singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
     singleOf(::SearchHistoryRepositoryImpl) { bind<SearchHistoryRepository>() }
     singleOf(::TracksRepositoryImpl) { bind<TracksRepository>() }
+    factoryOf(::FavoriteTracksRepositoryImpl) { bind<FavoriteTracksRepository>() }
+    factoryOf(::PlaylistsRepositoryImpl) { bind<PlaylistsRepository>() }
 }

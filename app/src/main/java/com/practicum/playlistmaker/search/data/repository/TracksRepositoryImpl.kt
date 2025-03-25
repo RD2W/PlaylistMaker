@@ -41,10 +41,11 @@ class TracksRepositoryImpl(
         if (response.resultCode == RESPONSE_OK) {
             val trackList = (response as TracksSearchResponse).results.map { it ->
                 Track(
-                    it.trackId,
+                    it.trackId ?: throw IllegalArgumentException("Track ID cannot be null!"),
                     it.trackName,
                     it.artistName,
                     it.trackTime?.let { time -> formatDurationToMMSS(time) } ?: NOT_AVAILABLE,
+                    it.trackTime ?: 0L,
                     it.artworkUrl100,
                     it.collectionName,
                     it.releaseDate?.let { data -> formatDateToYear(data) } ?: NOT_AVAILABLE,

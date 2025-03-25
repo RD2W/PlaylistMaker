@@ -1,9 +1,11 @@
 package com.practicum.playlistmaker.common.di
 
 import android.content.Context
+import androidx.room.Room
 import com.google.gson.Gson
 import com.practicum.playlistmaker.common.constants.ApiConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
+import com.practicum.playlistmaker.media.data.source.local.db.AppDatabase
 import com.practicum.playlistmaker.search.data.source.local.LocalClient
 import com.practicum.playlistmaker.search.data.source.local.sprefs.SharedPreferencesClient
 import com.practicum.playlistmaker.search.data.source.remote.ITunesApiService
@@ -34,6 +36,19 @@ val sourceModule = module {
     single<ITunesApiService> {
         get<Retrofit>().create(ITunesApiService::class.java)
     }
+
+    single {
+        Room.databaseBuilder(
+            get(),
+            AppDatabase::class.java,
+            "app_database.db"
+        ).build()
+    }
+
+    single { get<AppDatabase>().trackDao() }
+    single { get<AppDatabase>().favoriteTrackDao() }
+    single { get<AppDatabase>().playlistDao() }
+    single { get<AppDatabase>().playlistTrackDao() }
 
     singleOf(::Gson)
     singleOf(::RetrofitClient) { bind<NetworkClient>() }

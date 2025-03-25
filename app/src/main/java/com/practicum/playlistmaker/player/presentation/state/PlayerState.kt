@@ -7,4 +7,6 @@ data class PlayerState(
     val track: Track? = null,
     val screenState: PlayerScreenState = PlayerScreenState.Stopped,
     val currentPosition: String = START_TRACK_POSITION,
+    val isFavorite: Boolean = false,
+    val isInPlaylist: Boolean = false,
 )
