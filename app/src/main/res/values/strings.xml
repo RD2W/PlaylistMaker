@@ -46,4 +46,10 @@
     <string name="new_playlist_name">Name*</string>
     <string name="new_playlist_description">Description</string>
     <string name="new_playlist_create_button">Create</string>
+    <string name="playlist_title">Playlist</string>
+    <string name="playlist_more_share_item">Share</string>
+    <string name="playlist_more_edit_item">Edit info</string>
+    <string name="playlist_more_delete_item">Delete playlist</string>
+    <string name="player_title">Player</string>
+    <string name="player_add_track_to_playlist">Add track to Playlist</string>
 </resources>

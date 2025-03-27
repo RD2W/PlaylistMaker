@@ -14,8 +14,8 @@ android {
         applicationId = "com.practicum.playlistmaker"
         minSdk = 31
         targetSdk = 35
-        versionCode = 12
-        versionName = "1.0.12"
+        versionCode = 13
+        versionName = "1.0.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -63,9 +63,12 @@ dependencies {
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    ksp(libs.compiler)
+    ksp(libs.glide.compiler)
+    ksp(libs.room.compiler)
 }

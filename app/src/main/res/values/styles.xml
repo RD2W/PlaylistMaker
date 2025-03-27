@@ -40,7 +40,7 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="FoundTrackName">
+    <style name="FoundTrackName" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">@dimen/text_size</item>
@@ -74,7 +74,7 @@
         <item name="cornerSize">@dimen/corner_radius_8</item>
     </style>
 
-    <style name="PlaylistTextStyle">
+    <style name="PlaylistTextStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textSize">@dimen/text_small_size</item>
@@ -83,7 +83,31 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="SearchPlaceholderTextStyle">
+    <style name="PlaylistTitleTextStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">@dimen/text_medium_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="PlaylistNameTitleTextStyle" parent="PlaylistTitleTextStyle">
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:textSize">@dimen/text_title_plus_size</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="PlaylistMoreMenuTextStyle" parent="PlaylistTitleTextStyle">
+        <item name="android:layout_marginTop">@dimen/value_8</item>
+        <item name="android:paddingTop">@dimen/value_12</item>
+        <item name="android:paddingBottom">@dimen/value_12</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_middle_plus_size</item>
+    </style>
+
+    <style name="SearchPlaceholderTextStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
@@ -126,7 +150,13 @@
     <style name="CustomToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">@color/background</item>
         <item name="navigationIconTint">@color/button</item>
+        <item name="navigationIcon">@drawable/ic_back</item>
         <item name="titleTextAppearance">@style/CustomToolbarTitleText</item>
+    </style>
+
+    <style name="PlaylistToolbarStyle" parent="CustomToolbarStyle">
+        <item name="android:background">@color/light_gray</item>
+        <item name="navigationIconTint">@color/dark_gray</item>
     </style>
 
     <style name="CustomToolbarTitleText">
@@ -136,7 +166,7 @@
         <item name="android:textFontWeight">500</item>
     </style>
 
-    <style name="PlayerTrackNameText">
+    <style name="PlayerTrackNameText" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">@color/text_player_main</item>
         <item name="android:textSize">@dimen/text_title_size</item>
@@ -154,7 +184,7 @@
         <item name="android:textFontWeight">500</item>
     </style>
 
-    <style name="PlayerTrackDetailsText">
+    <style name="PlayerTrackDetailsText" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textColor">@color/text_gray</item>
         <item name="android:textSize">@dimen/text_small_plus_size</item>
@@ -173,7 +203,7 @@
         <item name="cornerSize">@dimen/corner_radius_8</item>
     </style>
 
-    <style name="CustomTabLayoutStyle">
+    <style name="CustomTabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="android:gravity">center</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
         <item name="tabTextColor">@color/text_tab_layout</item>

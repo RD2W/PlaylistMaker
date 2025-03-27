@@ -21,6 +21,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/value_16"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerGuidLineBase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50"/>
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/grPlaylistCover"
         android:layout_width="wrap_content"
@@ -44,31 +51,29 @@
         android:id="@+id/ivCoverFrame"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="@dimen/zero_dp"
-        android:layout_marginTop="@dimen/value_24"
-        android:layout_marginStart="@dimen/value_8"
-        android:layout_marginEnd="@dimen/value_8"
+        android:layout_marginEnd="@dimen/value_16"
+        android:layout_marginBottom="@dimen/value_16"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_playlist_cover_frame"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/centerGuidLineBase"
         app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/OutlinedTextInputLayout"
         android:id="@+id/textInputLayoutPlaylistName"
+        style="@style/OutlinedTextInputLayout"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/value_32"
         android:hint="@string/new_playlist_name"
-        app:layout_constraintTop_toBottomOf="@id/ivCoverFrame"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase">
+        app:layout_constraintStart_toStartOf="@id/centerGuidLineBase"
+        app:layout_constraintTop_toTopOf="@+id/ivCoverFrame">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/CustomTextInputEditTextStyle"
             android:id="@+id/etvPlaylistName"
+            style="@style/CustomTextInputEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -79,12 +84,11 @@
         android:id="@+id/textInputLayoutPlaylistDescription"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="@dimen/value_16"
         android:hint="@string/new_playlist_description"
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutPlaylistName"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase">
+        app:layout_constraintStart_toStartOf="@id/centerGuidLineBase">
 
         <com.google.android.material.textfield.TextInputEditText
             style="@style/CustomTextInputEditTextStyle"
@@ -97,16 +101,15 @@
     <com.google.android.material.button.MaterialButton
         style="@style/CreatePlaylistButtonStyle"
         android:id="@+id/btnCreatePlaylist"
-        android:layout_width="@dimen/zero_dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/value_32"
+        android:layout_marginTop="@dimen/value_32"
         android:enabled="false"
         android:text="@string/new_playlist_create_button"
-        app:layout_constraintVertical_bias="1"
-        app:layout_constraintTop_toBottomOf="@id/textInputLayoutPlaylistDescription"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCoverFrame"
         app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-        app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
+        app:layout_constraintStart_toStartOf="@id/centerGuidLineBase"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutPlaylistDescription"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

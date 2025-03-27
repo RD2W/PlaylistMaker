@@ -1,0 +1,57 @@
+name: Build APK on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master # Ветка проекта в которую будет делаться PR
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонирование репозитория
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Шаг 2: Установка Java Development Kit (JDK)
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Версия Java должна соответствовать версии в проекте
+          distribution: 'temurin'
+
+      # Шаг 3: Настройка Gradle кэша для ускорения сборки
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Шаг 4: Получение versionName из build.gradle.kts
+      - name: Extract versionName
+        id: extract_version
+        run: |
+          VERSION_NAME=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts)
+          echo "Extracted versionName: $VERSION_NAME"
+          echo "version=$VERSION_NAME" >> $GITHUB_ENV
+
+      # Шаг 5: Сборка проекта и создание APK
+      - name: Build APK
+        run: ./gradlew assembleDebug
+
+      # Шаг 6: Переименование APK
+      - name: Rename APK
+        run: |
+          mv app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Playlist_Maker-${{ env.version }}-debug.apk
+
+      # Шаг 7: Загрузка APK как артефакта
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Playlist_Maker-${{ env.version }}-debug.apk
+          path: app/build/outputs/apk/debug/Playlist_Maker-${{ env.version }}-debug.apk

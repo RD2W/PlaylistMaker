@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrimeLayoutStyle"
     android:id="@+id/addPlaylist"
-    tools:context=".media.presentation.view.AddPlaylistFragment">
+    tools:context=".listmaker.presentation.view.AddPlaylistFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuidLineBase"
