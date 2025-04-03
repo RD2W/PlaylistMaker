@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.player.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -10,10 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.domain.model.Playlist
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
 import com.practicum.playlistmaker.player.domain.model.ErrorType
+import com.practicum.playlistmaker.player.presentation.adapter.PlaylistLinearAdapter
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.viewmodel.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,13 +35,25 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val args: PlayerFragmentArgs by navArgs()
     private val viewModel: PlayerViewModel by viewModel()
 
+    private val adapter = PlaylistLinearAdapter { playlist ->
+        val message = getString(R.string.player_track_added_to_playlist_message, playlist.name)
+        addTrackToPlaylist(playlist.playlistId)
+        showBottomSheetAddPlaylist(false)
+        showSnackbar(message)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getTrack(args.trackParcel)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPlayerBinding.bind(view)
 
-        viewModel.getTrack(args.trackParcel)
         observePlayerState()
         setupUI()
+        setupRecyclerView()
         setupButtons()
     }
 
@@ -61,6 +77,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             binding.playerListenedTrackTime.text = state.currentPosition
             updateFavoriteButton(state.isFavorite)
             updatePlaylistButton(state.isInPlaylist)
+            showPlaylists(state.availablePlaylists)
         }
     }
 
@@ -143,6 +160,23 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
     }
 
+    fun showSnackbar(message: String) {
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_LONG
+        ).show()
+    }
+
+    private fun showPlaylists(playlists: List<Playlist>) {
+//        Log.d("Playlists", "Playlists: ${playlists.joinToString { it.name.toString() }}")
+        Log.d("Playlists", "Playlists:\n${playlists.joinToString("\n") {
+            "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
+        }}")
+
+        adapter.submitList(playlists)
+    }
+
     private fun setupButtons() {
         with(binding) {
             topAppBar.setNavigationOnClickListener {
@@ -174,6 +208,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun setupUI() {
         showBottomSheetAddPlaylist(false)
         setupBottomSheetAddToPlaylistCallback()
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvPlaylistsList.adapter = adapter
+    }
+
+    private fun addTrackToPlaylist(playlistId: Long) {
+        viewModel.addToPlaylist(playlistId)
     }
 
     private fun setupBottomSheetAddToPlaylistCallback() {

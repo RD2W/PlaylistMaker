@@ -71,6 +71,11 @@
         <action
             android:id="@+id/action_mediaFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+
+        <!-- Переход из MediaFragment в PlaylistFragment -->
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
     </fragment>
 
     <!-- SettingsFragment -->
@@ -110,11 +115,6 @@
         <action
             android:id="@+id/action_addPlaylistFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
-
-        <!-- Переход из AddPlaylistFragment в PlaylistFragment -->
-        <action
-            android:id="@+id/action_addPlaylistFragment_to_playlistFragment"
-            app:destination="@id/playlistFragment" />
     </fragment>
 
     <!-- PlaylistFragment -->
@@ -124,10 +124,19 @@
         android:label="@string/playlist_title"
         tools:layout="@layout/fragment_playlist" >
 
+        <argument
+            android:name="playlistId"
+            app:argType="long" />
+
         <!-- Переход из PlaylistFragment в MediaFragment -->
         <action
             android:id="@+id/action_playlistFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
+
+        <!-- Переход из PlaylistFragment в PlayerFragment -->
+        <action
+            android:id="@+id/action_playlistFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
 
     <!-- PlayerFragment -->

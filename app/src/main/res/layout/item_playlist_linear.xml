@@ -5,7 +5,7 @@
     android:id="@+id/playlistLinearItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="@dimen/value_4"
+    android:layout_marginVertical="@dimen/value_8"
     android:background="@color/background">
 
     <com.google.android.material.imageview.ShapeableImageView

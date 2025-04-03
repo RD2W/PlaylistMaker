@@ -39,6 +39,7 @@
 
         <!-- Обложка плейлиста -->
         <com.google.android.material.imageview.ShapeableImageView
+            style="@style/PlaylistDetailsCoverStyle"
             android:id="@+id/ivCoverFrame"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="@dimen/zero_dp"
@@ -179,9 +180,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTrackList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/zero_dp"
             android:layout_marginTop="@dimen/value_16"
-            android:paddingHorizontal="@dimen/value_16"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/track_item"/>
 
     </LinearLayout>

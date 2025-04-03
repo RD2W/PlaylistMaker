@@ -13,9 +13,9 @@ interface TracksDao {
      * Вставляет или обновляет трек в таблице `tracks`.
      *
      * Логика работы:
-     * - Если трек с таким же `trackId` уже существует, он будет заменен (стратегия `OnConflictStrategy.REPLACE`).
+     * - Если трек с таким же `trackId` уже существует, он будет проигнорирован (стратегия `OnConflictStrategy.IGNORE`).
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTrack(track: TrackEntity)
 
     /**

@@ -9,5 +9,7 @@
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker">
+        <item name="snackbarStyle">@style/CustomSnackbarStyle</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.PlaylistMaker.MaterialAlertDialog</item>
     </style>
 </resources>

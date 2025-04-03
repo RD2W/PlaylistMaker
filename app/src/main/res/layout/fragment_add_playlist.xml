@@ -21,26 +21,8 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/value_16"/>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/grPlaylistCover"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="btnAddCoverPlaylist,ivCoverFrame"
-        android:visibility="visible"/>
-
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/btnAddCoverPlaylist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_playlist_button"
-        app:layout_constraintDimensionRatio="h,1:1"
-        app:layout_constraintTop_toTopOf="@id/ivCoverFrame"
-        app:layout_constraintEnd_toEndOf="@id/ivCoverFrame"
-        app:layout_constraintStart_toStartOf="@id/ivCoverFrame"
-        app:layout_constraintBottom_toBottomOf="@id/ivCoverFrame"/>
-
-    <com.google.android.material.imageview.ShapeableImageView
+        style="@style/PlaylistCoverStyle"
         android:id="@+id/ivCoverFrame"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="@dimen/zero_dp"

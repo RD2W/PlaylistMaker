@@ -23,4 +23,4 @@ fun getCurrentYearAsString(): String {
         .format(DateTimeFormatter.ofPattern("yyyy"))
 }
 
-fun convertMillisToMinutes(milliseconds: Long) = (milliseconds / 60_000).toString()
+fun convertMillisToMinutes(milliseconds: Long) = (milliseconds / 60_000).toInt()

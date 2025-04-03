@@ -64,7 +64,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 is FavoriteScreenState.Loading -> showLoading()
                 is FavoriteScreenState.Content -> showContent(state.tracks)
                 is FavoriteScreenState.Empty -> showPlaceholder()
-                FavoriteScreenState.Error -> showPlaceholder()
+                is FavoriteScreenState.Error -> showPlaceholder()
             }
         }
     }

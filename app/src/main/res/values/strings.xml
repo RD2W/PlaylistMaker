@@ -50,6 +50,28 @@
     <string name="playlist_more_share_item">Share</string>
     <string name="playlist_more_edit_item">Edit info</string>
     <string name="playlist_more_delete_item">Delete playlist</string>
+    <string name="playlist_delete_playlist_title">@string/playlist_more_delete_item</string>
+    <string name="playlist_delete_playlist_message">Do you want to delete the playlist?</string>
+    <string name="playlist_delete_track_title">Delete track</string>
+    <string name="playlist_delete_track_message">Do you want to delete the track \"%s\"?</string>
     <string name="player_title">Player</string>
     <string name="player_add_track_to_playlist">Add track to Playlist</string>
+    <string name="player_track_added_to_playlist_message">Added to Playlist \"%s\"</string>
+
+    <!-- Permission messages -->
+    <string name="permission_denied_message">Gallery access denied</string>
+    <string name="permission_rationale_title">Photo access required</string>
+    <string name="permission_rationale_message">To select playlist cover we need access to your photos.</string>
+    <string name="permission_settings_title">Permission required</string>
+    <string name="permission_settings_message">You denied permission with \"Don\'t ask again\". Please enable access in app settings.</string>
+    <string name="settings">Settings</string>
+    <string name="grant">Allow</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Error messages -->
+    <string name="error_loading_image">Error loading image</string>
+    <string name="image_selected">Image selected</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

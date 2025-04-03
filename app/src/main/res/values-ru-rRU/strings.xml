@@ -48,6 +48,28 @@
     <string name="playlist_more_share_item">Поделиться</string>
     <string name="playlist_more_edit_item">Редактировать информацию</string>
     <string name="playlist_more_delete_item">Удалить плейлист</string>
+    <string name="playlist_delete_playlist_title">@string/playlist_more_delete_item</string>
+    <string name="playlist_delete_playlist_message">Хотите удалить плейлист?</string>
+    <string name="playlist_delete_track_title">Удалить трек</string>
+    <string name="playlist_delete_track_message">Хотите удалить трек \"%s\"?</string>
     <string name="player_title">Плеер</string>
     <string name="player_add_track_to_playlist">Добавить в плейлист</string>
+    <string name="player_track_added_to_playlist_message">Добавлено в плейлист \"%s\"</string>
+
+    <!-- Сообщения о разрешениях -->
+    <string name="permission_denied_message">Доступ к галерее запрещен</string>
+    <string name="permission_rationale_title">Требуется доступ к фото</string>
+    <string name="permission_rationale_message">Для выбора обложки плейлиста необходимо разрешение на доступ к фотографиям.</string>
+    <string name="permission_settings_title">Требуется доступ</string>
+    <string name="permission_settings_message">Вы запретили доступ с опцией \"Больше не спрашивать\". Пожалуйста, предоставьте доступ в настройках приложения.</string>
+    <string name="settings">Настройки</string>
+    <string name="grant">Разрешить</string>
+    <string name="cancel">Отмена</string>
+
+    <!-- Сообщения об ошибках -->
+    <string name="error_loading_image">Ошибка загрузки изображения</string>
+    <string name="image_selected">Изображение выбрано</string>
+
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

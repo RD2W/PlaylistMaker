@@ -32,6 +32,16 @@ interface PlaylistTrackCrossRefDao {
     suspend fun removeTrackFromPlaylist(crossRef: PlaylistTrackCrossRef)
 
     /**
+     * Удаляет все треки из указанного плейлиста.
+     *
+     * Логика работы:
+     * - Выполняет SQL-запрос DELETE, который удаляет все записи из таблицы `playlist_track_cross_ref`,
+     *   где `playlist_id` соответствует переданному идентификатору плейлиста.
+     */
+    @Query("DELETE FROM playlist_track_cross_ref WHERE playlist_id = :playlistId")
+    suspend fun removeAllTracksFromPlaylist(playlistId: Long)
+
+    /**
      * Возвращает поток списка треков, принадлежащих указанному плейлисту.
      *
      * Логика работы:
@@ -67,6 +77,40 @@ interface PlaylistTrackCrossRefDao {
         """
     )
     suspend fun isTrackInPlaylist(playlistId: Long, trackId: Int): Boolean
+
+    /**
+     * Проверяет наличие трека в любом из плейлистов и возвращает результат как реактивный поток.
+     *
+     * ### SQL Логика работы:
+     * 1. Использует оператор EXISTS для эффективной проверки наличия записи
+     * 2. Ищет в таблице связей `playlist_track_cross_ref` записи с указанным track_id
+     * 3. LIMIT 1 оптимизирует запрос - прекращает поиск после первой найденной записи
+     *
+     * ### Особенности поведения:
+     * - Возвращает Flow<Boolean>, который эмитит:
+     *   - `true` если трек найден хотя бы в одном плейлисте
+     *   - `false` если трек отсутствует во всех плейлистах
+     * - Автоматически обновляется при:
+     *   - Добавлении трека в любой плейлист
+     *   - Удалении трека из всех плейлистов
+     *
+     * ### Производительность:
+     * - Запрос выполняется на уровне SQLite (максимальная эффективность)
+     * - EXISTS + LIMIT 1 обеспечивают минимальную нагрузку на БД
+     * - Не требует загрузки самих данных о плейлистах
+     *
+     * @param trackId Идентификатор трека для проверки (должен соответствовать track_id в БД)
+     * @return Flow с булевым результатом проверки (true - найден, false - не найден)
+     */
+    @Query(
+        """
+        SELECT EXISTS(
+            SELECT 1 FROM playlist_track_cross_ref 
+            WHERE track_id = :trackId
+        ) LIMIT 1
+        """
+    )
+    fun isTrackInAnyPlaylist(trackId: Int): Flow<Boolean>
 
     /**
      * Возвращает поток списка идентификаторов плейлистов, содержащих указанный трек.

@@ -11,6 +11,7 @@
     <color name="text_tab_layout">@color/white</color>
     <color name="text_search_field">@color/dark_gray</color>
     <color name="icon_search_field">@color/dark_gray</color>
+    <color name="background_snackbar">@color/white</color>
     <color name="background_search_field">@color/white</color>
     <color name="background_track_placeholder">@color/dark_gray</color>
     <color name="text_track_details">@color/white</color>

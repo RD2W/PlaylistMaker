@@ -341,7 +341,6 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/value_24"
             android:layout_weight="1"
-            android:paddingHorizontal="@dimen/value_16"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_playlist_linear"/>
 

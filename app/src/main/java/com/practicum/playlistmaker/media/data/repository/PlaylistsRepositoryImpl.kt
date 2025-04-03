@@ -223,6 +223,35 @@ class PlaylistsRepositoryImpl(
     }
 
     /**
+     * Проверяет наличие трека в любом из плейлистов и возвращает результат как реактивный поток.
+     *
+     * ### Логика работы:
+     * 1. Делегирует запрос к DAO слою через `playlistTrackDao.isTrackInAnyPlaylist(trackId)`
+     * 2. Возвращает чистый Flow без дополнительных операторов для максимальной совместимости
+     *
+     * ### Особенности:
+     * - Возвращает `Flow<Boolean>`, который будет автоматически обновляться при:
+     *   - Добавлении трека в любой плейлист
+     *   - Удалении трека из всех плейлистов
+     * - Каждое изменение в таблице связей вызовет новое значение в Flow
+     * - Не требует явной подписки/отписки - жизненный цикл управляется корутинами
+     *
+     * ### Пример использования:
+     * repository.isTrackInAnyPlaylist(trackId)
+     *     .collect { isInPlaylist ->
+     *         // Обновление UI в зависимости от состояния
+     *     }
+     *
+     * @param trackId Идентификатор трека для проверки
+     * @return Flow, который эмитит:
+     *         - `true` если трек существует хотя бы в одном плейлисте
+     *         - `false` если трек отсутствует во всех плейлистах
+     */
+    override fun isTrackInAnyPlaylist(trackId: Int): Flow<Boolean> {
+        return playlistTrackDao.isTrackInAnyPlaylist(trackId)
+    }
+
+    /**
      * Добавляет трек в плейлист.
      *
      * Логика работы:
@@ -250,5 +279,24 @@ class PlaylistsRepositoryImpl(
     override suspend fun removeTrackFromPlaylist(playlistId: Long, trackId: Int) {
         val crossRef = PlaylistTrackCrossRef(playlistId = playlistId, trackId = trackId)
         playlistTrackDao.removeTrackFromPlaylist(crossRef)
+    }
+
+    /**
+     * Очищает плейлист, удаляя все треки из него.
+     *
+     * Логика работы:
+     * 1. Вызывает метод [PlaylistTrackCrossRefDao.removeAllTracksFromPlaylist], который выполняет SQL-запрос DELETE,
+     *    удаляющий все записи из таблицы `playlist_track_cross_ref`, связанные с указанным `playlistId`.
+     * 2. После выполнения метода плейлист становится пустым (все связи между плейлистом и треками удаляются).
+     *
+     * Особенности:
+     * - Метод является suspend-функцией, что позволяет вызывать его асинхронно внутри корутин.
+     * - Сам плейлист (запись в таблице `playlists`) не удаляется, удаляются только связи с треками.
+     * - Треки (записи в таблице `tracks`) остаются в базе данных, так как они могут быть связаны с другими плейлистами.
+     *
+     * @param playlistId Идентификатор плейлиста, который нужно очистить.
+     */
+    override suspend fun clearTracksInPlaylist(playlistId: Long) {
+        playlistTrackDao.removeAllTracksFromPlaylist(playlistId)
     }
 }
