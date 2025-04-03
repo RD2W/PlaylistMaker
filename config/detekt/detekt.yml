@@ -1,0 +1,54 @@
+# config/detekt/detekt.yml
+build:
+  maxIssues: 0  # Не пропускать ошибки (0 = fail при любом нарушении)
+
+style:
+  active: true
+  NewLineAtEndOfFile:
+    active: true  # Требует пустую строку в конце файла
+  MagicNumber:
+    active: true
+    excludes: ["-1", "0", "1", "2"]  # Запрещает "магические числа", кроме 0, 1, 2 и -1
+
+complexity:
+  active: true
+  LongMethod:
+    active: true
+    threshold: 50  # Метод не должен превышать 50 строк
+  NestedBlockDepth:
+    active: true
+    threshold: 4  # Максимум 4 уровня вложенности (if/for/try и т.д.)
+  TooManyFunctions:
+    active: true
+    thresholdInInterfaces: 15  # Увеличиваем лимит с 11 до 15
+    thresholdInClasses: 30  # Увеличиваем лимит с 11 до 30
+  LongParameterList:
+    active: true
+    constructorThreshold: 10  # Максимальное количество параметров в конструкторах
+    functionThreshold: 8     # Максимальное количество параметров в обычных функциях
+    ignoreDefaultParameters: true
+    ignoreAnnotated: [ "Inject"]  # Игнорировать параметры в @Inject конструкторах
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+  SwallowedException:
+    active: false
+
+formatting:
+  active: true
+  autoCorrect: true  # Автоматически исправляет отступы/пробелы
+  Indentation:
+    active: true
+    indentSize: 4  # Отступы = 4 пробела
+  TrailingCommaOnCallSite:
+    active: true
+  TrailingCommaOnDeclarationSite:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 120  # Максимальная длина строки
+
+potential-bugs:
+    ImplicitDefaultLocale:
+      active: true

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
 }
 
@@ -41,6 +42,14 @@ android {
     }
 }
 
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    config.setFrom("${rootDir}/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true  // Совмещает с дефолтными правилами
+    autoCorrect = true
+    source.setFrom("src/main/java")
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -69,6 +78,15 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    detektPlugins(libs.detekt.cli)
+    detektPlugins(libs.detekt.formatting)
+
     ksp(libs.glide.compiler)
     ksp(libs.room.compiler)
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+    }
 }
