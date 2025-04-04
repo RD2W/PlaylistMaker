@@ -2,18 +2,18 @@ package com.practicum.playlistmaker.playlist.presentation.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.imageview.ShapeableImageView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.domain.model.Playlist
 import com.practicum.playlistmaker.common.domain.model.Track
@@ -46,7 +46,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private val adapter = TrackInPlaylistAdapter(
         onTrackClick = { track -> launchPlayer(track) },
-        onTrackLongClick = { track -> showDeleteTrackDialog(track) }
+        onTrackLongClick = { track -> showDeleteTrackDialog(track) },
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +85,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
                 viewModel.clickEvent.collect { trackParcel ->
                     val action =
                         PlaylistFragmentDirections.actionPlaylistFragmentToPlayerFragment(
-                            trackParcel
+                            trackParcel,
                         )
                     findNavController().navigate(action)
                 }
@@ -103,14 +103,16 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
             // Форматируем длительность в минуты
             val minutes = convertMillisToMinutes(playlist.totalDurationMillis)
             tvTracksTimeTitle.text = resources.getQuantityString(
-                R.plurals.minutes_plurals, minutes, minutes
+                R.plurals.minutes_plurals, minutes, minutes,
             )
 
             // Форматируем количество треков
             val trackCount = resources.getQuantityString(
-                R.plurals.tracks_plurals, playlist.trackCount, playlist.trackCount
+                R.plurals.tracks_plurals,
+                playlist.trackCount,
+                playlist.trackCount,
             )
-            tvTracksCountTitle.text = String.format(" • %s", trackCount)
+            tvTracksCountTitle.text = getString(R.string.bullet_prefix, trackCount)
 
             // Устанавливаем сведения о плейлисте для BottomSheetMore
             tvPlaylistName.text = playlist.name
@@ -234,15 +236,15 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
             }
 
             BottomSheetBehavior.STATE_DRAGGING -> {
-                //TODO()
+                // TODO()
             }
 
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                //TODO()
+                // TODO()
             }
 
             BottomSheetBehavior.STATE_SETTLING -> {
-                //TODO()
+                // TODO()
             }
         }
     }

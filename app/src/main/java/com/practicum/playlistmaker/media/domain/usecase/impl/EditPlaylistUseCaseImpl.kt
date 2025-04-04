@@ -8,7 +8,7 @@ class EditPlaylistUseCaseImpl(private val repository: PlaylistsRepository) : Edi
         playlistId: Long,
         name: String?,
         description: String?,
-        coverFilePath: String?
+        coverFilePath: String?,
     ) {
         repository.editPlaylist(
             playlistId = playlistId,

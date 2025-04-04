@@ -42,7 +42,7 @@ class PlaylistViewModel(
     private val clickDebounced = debounce<Unit>(
         delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = false
+        useLastParam = false,
     ) {
         isClickAllowed.set(true)
     }

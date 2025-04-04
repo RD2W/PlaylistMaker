@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 
 class FavoritesViewModel(
-    private val getFavoriteTracksUseCase: GetFavoriteTracksUseCase
+    private val getFavoriteTracksUseCase: GetFavoriteTracksUseCase,
 ) : ViewModel() {
 
     private val _state = MutableLiveData<FavoriteScreenState>()
@@ -33,7 +33,7 @@ class FavoritesViewModel(
     private val clickDebounced = debounce<Unit>(
         delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = false
+        useLastParam = false,
     ) {
         isClickAllowed.set(true)
     }

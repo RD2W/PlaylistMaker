@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.practicum.playlistmaker.media.data.source.local.db.entity.TrackEntity
 import com.practicum.playlistmaker.media.data.source.local.db.entity.FavoriteTrackEntity
+import com.practicum.playlistmaker.media.data.source.local.db.entity.TrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -45,14 +45,15 @@ interface FavoriteTracksDao {
      * Логика работы:
      * - Выполняет SQL-запрос, который выбирает все треки из таблицы `tracks`,
      *   чьи `trackId` присутствуют в таблице `favorite_tracks`.
-     * - Треки сортируются по времени добавления (`addedTimestamp`) в порядке убывания (последний добавленный трек будет первым).
+     * - Треки сортируются по времени добавления (`addedTimestamp`)
+     *   в порядке убывания (последний добавленный трек будет первым).
      */
     @Query(
         """
         SELECT tracks.* FROM tracks
         INNER JOIN favorite_tracks ON tracks.track_id = favorite_tracks.track_id
         ORDER BY favorite_tracks.added_timestamp DESC
-        """
+        """,
     )
     fun getFavoriteTracks(): Flow<List<TrackEntity>>
 
@@ -60,7 +61,8 @@ interface FavoriteTracksDao {
      * Проверяет, является ли трек избранным.
      *
      * Логика работы:
-     * - Выполняет SQL-запрос, который подсчитывает количество записей с указанным `trackId` в таблице `favorite_tracks`.
+     * - Выполняет SQL-запрос, который подсчитывает количество записей
+     *   с указанным `trackId` в таблице `favorite_tracks`.
      * - Если количество записей больше 0, трек считается избранным, и поток эмитит `true`.
      * - Если записей с таким `trackId` нет, поток эмитит `false`.
      * - Возвращает Flow<Boolean>, который эмитит `true`, если трек избранный, и `false`, если нет.

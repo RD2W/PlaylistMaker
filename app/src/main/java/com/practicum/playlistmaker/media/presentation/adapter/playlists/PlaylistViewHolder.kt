@@ -10,13 +10,12 @@ class PlaylistViewHolder(
     private val binding: ItemPlaylistGridBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(playlist: Playlist) {
-
         with(binding) {
             tvPlaylistName.text = playlist.name
             tvPlaylistCount.text = root.context.resources.getQuantityString(
                 R.plurals.tracks_plurals,
-                playlist.trackCount,      // Число для выбора формы
-                playlist.trackCount       // Число, которое подставляется в строку
+                playlist.trackCount, // Число для выбора формы
+                playlist.trackCount, // Число, которое подставляется в строку
             )
         }
 

@@ -18,8 +18,7 @@ class AddPlaylistViewModel(
     private val createPlaylistUseCase: CreatePlaylistUseCase,
     private val saveTempImageUseCase: SaveTempImageUseCase,
     private val deleteTempImageUseCase: DeleteTempImageUseCase,
-
-    ) : ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow<AddPlaylistUiState>(AddPlaylistUiState.Idle)
     val uiState: StateFlow<AddPlaylistUiState> get() = _uiState
 

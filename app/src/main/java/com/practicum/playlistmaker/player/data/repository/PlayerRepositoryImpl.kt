@@ -7,8 +7,8 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.practicum.playlistmaker.common.constants.LogTags
-import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.player.domain.model.ErrorType
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 

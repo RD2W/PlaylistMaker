@@ -72,6 +72,7 @@
     <string name="error_loading_image">Error loading image</string>
     <string name="image_selected">Image selected</string>
 
+    <string name="bullet_prefix" translatable="false">\u00A0•\u00A0%s</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 </resources>

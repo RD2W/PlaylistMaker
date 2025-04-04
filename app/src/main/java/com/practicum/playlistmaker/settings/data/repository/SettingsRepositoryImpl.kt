@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.settings.domain.repository.SettingsRepository
-import androidx.core.net.toUri
 
 class SettingsRepositoryImpl(private val context: Context) : SettingsRepository {
 
@@ -35,7 +35,7 @@ class SettingsRepositoryImpl(private val context: Context) : SettingsRepository 
     override fun openUserAgreement(userAgreementLink: String) {
         val agreementIntent = Intent(
             Intent.ACTION_VIEW,
-            userAgreementLink.toUri()
+            userAgreementLink.toUri(),
         ).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
@@ -52,7 +52,7 @@ class SettingsRepositoryImpl(private val context: Context) : SettingsRepository 
         } else {
             Log.e(
                 LogTags.EXTERNAL_NAVIGATION,
-                "No activity found to handle intent: ${intent.action}"
+                "No activity found to handle intent: ${intent.action}",
             )
         }
     }

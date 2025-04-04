@@ -2,9 +2,9 @@ package com.practicum.playlistmaker.media.presentation.view
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -86,9 +86,12 @@ class PlaylistsFragment : Fragment(R.layout.fragment_playlists) {
     }
 
     private fun showContent(playlists: List<Playlist>) {
-        Log.d("Playlists", "Playlists:\n${playlists.joinToString("\n") {
-            "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
-        }}")
+        Log.d(
+            "Playlists",
+            "Playlists:\n${playlists.joinToString("\n") {
+                "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
+            }}",
+        )
 
         showPlaceholder(false)
         adapter.submitList(playlists)

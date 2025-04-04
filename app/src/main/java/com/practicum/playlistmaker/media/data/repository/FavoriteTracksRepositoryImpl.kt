@@ -1,12 +1,12 @@
 package com.practicum.playlistmaker.media.data.repository
 
-import com.practicum.playlistmaker.media.data.source.local.db.dao.TracksDao
 import com.practicum.playlistmaker.common.domain.model.Track
-import com.practicum.playlistmaker.media.data.mapper.toTrackEntity
 import com.practicum.playlistmaker.media.data.mapper.toFavoriteTrackEntity
 import com.practicum.playlistmaker.media.data.mapper.toTrack
+import com.practicum.playlistmaker.media.data.mapper.toTrackEntity
 import com.practicum.playlistmaker.media.data.mapper.toTrackList
 import com.practicum.playlistmaker.media.data.source.local.db.dao.FavoriteTracksDao
+import com.practicum.playlistmaker.media.data.source.local.db.dao.TracksDao
 import com.practicum.playlistmaker.media.domain.repository.FavoriteTracksRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,8 +20,10 @@ class FavoriteTracksRepositoryImpl(
      * Возвращает поток списка избранных треков.
      *
      * Логика работы:
-     * 1. Вызывает метод `favoriteTracksDao.getFavoriteTracks()`, который возвращает поток списка сущностей `TrackEntity`.
-     * 2. Преобразует каждую сущность `TrackEntity` в доменную модель `Track` с помощью функции `toTrackList()`.
+     * 1. Вызывает метод `favoriteTracksDao.getFavoriteTracks()`,
+     *    который возвращает поток списка сущностей `TrackEntity`.
+     * 2. Преобразует каждую сущность `TrackEntity` в доменную модель `Track`
+     *    с помощью функции `toTrackList()`.
      */
     override fun getFavoriteTracks(): Flow<List<Track>> {
         return favoriteTracksDao.getFavoriteTracks().map { trackEntitiesList ->
@@ -44,8 +46,10 @@ class FavoriteTracksRepositoryImpl(
      * Возвращает избранный трек по его идентификатору (`trackId`).
      *
      * Логика работы:
-     * 1. Вызывает метод `favoriteTracksDao.getFavoriteTrackById(trackId)`, который пытается найти трек в таблице `favorite_tracks`.
-     * 2. Если трек найден, преобразует сущность `TrackEntity` в доменную модель `Track` с помощью функции `toTrack()`.
+     * 1. Вызывает метод `favoriteTracksDao.getFavoriteTrackById(trackId)`,
+     *    который пытается найти трек в таблице `favorite_tracks`.
+     * 2. Если трек найден, преобразует сущность `TrackEntity` в доменную модель `Track`
+     *    с помощью функции `toTrack()`.
      * 3. Если трек не найден, возвращает `null`.
      */
     override suspend fun getFavoriteTrackById(trackId: Int) =

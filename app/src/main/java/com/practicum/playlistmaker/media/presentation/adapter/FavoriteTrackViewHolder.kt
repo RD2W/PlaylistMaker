@@ -10,18 +10,17 @@ class FavoriteTrackViewHolder(private val binding: TrackItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(track: Track) {
-
         with(binding) {
-            foundTrackName.text = track.trackName
-            foundArtistName.text = track.artistName
-            foundTrackTime.text = String.format(" • %s", track.trackTime)
+            trackName.text = track.trackName
+            artistName.text = track.artistName
+            trackTime.text = trackTime.context.getString(R.string.bullet_prefix, track.trackTime)
         }
 
-        Glide.with(binding.foundTrackCover.context)
+        Glide.with(binding.trackCover.context)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.ic_track_placeholder)
             .fitCenter()
             .centerCrop()
-            .into(binding.foundTrackCover)
+            .into(binding.trackCover)
     }
 }

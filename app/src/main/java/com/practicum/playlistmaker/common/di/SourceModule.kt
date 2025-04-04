@@ -22,7 +22,7 @@ val sourceModule = module {
     single {
         androidApplication().getSharedPreferences(
             PrefsConstants.PREFS_NAME,
-            Context.MODE_PRIVATE
+            Context.MODE_PRIVATE,
         )
     }
 
@@ -41,7 +41,7 @@ val sourceModule = module {
         Room.databaseBuilder(
             get(),
             AppDatabase::class.java,
-            "app_database.db"
+            "app_database.db",
         ).build()
     }
 

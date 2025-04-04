@@ -54,7 +54,7 @@ class PlayerViewModel(
     private val updatePositionDebounced = debounce<String>(
         delayMillis = PROGRESS_BAR_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = true
+        useLastParam = true,
     ) { position ->
         updateState { it.copy(currentPosition = position) }
     }
@@ -63,7 +63,7 @@ class PlayerViewModel(
     private val clickDebounced = debounce<Unit>(
         delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = false
+        useLastParam = false,
     ) {
         isClickAllowed.set(true)
     }

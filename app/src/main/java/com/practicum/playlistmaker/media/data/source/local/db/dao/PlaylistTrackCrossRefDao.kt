@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.practicum.playlistmaker.media.data.source.local.db.entity.TrackEntity
 import com.practicum.playlistmaker.media.data.source.local.db.entity.PlaylistTrackCrossRef
+import com.practicum.playlistmaker.media.data.source.local.db.entity.TrackEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,7 +17,8 @@ interface PlaylistTrackCrossRefDao {
      *
      * Логика работы:
      * - Вставляет объект `PlaylistTrackCrossRef` в таблицу `playlist_track_cross_ref`.
-     * - Если связь с такими же `playlistId` и `trackId` уже существует, она будет заменена (стратегия `OnConflictStrategy.REPLACE`).
+     * - Если связь с такими же `playlistId` и `trackId` уже существует,
+     *   она будет заменена (стратегия `OnConflictStrategy.REPLACE`).
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTrackToPlaylist(crossRef: PlaylistTrackCrossRef)
@@ -26,7 +27,8 @@ interface PlaylistTrackCrossRefDao {
      * Удаляет связь между плейлистом и треком.
      *
      * Логика работы:
-     * - Удаляет запись из таблицы `playlist_track_cross_ref`, соответствующую переданному объекту `PlaylistTrackCrossRef`.
+     * - Удаляет запись из таблицы `playlist_track_cross_ref`,
+     *   соответствующую переданному объекту `PlaylistTrackCrossRef`.
      */
     @Delete
     suspend fun removeTrackFromPlaylist(crossRef: PlaylistTrackCrossRef)
@@ -55,7 +57,7 @@ interface PlaylistTrackCrossRefDao {
             SELECT track_id FROM playlist_track_cross_ref
             WHERE playlist_id = :playlistId
         )
-        """
+        """,
     )
     fun getTracksInPlaylist(playlistId: Long): Flow<List<TrackEntity>>
 
@@ -74,7 +76,7 @@ interface PlaylistTrackCrossRefDao {
         SELECT 1 FROM playlist_track_cross_ref 
         WHERE playlist_id = :playlistId AND track_id = :trackId
         )
-        """
+        """,
     )
     suspend fun isTrackInPlaylist(playlistId: Long, trackId: Int): Boolean
 
@@ -108,7 +110,7 @@ interface PlaylistTrackCrossRefDao {
             SELECT 1 FROM playlist_track_cross_ref 
             WHERE track_id = :trackId
         ) LIMIT 1
-        """
+        """,
     )
     fun isTrackInAnyPlaylist(trackId: Int): Flow<Boolean>
 
@@ -146,7 +148,7 @@ interface PlaylistTrackCrossRefDao {
             SELECT playlist_id FROM playlist_track_cross_ref 
             WHERE track_id = :trackId
         )
-        """
+        """,
     )
     fun getPlaylistsNotContainingTrack(trackId: Int): Flow<List<Long>>
 
@@ -177,7 +179,7 @@ interface PlaylistTrackCrossRefDao {
             SELECT 1 FROM playlist_track_cross_ref
             WHERE playlist_id = p.playlist_id
         )
-        """
+        """,
     )
     fun getNonEmptyPlaylistsNotContainingTrack(trackId: Int): Flow<List<Long>>
 

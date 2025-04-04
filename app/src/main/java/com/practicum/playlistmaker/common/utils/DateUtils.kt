@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.common.utils
 
+import com.practicum.playlistmaker.common.constants.AppConstants.MILLISECONDS_PER_MINUTE
+import com.practicum.playlistmaker.common.constants.AppConstants.ROUNDING_OFFSET
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
@@ -23,4 +25,6 @@ fun getCurrentYearAsString(): String {
         .format(DateTimeFormatter.ofPattern("yyyy"))
 }
 
-fun convertMillisToMinutes(milliseconds: Long) = (milliseconds / 60_000).toInt()
+fun convertMillisToMinutes(milliseconds: Long): Int {
+    return (milliseconds / MILLISECONDS_PER_MINUTE + ROUNDING_OFFSET).toInt()
+}

@@ -8,4 +8,6 @@ object AppConstants {
     const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
     const val PROGRESS_BAR_DELAY_MILLIS = 300L
     const val START_TRACK_POSITION = "00:00"
+    const val MILLISECONDS_PER_MINUTE = 60_000.0
+    const val ROUNDING_OFFSET = 0.5
 }

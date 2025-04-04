@@ -16,7 +16,7 @@ object TrackMapperImpl : TrackMapper {
         releaseDate = track.releaseDate,
         primaryGenreName = track.primaryGenreName,
         country = track.country,
-        previewUrl = track.previewUrl
+        previewUrl = track.previewUrl,
     )
 
     override fun toDomain(trackParcel: TrackParcel) = Track(
@@ -30,6 +30,6 @@ object TrackMapperImpl : TrackMapper {
         releaseDate = trackParcel.releaseDate,
         primaryGenreName = trackParcel.primaryGenreName,
         country = trackParcel.country,
-        previewUrl = trackParcel.previewUrl
+        previewUrl = trackParcel.previewUrl,
     )
 }

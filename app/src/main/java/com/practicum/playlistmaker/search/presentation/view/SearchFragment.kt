@@ -13,8 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.search.presentation.adapter.SearchHistoryAdapter
 import com.practicum.playlistmaker.search.presentation.adapter.TrackAdapter
 import com.practicum.playlistmaker.search.presentation.state.SearchScreenState
@@ -87,7 +87,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setPlaceholder(
             placeholderImageResId = R.drawable.ic_not_found_placeholder,
             placeholderText = getString(R.string.search_placeholder_not_found),
-            isUpdateButtonVisible = false
+            isUpdateButtonVisible = false,
         )
     }
 
@@ -95,7 +95,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setPlaceholder(
             placeholderImageResId = R.drawable.ic_no_internet_placeholder,
             placeholderText = getString(R.string.search_placeholder_network_error),
-            isUpdateButtonVisible = true
+            isUpdateButtonVisible = true,
         )
     }
 
@@ -107,7 +107,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun setPlaceholder(
         placeholderImageResId: Int,
         placeholderText: String,
-        isUpdateButtonVisible: Boolean
+        isUpdateButtonVisible: Boolean,
     ) {
         with(binding) {
             ivSearchPlaceholder.setImageResource(placeholderImageResId)
@@ -169,14 +169,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     searchViewModel.researchDebounce()
                     true
-                } else false
+                } else {
+                    false
+                }
             }
 
             addTextChangedListener(
                 onTextChanged = { charSequence, _, _, _ ->
                     updateUIForSearchInput(charSequence)
                     searchViewModel.searchDebounce(charSequence.toString())
-                })
+                },
+            )
 
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) updateSearchHistoryVisibility(searchHistoryAdapter.getCurrentHistory())
@@ -187,7 +190,15 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun updateSearchHistoryVisibility(history: List<Track>) {
         with(binding) {
             searchHistoryViewGroup.visibility =
-                if (etvInputSearch.text.isNullOrEmpty() && etvInputSearch.hasFocus() && history.isNotEmpty()) View.VISIBLE else View.GONE
+                if (
+                    etvInputSearch.text.isNullOrEmpty() &&
+                    etvInputSearch.hasFocus() &&
+                    history.isNotEmpty()
+                ) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
         }
     }
 

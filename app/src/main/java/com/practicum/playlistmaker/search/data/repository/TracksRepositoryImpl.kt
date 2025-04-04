@@ -28,8 +28,8 @@ class TracksRepositoryImpl(
             emit(
                 NetworkRequestResult.NoConnection(
                     emptyList(),
-                    context.getString(R.string.no_internet_connection)
-                )
+                    context.getString(R.string.no_internet_connection),
+                ),
             )
             return@flow
         }
@@ -39,19 +39,19 @@ class TracksRepositoryImpl(
         }
 
         if (response.resultCode == RESPONSE_OK) {
-            val trackList = (response as TracksSearchResponse).results.map { it ->
+            val trackList = (response as TracksSearchResponse).results.map { trackDto ->
                 Track(
-                    it.trackId ?: throw IllegalArgumentException("Track ID cannot be null!"),
-                    it.trackName,
-                    it.artistName,
-                    it.trackTime?.let { time -> formatDurationToMMSS(time) } ?: NOT_AVAILABLE,
-                    it.trackTime ?: 0L,
-                    it.artworkUrl100,
-                    it.collectionName,
-                    it.releaseDate?.let { data -> formatDateToYear(data) } ?: NOT_AVAILABLE,
-                    it.primaryGenreName,
-                    it.country,
-                    it.previewUrl,
+                    trackDto.trackId ?: throw IllegalArgumentException("Track ID cannot be null!"),
+                    trackDto.trackName,
+                    trackDto.artistName,
+                    trackDto.trackTime?.let { time -> formatDurationToMMSS(time) } ?: NOT_AVAILABLE,
+                    trackDto.trackTime ?: 0L,
+                    trackDto.artworkUrl100,
+                    trackDto.collectionName,
+                    trackDto.releaseDate?.let { data -> formatDateToYear(data) } ?: NOT_AVAILABLE,
+                    trackDto.primaryGenreName,
+                    trackDto.country,
+                    trackDto.previewUrl,
                 )
             }
             emit(NetworkRequestResult.Success(trackList))
@@ -59,8 +59,8 @@ class TracksRepositoryImpl(
             emit(
                 NetworkRequestResult.Error(
                     emptyList(),
-                    context.getString(R.string.server_error)
-                )
+                    context.getString(R.string.server_error),
+                ),
             )
         }
     }.flowOn(Dispatchers.IO)

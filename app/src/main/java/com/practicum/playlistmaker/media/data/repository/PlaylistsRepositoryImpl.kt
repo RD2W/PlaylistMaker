@@ -28,8 +28,10 @@ class PlaylistsRepositoryImpl(
      * Возвращает поток списка всех плейлистов.
      *
      * Логика работы:
-     * 1. Вызывает метод `playlistsDao.getAllPlaylistsInfo()`, который возвращает поток списка сущностей `PlaylistInfoEntity`.
-     * 2. Преобразует каждую сущность `PlaylistInfoEntity` в доменную модель `Playlist` с помощью мапера `toPlaylist()`.
+     * 1. Вызывает метод `playlistsDao.getAllPlaylistsInfo()`,
+     *    который возвращает поток списка сущностей `PlaylistInfoEntity`.
+     * 2. Преобразует каждую сущность `PlaylistInfoEntity` в доменную модель `Playlist`
+     *    с помощью мапера `toPlaylist()`.
      */
     override fun getPlaylistsInfo(): Flow<List<Playlist>> {
         return playlistsDao.getAllPlaylistsInfo().map { playlistInfoEntities ->
@@ -41,13 +43,15 @@ class PlaylistsRepositoryImpl(
      * Возвращает поток плейлиста по его идентификатору (`playlistId`).
      *
      * Логика работы:
-     * 1. Вызывает метод `playlistsDao.getPlaylistById(playlistId)`, который возвращает сущность `PlaylistEntity?` (может быть `null`).
-     * 2. Преобразует сущность `PlaylistEntity` в доменную модель `Playlist` с помощью мапера `toPlaylist()`.
+     * 1. Вызывает метод `playlistsDao.getPlaylistById(playlistId)`,
+     *    который возвращает сущность `PlaylistEntity?` (может быть `null`).
+     * 2. Преобразует сущность `PlaylistEntity` в доменную модель `Playlist`
+     *    с помощью мапера `toPlaylist()`.
      * 3. Если плейлист не найден, возвращает `null`.
      */
     override fun getPlaylistById(playlistId: Long): Flow<Playlist?> {
         return playlistsDao.getPlaylistById(playlistId).combine(
-            playlistTrackDao.getTracksInPlaylist(playlistId)
+            playlistTrackDao.getTracksInPlaylist(playlistId),
         ) { playlistEntity, trackEntities ->
             playlistEntity?.toPlaylist(trackEntities)
         }
@@ -57,8 +61,10 @@ class PlaylistsRepositoryImpl(
      * Возвращает поток списка треков, принадлежащих указанному плейлисту.
      *
      * Логика работы:
-     * 1. Вызывает метод `playlistTrackDao.getTracksInPlaylist(playlistId)`, который возвращает поток списка сущностей `TrackEntity`.
-     * 2. Преобразует каждую сущность `TrackEntity` в доменную модель `Track` с помощью мапера `toTrack()`.
+     * 1. Вызывает метод `playlistTrackDao.getTracksInPlaylist(playlistId)`,
+     *    который возвращает поток списка сущностей `TrackEntity`.
+     * 2. Преобразует каждую сущность `TrackEntity` в доменную модель `Track`
+     *    с помощью мапера `toTrack()`.
      */
     override fun getTracksInPlaylist(playlistId: Long): Flow<List<Track>> {
         return playlistTrackDao.getTracksInPlaylist(playlistId).map { trackEntities ->
@@ -217,7 +223,8 @@ class PlaylistsRepositoryImpl(
             when {
                 playlistIds.isEmpty() -> flowOf(emptyList())
                 else -> playlistsDao.getPlaylistsInfoByIds(playlistIds).map { playlistInfoEntities ->
-                    playlistInfoEntities.map { it.toPlaylist() } }
+                    playlistInfoEntities.map { it.toPlaylist() }
+                }
             }
         }
     }
@@ -255,16 +262,18 @@ class PlaylistsRepositoryImpl(
      * Добавляет трек в плейлист.
      *
      * Логика работы:
-     * 1. Преобразует доменную модель `Track` в сущность `TrackEntity` с помощью мапера `toTrackEntity()`.
+     * 1. Преобразует доменную модель `Track` в сущность `TrackEntity`
+     *    с помощью мапера `toTrackEntity()`.
      * 2. Вызывает метод `tracksDao.insertTrack()` для сохранения трека в таблице `tracks`.
      * 3. Создает объект `PlaylistTrackCrossRef` для связи между плейлистом и треком.
-     * 4. Вызывает метод `playlistTrackDao.addTrackToPlaylist()` для добавления связи в таблицу `playlist_track_cross_ref`.
+     * 4. Вызывает метод `playlistTrackDao.addTrackToPlaylist()` для добавления связи
+     *    в таблицу `playlist_track_cross_ref`.
      */
     override suspend fun addTrackToPlaylist(playlistId: Long, track: Track) {
         tracksDao.insertTrack(track.toTrackEntity())
         val crossRef = PlaylistTrackCrossRef(
             playlistId = playlistId,
-            trackId = track.trackId
+            trackId = track.trackId,
         )
         playlistTrackDao.addTrackToPlaylist(crossRef)
     }

@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.databinding.TrackItemBinding
 
 class FavoriteTrackAdapter(
-    private val onTrackClick: (Track) -> Unit
+    private val onTrackClick: (Track) -> Unit,
 ) : ListAdapter<Track, FavoriteTrackViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteTrackViewHolder {

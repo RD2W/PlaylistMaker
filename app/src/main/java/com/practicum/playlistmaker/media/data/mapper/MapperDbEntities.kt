@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.media.data.source.local.db.entity.TrackEntity
 
 fun Track.toFavoriteTrackEntity() = FavoriteTrackEntity(
     trackId = this.trackId,
-    addedTimestamp = System.currentTimeMillis()
+    addedTimestamp = System.currentTimeMillis(),
 )
 
 fun Track.toTrackEntity() = TrackEntity(
@@ -23,7 +23,7 @@ fun Track.toTrackEntity() = TrackEntity(
     releaseDate = this.releaseDate.orEmpty(),
     primaryGenreName = this.primaryGenreName.orEmpty(),
     country = this.country.orEmpty(),
-    previewUrl = this.previewUrl.orEmpty()
+    previewUrl = this.previewUrl.orEmpty(),
 )
 
 fun TrackEntity.toTrack() = Track(
@@ -37,7 +37,7 @@ fun TrackEntity.toTrack() = Track(
     releaseDate = this.releaseDate,
     primaryGenreName = this.primaryGenreName,
     country = this.country,
-    previewUrl = this.previewUrl
+    previewUrl = this.previewUrl,
 )
 
 fun List<TrackEntity>.toTrackList(): List<Track> {
@@ -59,7 +59,7 @@ fun PlaylistInfoEntity.toPlaylist() = Playlist(
     coverFilePath = playlist.coverFilePath,
     totalDurationMillis = totalDurationMillis ?: 0L,
     trackCount = trackCount,
-    trackList = emptyList()
+    trackList = emptyList(),
 )
 
 fun PlaylistEntity.toPlaylist(tracks: List<TrackEntity>): Playlist {
@@ -72,6 +72,6 @@ fun PlaylistEntity.toPlaylist(tracks: List<TrackEntity>): Playlist {
         coverFilePath = this.coverFilePath,
         totalDurationMillis = trackList.sumOf { it.trackTimeMillis },
         trackCount = trackList.size,
-        trackList = trackList
+        trackList = trackList,
     )
 }

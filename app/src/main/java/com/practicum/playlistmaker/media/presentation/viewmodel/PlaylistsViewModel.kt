@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
-import com.practicum.playlistmaker.common.constants.LogTags.PLAYLISTS
 import com.practicum.playlistmaker.common.constants.LogTags.CLICK_DEBOUNCE
+import com.practicum.playlistmaker.common.constants.LogTags.PLAYLISTS
 import com.practicum.playlistmaker.common.utils.debounce
 import com.practicum.playlistmaker.media.domain.usecase.GetPlaylistsUseCase
 import com.practicum.playlistmaker.media.presentation.state.PlaylistsScreenState
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 class PlaylistsViewModel(
     private val getPlaylistsUseCase: GetPlaylistsUseCase,
 ) : ViewModel() {
-    private val _state = MutableLiveData< PlaylistsScreenState>()
+    private val _state = MutableLiveData<PlaylistsScreenState>()
     val state: LiveData<PlaylistsScreenState> get() = _state
 
     private val _clickEvent = MutableSharedFlow<Long>()
@@ -30,7 +30,7 @@ class PlaylistsViewModel(
     private val clickDebounced = debounce<Unit>(
         delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = false
+        useLastParam = false,
     ) {
         isClickAllowed.set(true)
     }

@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +17,7 @@ import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -42,7 +42,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
     private lateinit var currentPermission: String
 
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission(),
     ) { isGranted ->
         if (isGranted) {
             openImagePicker()
@@ -106,8 +106,8 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
                 btnCreatePlaylist.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        if (isNotEmpty) R.color.light_blue else R.color.button_gray
-                    )
+                        if (isNotEmpty) R.color.light_blue else R.color.button_gray,
+                    ),
                 )
             }
 
@@ -148,7 +148,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
         when {
             ContextCompat.checkSelfPermission(
                 requireContext(),
-                currentPermission
+                currentPermission,
             ) == PackageManager.PERMISSION_GRANTED -> {
                 openImagePicker()
             }
@@ -168,7 +168,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
             titleRes = R.string.permission_rationale_title,
             messageRes = R.string.permission_rationale_message,
             positiveButtonRes = R.string.grant,
-            positiveAction = { requestPermissionLauncher.launch(permission) }
+            positiveAction = { requestPermissionLauncher.launch(permission) },
         ).show()
     }
 
@@ -182,7 +182,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
                     data = Uri.fromParts("package", requireContext().packageName, null)
                 }
                 startActivity(intent)
-            }
+            },
         ).show()
     }
 

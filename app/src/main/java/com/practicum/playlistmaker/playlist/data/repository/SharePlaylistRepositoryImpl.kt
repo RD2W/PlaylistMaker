@@ -22,7 +22,7 @@ class SharePlaylistRepositoryImpl(
             appendPlaylistInfo(
                 playlistName,
                 playlistDescription,
-                tracksCount
+                tracksCount,
             )
             appendTracks(tracksList)
         }
@@ -35,7 +35,7 @@ class SharePlaylistRepositoryImpl(
         val chooserIntent = Intent.createChooser(shareIntent, playlistName).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        
+
         startActivitySafely(chooserIntent)
     }
 
@@ -47,7 +47,7 @@ class SharePlaylistRepositoryImpl(
         val tracksCountText = context.resources?.getQuantityString(
             R.plurals.tracks_plurals,
             tracksCount,
-            tracksCount
+            tracksCount,
         )
         appendLine(playlistName)
         if (playlistDescription.isNotBlank()) {
@@ -72,7 +72,7 @@ class SharePlaylistRepositoryImpl(
         } else {
             Log.e(
                 LogTags.EXTERNAL_NAVIGATION,
-                "No activity found to handle intent: ${intent.action}"
+                "No activity found to handle intent: ${intent.action}",
             )
         }
     }

@@ -86,7 +86,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             view = binding.btnAddToFavorites,
             isActive = isFavorite,
             activeIconRes = R.drawable.ic_player_add_favs_button_active,
-            inactiveIconRes = R.drawable.ic_player_add_favs_button
+            inactiveIconRes = R.drawable.ic_player_add_favs_button,
         )
     }
 
@@ -95,7 +95,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             view = binding.btnAddToPlaylist,
             isActive = isInPlaylist,
             activeIconRes = R.drawable.ic_player_add_plist_button_active,
-            inactiveIconRes = R.drawable.ic_player_add_plist_button
+            inactiveIconRes = R.drawable.ic_player_add_plist_button,
         )
     }
 
@@ -103,7 +103,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         view: ImageView,
         isActive: Boolean,
         activeIconRes: Int,
-        inactiveIconRes: Int
+        inactiveIconRes: Int,
     ) {
         val iconRes = if (isActive) activeIconRes else inactiveIconRes
         view.setImageResource(iconRes)
@@ -119,7 +119,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             playerTrackCountry.text = track.country
             if (track.collectionName.isNullOrBlank()) {
                 groupCollectionName.visibility = View.GONE
-            } else playerTrackAlbum.text = track.collectionName
+            } else {
+                playerTrackAlbum.text = track.collectionName
+            }
 
             Glide.with(playerTrackCover.context)
                 .load(track.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
@@ -164,15 +166,18 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         Snackbar.make(
             binding.root,
             message,
-            Snackbar.LENGTH_LONG
+            Snackbar.LENGTH_LONG,
         ).show()
     }
 
     private fun showPlaylists(playlists: List<Playlist>) {
 //        Log.d("Playlists", "Playlists: ${playlists.joinToString { it.name.toString() }}")
-        Log.d("Playlists", "Playlists:\n${playlists.joinToString("\n") {
-            "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
-        }}")
+        Log.d(
+            "Playlists",
+            "Playlists:\n${playlists.joinToString("\n") {
+                "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
+            }}",
+        )
 
         adapter.submitList(playlists)
     }
@@ -243,15 +248,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
 
             BottomSheetBehavior.STATE_DRAGGING -> {
-                //TODO()
+                // TODO()
             }
 
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                //TODO()
+                // TODO()
             }
 
             BottomSheetBehavior.STATE_SETTLING -> {
-                //TODO()
+                // TODO()
             }
         }
     }
@@ -261,9 +266,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun showBottomSheetAddPlaylist(visibility: Boolean) {
-        if(visibility) {
+        if (visibility) {
             bottomSheetAddToPlaylist.state = BottomSheetBehavior.STATE_COLLAPSED
-        } else bottomSheetAddToPlaylist.state = BottomSheetBehavior.STATE_HIDDEN
+        } else {
+            bottomSheetAddToPlaylist.state = BottomSheetBehavior.STATE_HIDDEN
+        }
     }
 
     override fun onStop() {

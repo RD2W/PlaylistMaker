@@ -40,7 +40,7 @@ class SearchViewModel(
     private val searchDebounced = debounce<String>(
         delayMillis = SEARCH_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = true
+        useLastParam = true,
     ) { term ->
         searchForTracks(term)
     }
@@ -48,7 +48,7 @@ class SearchViewModel(
     private val clickDebounced = debounce<Unit>(
         delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = false
+        useLastParam = false,
     ) {
         isClickAllowed.set(true)
     }
@@ -72,9 +72,15 @@ class SearchViewModel(
             tracksInteractor.searchTracks(term).collect { result ->
                 withContext(Dispatchers.Main) {
                     when (result) {
-                        is NetworkRequestResult.Success -> handleTrackResponse(result.data)
-                        is NetworkRequestResult.Error -> _searchScreenState.value = SearchScreenState.NetworkError
-                        is NetworkRequestResult.NoConnection -> _searchScreenState.value = SearchScreenState.NetworkError
+                        is NetworkRequestResult.Success -> {
+                            handleTrackResponse(result.data)
+                        }
+                        is NetworkRequestResult.Error -> {
+                            _searchScreenState.value = SearchScreenState.NetworkError
+                        }
+                        is NetworkRequestResult.NoConnection -> {
+                            _searchScreenState.value = SearchScreenState.NetworkError
+                        }
                     }
                 }
             }

@@ -16,7 +16,8 @@ interface PlaylistsDao {
      *
      * Логика работы:
      * - Вставляет объект `PlaylistEntity` в таблицу `playlists`.
-     * - Если плейлист с таким же `playlistId` уже существует, он будет заменен (стратегия `OnConflictStrategy.REPLACE`).
+     * - Если плейлист с таким же `playlistId` уже существует,
+     *   он будет заменен (стратегия `OnConflictStrategy.REPLACE`).
      * - Возвращает `rowId` вставленной или обновленной записи.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,7 +27,8 @@ interface PlaylistsDao {
      * Удаляет плейлист по его идентификатору (`playlistId`).
      *
      * Логика работы:
-     * - Выполняет SQL-запрос для удаления записи из таблицы `playlists`, где `playlistId` совпадает с указанным значением.
+     * - Выполняет SQL-запрос для удаления записи из таблицы `playlists`,
+     *   где `playlistId` совпадает с указанным значением.
      */
     @Query("DELETE FROM playlists WHERE playlist_id = :playlistId")
     suspend fun deletePlaylistById(playlistId: Long)
@@ -64,7 +66,7 @@ interface PlaylistsDao {
         LEFT JOIN tracks t ON pt.track_id = t.track_id
         GROUP BY p.playlist_id
         ORDER BY p.added_at DESC
-        """
+        """,
     )
     fun getAllPlaylistsInfo(): Flow<List<PlaylistInfoEntity>>
 
@@ -105,7 +107,7 @@ interface PlaylistsDao {
         LEFT JOIN tracks t ON pt.track_id = t.track_id
         WHERE p.playlist_id IN (:playlistIds)
         GROUP BY p.playlist_id
-        """
+        """,
     )
     fun getPlaylistsInfoByIds(playlistIds: List<Long>): Flow<List<PlaylistInfoEntity>>
 
@@ -149,7 +151,7 @@ interface PlaylistsDao {
             cover_file_path = COALESCE(:coverFilePath, cover_file_path),
             edited_at = :editedAt
         WHERE playlist_id = :playlistId
-        """
+        """,
     )
     suspend fun editPlaylistInfo(
         playlistId: Long,

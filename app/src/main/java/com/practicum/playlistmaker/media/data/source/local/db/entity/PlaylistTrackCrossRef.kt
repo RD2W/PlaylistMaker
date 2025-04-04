@@ -14,14 +14,14 @@ import kotlin.Long
             entity = PlaylistEntity::class,
             parentColumns = ["playlist_id"],
             childColumns = ["playlist_id"],
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = TrackEntity::class,
             parentColumns = ["track_id"],
             childColumns = ["track_id"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
     indices = [Index(value = ["track_id"])],
 )

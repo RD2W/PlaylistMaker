@@ -16,7 +16,7 @@ class ImageRepositoryImpl(
             File.createTempFile(
                 TEMP_FILE_PREFIX,
                 TEMP_FILE_SUFFIX,
-                context.cacheDir
+                context.cacheDir,
             ).apply {
                 when {
                     uri.toString().contains("com.google.android.apps.photos.contentprovider") -> {

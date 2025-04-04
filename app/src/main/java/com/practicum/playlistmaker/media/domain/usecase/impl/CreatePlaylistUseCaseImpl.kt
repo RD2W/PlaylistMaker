@@ -33,7 +33,7 @@ class CreatePlaylistUseCaseImpl(
     private suspend fun createPlaylist(
         name: String,
         description: String,
-        coverPath: String?
+        coverPath: String?,
     ): Result<Long> {
         return try {
             val playlistId = repository.createPlaylist(
@@ -41,8 +41,8 @@ class CreatePlaylistUseCaseImpl(
                     name = name,
                     description = description,
                     creationDate = getCurrentYearAsString(),
-                    coverFilePath = coverPath
-                )
+                    coverFilePath = coverPath,
+                ),
             )
             Result.success(playlistId)
         } catch (e: Exception) {
