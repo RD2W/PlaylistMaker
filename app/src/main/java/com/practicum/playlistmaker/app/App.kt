@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.app
 
 import android.app.Application
+import com.practicum.playlistmaker.BuildConfig
 import com.practicum.playlistmaker.common.di.appModule
 import com.practicum.playlistmaker.common.di.dataModule
 import com.practicum.playlistmaker.common.di.domainModule
@@ -20,7 +21,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            androidLogger(Level.DEBUG)
+            if (BuildConfig.DEBUG) androidLogger(Level.DEBUG)
             modules(
                 appModule,
                 dataModule,
