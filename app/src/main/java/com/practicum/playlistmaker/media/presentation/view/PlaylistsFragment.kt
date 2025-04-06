@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
 import com.practicum.playlistmaker.common.domain.model.Playlist
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.media.presentation.adapter.playlists.PlaylistAdapter
@@ -77,7 +78,9 @@ class PlaylistsFragment : Fragment(R.layout.fragment_playlists) {
 
     private fun setupButton() {
         binding.btnAddPlaylist.setOnClickListener {
-            findNavController().navigate(R.id.action_mediaFragment_to_addPlaylistFragment)
+            val action =
+                MediaFragmentDirections.actionMediaFragmentToAddPlaylistFragment(NEW_PLAYLIST_ID)
+            findNavController().navigate(action)
         }
     }
 

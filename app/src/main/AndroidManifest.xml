@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- Для API 32 и ниже (устаревшее, но нужно для обратной совместимости) -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"

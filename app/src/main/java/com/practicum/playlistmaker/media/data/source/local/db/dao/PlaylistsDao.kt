@@ -112,35 +112,27 @@ interface PlaylistsDao {
     fun getPlaylistsInfoByIds(playlistIds: List<Long>): Flow<List<PlaylistInfoEntity>>
 
     /**
-     * Обновляет информацию о плейлисте с возможностью частичного изменения полей.
+     * Обновляет информацию о плейлисте с расширенным управлением обложкой.
      *
-     * Логика работы:
-     * - Выполняет SQL-запрос UPDATE для выборочного обновления полей плейлиста
-     * - Использует функцию COALESCE для обновления только переданных параметров:
-     *   - Если параметр не null - поле будет обновлено
-     *   - Если параметр null - поле останется без изменений
-     * - Автоматически обновляет поле edited_at текущим временем (System.currentTimeMillis())
-     *
-     * Особенности:
-     * - Поддерживает частичное обновление (можно изменить одно или несколько полей)
-     * - Не изменяет поля, для которых передано null
-     * - Всегда обновляет edited_at (даже если другие поля не меняются)
-     * - Не изменяет playlist_id и creation_date
-     *
-     * @param playlistId ID плейлиста для обновления (обязательный параметр)
-     * @param name Новое название (необязательно, null = не изменять)
-     * @param description Новое описание (необязательно, null = не изменять)
-     * @param coverFilePath Новый путь к обложке (необязательно, null = не изменять)
+     * @param playlistId ID редактируемого плейлиста (обязательный)
+     * @param name Новое название (null - не изменять)
+     * @param description Новое описание (null - не изменять)
+     * @param coverFilePath Управление обложкой:
+     *                      - null: оставить текущую обложку без изменений
+     *                      - "": удалить текущую обложку (передать EMPTY_STRING)
+     *                      - "path/to/image": установить новую обложку
      * @param editedAt Время редактирования (по умолчанию текущее время)
      *
-     * Примеры использования:
-     * 1. Изменить только название:
-     *    editPlaylistInfo(123, name = "Новое название")
+     * Логика работы с обложкой:
+     * - Использует CASE выражение SQL для точного контроля:
+     *   - NULL в параметре → сохраняет текущее значение (COALESCE)
+     *   - Пустая строка ("") → устанавливает NULL в БД (удаление)
+     *   - Путь к файлу → обновляет значение
      *
-     * 2. Изменить описание и обложку:
-     *    editPlaylistInfo(123,
-     *        description = "Новое описание",
-     *        coverFilePath = "/new/path.jpg")
+     * Примеры:
+     * 1. editPlaylistInfo(123, name = "New name") - изменить только название
+     * 2. editPlaylistInfo(123, coverFilePath = "") - удалить обложку
+     * 3. editPlaylistInfo(123, coverFilePath = "/path.jpg") - обновить обложку
      */
     @Query(
         """
@@ -148,7 +140,10 @@ interface PlaylistsDao {
         SET 
             name = COALESCE(:name, name),
             description = COALESCE(:description, description),
-            cover_file_path = COALESCE(:coverFilePath, cover_file_path),
+            cover_file_path = CASE 
+                WHEN :coverFilePath IS NULL THEN cover_file_path 
+                WHEN :coverFilePath = '' THEN NULL 
+                ELSE :coverFilePath END,
             edited_at = :editedAt
         WHERE playlist_id = :playlistId
         """,

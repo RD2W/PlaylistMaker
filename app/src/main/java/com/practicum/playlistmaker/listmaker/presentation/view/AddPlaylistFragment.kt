@@ -20,13 +20,20 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
+import com.practicum.playlistmaker.common.utils.VibrationController
+import com.practicum.playlistmaker.common.utils.setToolbarTitle
+import com.practicum.playlistmaker.common.utils.shake
 import com.practicum.playlistmaker.databinding.FragmentAddPlaylistBinding
 import com.practicum.playlistmaker.listmaker.presentation.state.AddPlaylistUiState
 import com.practicum.playlistmaker.listmaker.presentation.viewmodel.AddPlaylistViewModel
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import kotlin.getValue
@@ -37,7 +44,10 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
     private val binding: FragmentAddPlaylistBinding
         get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
+    private val args: AddPlaylistFragmentArgs by navArgs()
     private val viewModel: AddPlaylistViewModel by viewModel()
+    private val vibrationController: VibrationController by inject()
+
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
     private lateinit var currentPermission: String
 
@@ -57,6 +67,8 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (args.playlistId != NEW_PLAYLIST_ID) viewModel.loadPlaylist(args.playlistId)
+
         pickImageLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -80,7 +92,19 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { state ->
                 when (state) {
-                    is AddPlaylistUiState.Success -> navigateBack()
+                    is AddPlaylistUiState.EditMode -> {
+                        setToolbarTitle(R.string.edit_playlist_title)
+                        state.currentCover?.let { loadImageWithGlide(it) } ?: run {
+                            binding.ivCoverFrame.setImageResource(R.drawable.ic_playlist_cover_frame)
+                        }
+                        with(binding) {
+                            etvPlaylistName.setText(state.currentName)
+                            etvPlaylistDescription.setText(state.currentDescription)
+                            btnCreatePlaylist.text = getString(R.string.edit_playlist_save_button)
+                        }
+                    }
+
+                    is AddPlaylistUiState.Success -> onSuccess()
                     else -> Unit
                 }
             }
@@ -93,6 +117,21 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
                     loadImageWithGlide(it)
                 } ?: run {
                     binding.ivCoverFrame.setImageResource(R.drawable.ic_playlist_cover_frame)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.hasCover.collect { hasCover ->
+                binding.ivCoverFrame.setOnLongClickListener {
+                    if (hasCover) {
+                        vibrationController.vibrate() // Вибрация при долгом нажатии
+                        showRemoveCoverConfirmationDialog()
+                    } else {
+                        // Анимация "нет" при попытке удалить отсутствующую обложку
+                        binding.ivCoverFrame.shake()
+                    }
+                    true
                 }
             }
         }
@@ -112,9 +151,9 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
             }
 
             btnCreatePlaylist.setOnClickListener {
-                val name = etvPlaylistName.text.toString()
-                val description = etvPlaylistDescription.text.toString()
-                if (name.isNotEmpty()) viewModel.createPlaylist(name, description)
+                val name = etvPlaylistName.text.toString().trim()
+                val description = etvPlaylistDescription.text.toString().trim()
+                if (name.isNotBlank()) viewModel.savePlaylist(name, description)
             }
 
             ivCoverFrame.setOnClickListener {
@@ -139,9 +178,11 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
                 Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
             }
+
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
                 Manifest.permission.READ_MEDIA_IMAGES
             }
+
             else -> Manifest.permission.READ_EXTERNAL_STORAGE
         }
 
@@ -186,6 +227,16 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
         ).show()
     }
 
+    private fun showRemoveCoverConfirmationDialog() {
+        buildMaterialDialog(
+            titleRes = R.string.edit_playlist_remove_cover_title,
+            messageRes = R.string.edit_playlist_remove_cover_message,
+            positiveButtonRes = R.string.yes,
+            negativeButtonRes = R.string.no,
+            positiveAction = { viewModel.removeCoverImage() },
+        ).show()
+    }
+
     private fun buildMaterialDialog(
         context: Context = requireContext(),
         @StringRes titleRes: Int,
@@ -203,6 +254,26 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
             .apply {
                 setCancelable(false)
             }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_LONG,
+        ).show()
+    }
+
+    private fun onSuccess() {
+        val message = if (args.playlistId == NEW_PLAYLIST_ID) {
+            val name = binding.etvPlaylistName.text.toString().trim()
+            getString(R.string.new_playlist_created_message, name)
+        } else {
+            getString(R.string.edit_playlist_saved_message)
+        }
+
+        showSnackbar(message)
+        navigateBack()
     }
 
     private fun openImagePicker() {

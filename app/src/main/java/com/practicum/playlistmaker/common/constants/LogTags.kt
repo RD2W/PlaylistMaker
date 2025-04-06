@@ -11,4 +11,5 @@ object LogTags {
     const val PLAYLIST = "Playlist"
     const val PLAYLISTS = "Playlists"
     const val PLAYLIST_COVER = "PlaylistCover"
+    const val VIBRATION = "Vibration"
 }

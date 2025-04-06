@@ -111,6 +111,10 @@
         android:label="@string/add_new_playlist_title"
         tools:layout="@layout/fragment_add_playlist" >
 
+        <argument
+            android:name="playlistId"
+            app:argType="long" />
+
         <!-- Переход из AddPlaylistFragment в MediaFragment -->
         <action
             android:id="@+id/action_addPlaylistFragment_to_mediaFragment"
@@ -137,6 +141,11 @@
         <action
             android:id="@+id/action_playlistFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+
+        <!-- Переход из PlaylistFragment в AddPlaylistFragment -->
+        <action
+            android:id="@+id/action_playlistFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment" />
     </fragment>
 
     <!-- PlayerFragment -->

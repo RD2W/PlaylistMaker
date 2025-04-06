@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
 import com.practicum.playlistmaker.common.domain.model.Playlist
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
@@ -162,7 +163,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    fun showSnackbar(message: String) {
+    private fun showSnackbar(message: String) {
         Snackbar.make(
             binding.root,
             message,
@@ -171,14 +172,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun showPlaylists(playlists: List<Playlist>) {
-//        Log.d("Playlists", "Playlists: ${playlists.joinToString { it.name.toString() }}")
         Log.d(
             "Playlists",
             "Playlists:\n${playlists.joinToString("\n") {
                 "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
             }}",
         )
-
         adapter.submitList(playlists)
     }
 
@@ -205,7 +204,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
 
             btnAddNewPlaylist.setOnClickListener {
-                findNavController().navigate(R.id.action_playerFragment_to_addPlaylistFragment)
+                addNewPlaylist()
             }
         }
     }
@@ -221,6 +220,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private fun addTrackToPlaylist(playlistId: Long) {
         viewModel.addToPlaylist(playlistId)
+    }
+
+    private fun addNewPlaylist() {
+        val action =
+            PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment(NEW_PLAYLIST_ID)
+        findNavController().navigate(action)
     }
 
     private fun setupBottomSheetAddToPlaylistCallback() {

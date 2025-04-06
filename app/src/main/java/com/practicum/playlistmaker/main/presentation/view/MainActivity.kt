@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.main.presentation.view
 
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -89,6 +90,10 @@ class MainActivity : AppCompatActivity() {
     private fun showNavBarHideBackButton(isVisible: Boolean) {
         binding.grNavigationView.isVisible = isVisible
         supportActionBar?.setDisplayHomeAsUpEnabled(!isVisible)
+    }
+
+    fun setToolbarTitle(@StringRes titleRes: Int) {
+        binding.topAppBar.title = getString(titleRes)
     }
 
     companion object {

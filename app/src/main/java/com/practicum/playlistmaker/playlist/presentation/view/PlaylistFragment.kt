@@ -163,6 +163,12 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun sharePlaylist() = viewModel.sharePlaylist()
 
+    private fun editPlaylist() {
+        val action =
+            PlaylistFragmentDirections.actionPlaylistFragmentToAddPlaylistFragment(args.playlistId)
+        findNavController().navigate(action)
+    }
+
     private fun setupInitialBottomSheetState() {
         bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
@@ -174,7 +180,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
             btnSharePlaylist.setOnClickListener { sharePlaylist() }
             btnMoreActions.setOnClickListener { toggleBottomSheetMoreState() }
             tvShareItem.setOnClickListener { sharePlaylist() }
-            tvEditInfoItem.setOnClickListener { }
+            tvEditInfoItem.setOnClickListener { editPlaylist() }
             tvDeleteListItem.setOnClickListener { showDeletePlaylistDialog() }
 
             overlay.setOnClickListener {
