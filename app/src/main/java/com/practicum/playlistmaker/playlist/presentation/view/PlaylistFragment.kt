@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.playlist.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -24,6 +23,7 @@ import com.practicum.playlistmaker.playlist.presentation.state.PlaylistScreenSta
 import com.practicum.playlistmaker.playlist.presentation.viewmodel.PlaylistViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.io.File
 import kotlin.getValue
 
@@ -153,7 +153,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     }
 
     private fun showTracksList(tracks: List<Track>) {
-        Log.d("PlaylistTracks", "Tracks: ${tracks.joinToString { it.trackName.toString() }}")
+        Timber.d("Tracks: ${tracks.joinToString { it.trackName.toString() }}")
         adapter.submitList(tracks)
     }
 

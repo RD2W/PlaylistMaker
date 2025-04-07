@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.player.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -22,6 +21,7 @@ import com.practicum.playlistmaker.player.presentation.adapter.PlaylistLinearAda
 import com.practicum.playlistmaker.player.presentation.state.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.viewmodel.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
 
@@ -172,11 +172,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun showPlaylists(playlists: List<Playlist>) {
-        Log.d(
-            "Playlists",
-            "Playlists:\n${playlists.joinToString("\n") {
-                "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
-            }}",
+        Timber.d(
+            "Playlists:\n${
+                playlists.joinToString("\n") {
+                    "ID: ${it.playlistId}\nName: ${it.name}\nTrack Count: ${it.trackCount}"
+                }
+            }",
         )
         adapter.submitList(playlists)
     }

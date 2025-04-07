@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.media.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaylistsViewModel(
@@ -45,7 +45,7 @@ class PlaylistsViewModel(
             getPlaylistsUseCase()
                 .catch { e ->
                     _state.value = PlaylistsScreenState.Error
-                    Log.e(PLAYLISTS, "Load playlists error: $e")
+                    Timber.tag(PLAYLISTS).e("Load playlists error: $e")
                 }
                 .collect { playlists ->
                     _state.value = if (playlists.isEmpty()) {
@@ -63,7 +63,7 @@ class PlaylistsViewModel(
                 try {
                     _clickEvent.emit(playlistId)
                 } catch (e: Exception) {
-                    Log.e(CLICK_DEBOUNCE, "ClickEvent error: $e")
+                    Timber.tag(CLICK_DEBOUNCE).e("ClickEvent error: $e")
                 }
             }
             clickDebounced(Unit)

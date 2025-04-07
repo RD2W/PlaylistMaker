@@ -3,11 +3,11 @@ package com.practicum.playlistmaker.playlist.data.repository
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.LogTags.EXTERNAL_NAVIGATION
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.playlist.domain.repository.SharePlaylistRepository
+import timber.log.Timber
 
 class SharePlaylistRepositoryImpl(
     private val context: Context,
@@ -67,13 +67,10 @@ class SharePlaylistRepositoryImpl(
             try {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Log.e(LogTags.EXTERNAL_NAVIGATION, "No activity found to handle intent", e)
+                Timber.tag(EXTERNAL_NAVIGATION).e(e, "No activity found to handle intent")
             }
         } else {
-            Log.e(
-                LogTags.EXTERNAL_NAVIGATION,
-                "No activity found to handle intent: ${intent.action}",
-            )
+            Timber.tag(EXTERNAL_NAVIGATION).e("No activity found to handle intent: ${intent.action}")
         }
     }
 }

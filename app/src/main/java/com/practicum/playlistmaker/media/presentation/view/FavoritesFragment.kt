@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.media.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,6 +16,7 @@ import com.practicum.playlistmaker.media.presentation.state.FavoriteScreenState
 import com.practicum.playlistmaker.media.presentation.viewmodel.FavoritesViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
@@ -74,7 +74,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun showContent(tracks: List<Track>) {
-        Log.d("FavoriteTracks", "Tracks: ${tracks.joinToString { it.trackName.toString() }}")
+        Timber.d("Tracks: ${tracks.joinToString { it.trackName.toString() }}")
         showPlaceholder(false)
         adapter.submitList(tracks)
     }

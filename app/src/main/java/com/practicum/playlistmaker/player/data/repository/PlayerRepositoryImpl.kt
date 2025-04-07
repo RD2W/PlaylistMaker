@@ -2,15 +2,16 @@ package com.practicum.playlistmaker.player.data.repository
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
-import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.LogTags.EXO_PLAYER
+import com.practicum.playlistmaker.common.constants.LogTags.NETWORK_UTILS
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.utils.NetworkUtils
 import com.practicum.playlistmaker.player.domain.model.ErrorType
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
+import timber.log.Timber
 
 class PlayerRepositoryImpl(
     private val context: Context,
@@ -22,7 +23,7 @@ class PlayerRepositoryImpl(
         onError: (ErrorType) -> Unit,
     ) {
         if (!NetworkUtils.isNetworkAvailable(context)) {
-            Log.e(LogTags.NETWORK_UTILS, "No internet connection")
+            Timber.tag(NETWORK_UTILS).e("No internet connection")
             onError(ErrorType.NoInternet)
             return
         }
@@ -32,7 +33,7 @@ class PlayerRepositoryImpl(
             exoPlayer.prepare()
             onPrepared()
         } catch (e: Exception) {
-            Log.e(LogTags.EXO_PLAYER, "Exception during preparePlayer: ${e.message}", e)
+            Timber.tag(EXO_PLAYER).e(e, "Exception during preparePlayer: ${e.message}")
             onError(ErrorType.PlayerException)
         }
     }

@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +34,7 @@ import com.practicum.playlistmaker.listmaker.presentation.viewmodel.AddPlaylistV
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.io.File
 import kotlin.getValue
 
@@ -73,7 +73,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     result.data?.data?.let { uri ->
-                        Log.d("ImagePicker", "Selected URI: $uri")
+                        Timber.d("Selected URI: $uri")
                         viewModel.setSelectedImageUri(uri)
                     }
                 }
@@ -113,7 +113,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.coverImage.collect { file ->
                 file?.let {
-                    Log.d("CoverImage", "File loaded: ${it.path}")
+                    Timber.d("File loaded: ${it.path}")
                     loadImageWithGlide(it)
                 } ?: run {
                     binding.ivCoverFrame.setImageResource(R.drawable.ic_playlist_cover_frame)

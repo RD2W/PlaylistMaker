@@ -1,10 +1,9 @@
 package com.practicum.playlistmaker.playlist.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
-import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.LogTags.CLICK_DEBOUNCE
 import com.practicum.playlistmaker.common.constants.LogTags.PLAYLIST
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Playlist
@@ -22,6 +21,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlaylistViewModel(
@@ -56,7 +56,7 @@ class PlaylistViewModel(
             getPlaylistByIdUseCase(playlistId)
                 .catch { e ->
                     _state.value = PlaylistScreenState.Error
-                    Log.e(PLAYLIST, "Load playlist error: $e")
+                    Timber.tag(PLAYLIST).e("Load playlist error: $e")
                 }
                 .collect { playlist ->
                     playlist?.let {
@@ -83,7 +83,7 @@ class PlaylistViewModel(
                 }
                 .onFailure { e ->
                     _state.value = PlaylistScreenState.Error
-                    Log.e(PLAYLIST, "Delete playlist error: $e")
+                    Timber.tag(PLAYLIST).e("Delete playlist error: $e")
                 }
         }
     }
@@ -101,7 +101,7 @@ class PlaylistViewModel(
                     val trackParcel = TrackMapperImpl.toParcel(track)
                     _clickEvent.emit(trackParcel)
                 } catch (e: Exception) {
-                    Log.e(LogTags.CLICK_DEBOUNCE, "ClickEvent error: $e")
+                    Timber.tag(CLICK_DEBOUNCE).e("ClickEvent error: $e")
                 }
             }
             clickDebounced(Unit)

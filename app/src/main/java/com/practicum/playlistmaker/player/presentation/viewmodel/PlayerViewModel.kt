@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.player.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,6 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class PlayerViewModel(
@@ -232,7 +232,7 @@ class PlayerViewModel(
                         // Можно обновить состояние или показать уведомление об успешном добавлении
                     }
                 } catch (e: Exception) {
-                    Log.e(CLICK_DEBOUNCE, "Add to playlist error: $e")
+                    Timber.tag(CLICK_DEBOUNCE).e("Add to playlist error: $e")
                 }
             }
             clickDebounced(Unit)

@@ -2,9 +2,9 @@ package com.practicum.playlistmaker.listmaker.data.repository
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.practicum.playlistmaker.common.constants.LogTags.PLAYLIST_COVER
 import com.practicum.playlistmaker.listmaker.domain.repository.ImageRepository
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
@@ -30,7 +30,7 @@ class ImageRepositoryImpl(
                 }
             }
         } catch (e: Exception) {
-            Log.e(PLAYLIST_COVER, "Error saving temp image", e)
+            Timber.tag(PLAYLIST_COVER).e(e, "Error saving temp image")
             null
         }
     }
@@ -39,7 +39,7 @@ class ImageRepositoryImpl(
         try {
             if (file.exists()) file.delete()
         } catch (e: Exception) {
-            Log.e(PLAYLIST_COVER, "Error deleting temp file", e)
+            Timber.tag(PLAYLIST_COVER).e(e, "Error deleting temp file")
         }
     }
 

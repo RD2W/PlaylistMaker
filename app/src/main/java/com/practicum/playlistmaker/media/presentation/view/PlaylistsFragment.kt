@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.media.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ import com.practicum.playlistmaker.media.presentation.state.PlaylistsScreenState
 import com.practicum.playlistmaker.media.presentation.viewmodel.PlaylistsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class PlaylistsFragment : Fragment(R.layout.fragment_playlists) {
 
@@ -89,11 +89,12 @@ class PlaylistsFragment : Fragment(R.layout.fragment_playlists) {
     }
 
     private fun showContent(playlists: List<Playlist>) {
-        Log.d(
-            "Playlists",
-            "Playlists:\n${playlists.joinToString("\n") {
-                "ID: ${it.playlistId}\nName: ${it.name}\nDescription: ${it.description}\nTrack Count: ${it.trackCount}"
-            }}",
+        Timber.d(
+            "Playlists:\n${
+                playlists.joinToString("\n") {
+                    "ID: ${it.playlistId}\nName: ${it.name}\nTrack Count: ${it.trackCount}"
+                }
+            }",
         )
 
         showPlaceholder(false)

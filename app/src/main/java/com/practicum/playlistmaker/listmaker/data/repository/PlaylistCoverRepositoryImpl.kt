@@ -2,9 +2,9 @@ package com.practicum.playlistmaker.listmaker.data.repository
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.practicum.playlistmaker.common.constants.LogTags.PLAYLIST_COVER
 import com.practicum.playlistmaker.listmaker.domain.repository.PlaylistCoverRepository
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
@@ -28,7 +28,7 @@ class PlaylistCoverRepositoryImpl(
         try {
             File(imagePath).takeIf { it.exists() }?.delete()
         } catch (e: Exception) {
-            Log.e(PLAYLIST_COVER, "Failed to delete cover image", e)
+            Timber.tag(PLAYLIST_COVER).e(e, "Failed to delete cover image")
         }
     }
 

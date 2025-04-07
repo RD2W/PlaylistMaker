@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.listmaker.presentation.viewmodel
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import kotlin.Long
 
@@ -106,7 +106,7 @@ class AddPlaylistViewModel(
                 selectedImageUri = uri
                 shouldRemoveCover = false // Сброс флага удаления при выборе новой обложки
             } catch (e: Exception) {
-                Log.e(PLAYLIST_COVER, "Failed to load image preview", e)
+                Timber.tag(PLAYLIST_COVER).e(e, "Failed to load image preview")
                 _uiState.value = AddPlaylistUiState.Error()
             }
         }
@@ -114,7 +114,7 @@ class AddPlaylistViewModel(
 
     // Удаление обложки
     fun removeCoverImage() {
-        Log.d(PLAYLIST_COVER, "Удаление обложки, текущий ID: $currentPlaylistId")
+        Timber.tag(PLAYLIST_COVER).d("Delete playlist cover image, ID: $currentPlaylistId")
         viewModelScope.launch {
             if (currentPlaylistId != NEW_PLAYLIST_ID) {
                 when (val current = _uiState.value) {
@@ -138,7 +138,7 @@ class AddPlaylistViewModel(
             _uiState.value = AddPlaylistUiState.Loading
             getPlaylistByIdUseCase(playlistId)
                 .catch { e ->
-                    Log.e("AddPlaylistVM", "Ошибка загрузки плейлиста ID: $playlistId", e)
+                    Timber.e(e, "Error loading playlist, ID: $playlistId")
                     _uiState.value = AddPlaylistUiState.Error()
                 }
                 .collect { playlist ->
@@ -151,7 +151,7 @@ class AddPlaylistViewModel(
                             currentCover = it.coverFilePath?.let { path -> File(path) },
                         )
                     } ?: run {
-                        Log.w("AddPlaylistVM", "Плейлист не найден, ID: $playlistId")
+                        Timber.w("Playlist not found, ID: $playlistId")
                         _uiState.value = AddPlaylistUiState.Error()
                     }
                 }
@@ -162,7 +162,7 @@ class AddPlaylistViewModel(
     fun savePlaylist(name: String, description: String) {
         when {
             name.isBlank() -> {
-                Log.w("AddPlaylistVM", "Попытка сохранения с пустым названием")
+                Timber.w("Trying to save a playlist with an empty name")
                 _uiState.value = AddPlaylistUiState.Error()
                 return
             }
@@ -181,7 +181,7 @@ class AddPlaylistViewModel(
                     clearTempData()
                 }
                 .onFailure { e ->
-                    Log.e("AddPlaylistVM", "Ошибка создания плейлиста", e)
+                    Timber.e(e, "Error creating a new playlist")
                     _uiState.value = AddPlaylistUiState.Error()
                 }
         }
@@ -208,7 +208,7 @@ class AddPlaylistViewModel(
                     clearTempData()
                 }
                 .onFailure { e ->
-                    Log.e("AddPlaylistVM", "Ошибка обновления плейлиста ID: $currentPlaylistId", e)
+                    Timber.e(e, "Error updating playlist, ID: $currentPlaylistId")
                     _uiState.value = AddPlaylistUiState.Error()
                 }
         }

@@ -3,9 +3,9 @@ package com.practicum.playlistmaker.common.utils
 import android.content.Context
 import android.os.VibrationEffect
 import android.os.VibratorManager
-import android.util.Log
 import com.practicum.playlistmaker.common.constants.AppConstants.VIBRATION_DURATION_MILLIS
 import com.practicum.playlistmaker.common.constants.LogTags.VIBRATION
+import timber.log.Timber
 
 class VibrationController(private val context: Context) {
 
@@ -26,7 +26,7 @@ class VibrationController(private val context: Context) {
                 vibrator.vibrate(effect)
             }
         } catch (e: Exception) {
-            Log.e(VIBRATION, "Vibration failed", e)
+            Timber.tag(VIBRATION).e(e, "Vibration failed")
         }
     }
 
@@ -40,7 +40,7 @@ class VibrationController(private val context: Context) {
                 vibrator.vibrate(effect)
             }
         } catch (e: Exception) {
-            Log.e(VIBRATION, "Predefined effect failed", e)
+            Timber.tag(VIBRATION).e(e, "Predefined effect failed")
         }
     }
 

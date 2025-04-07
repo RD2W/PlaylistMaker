@@ -1,12 +1,11 @@
 package com.practicum.playlistmaker.media.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
-import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.LogTags.CLICK_DEBOUNCE
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class FavoritesViewModel(
@@ -47,6 +47,7 @@ class FavoritesViewModel(
         viewModelScope.launch {
             getFavoriteTracksUseCase()
                 .catch { e ->
+                    Timber.e("Load favorite tracks error: $e")
                     _state.value = FavoriteScreenState.Error
                 }
                 .collect { tracks ->
@@ -66,7 +67,7 @@ class FavoritesViewModel(
                     val trackParcel = TrackMapperImpl.toParcel(track)
                     _clickEvent.emit(trackParcel)
                 } catch (e: Exception) {
-                    Log.e(LogTags.CLICK_DEBOUNCE, "ClickEvent error: $e")
+                    Timber.tag(CLICK_DEBOUNCE).e("ClickEvent error: $e")
                 }
             }
             clickDebounced(Unit)
