@@ -24,16 +24,15 @@ import com.practicum.playlistmaker.settings.domain.repository.SettingsRepository
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
     factory { ExoPlayer.Builder(androidApplication()).build() }
-    singleOf(::AppThemeRepositoryImpl) { bind<AppThemeRepository>() }
+    factoryOf(::AppThemeRepositoryImpl) { bind<AppThemeRepository>() }
     factoryOf(::PlayerRepositoryImpl) { bind<PlayerRepository>() }
-    singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
-    singleOf(::SearchHistoryRepositoryImpl) { bind<SearchHistoryRepository>() }
-    singleOf(::TracksRepositoryImpl) { bind<TracksRepository>() }
+    factoryOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
+    factoryOf(::SearchHistoryRepositoryImpl) { bind<SearchHistoryRepository>() }
+    factoryOf(::TracksRepositoryImpl) { bind<TracksRepository>() }
     factoryOf(::FavoriteTracksRepositoryImpl) { bind<FavoriteTracksRepository>() }
     factoryOf(::PlaylistsRepositoryImpl) { bind<PlaylistsRepository>() }
     factoryOf(::PlaylistCoverRepositoryImpl) { bind<PlaylistCoverRepository>() }

@@ -54,15 +54,14 @@ import com.practicum.playlistmaker.settings.domain.interactor.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.interactor.impl.SettingsInteractorImpl
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val domainModule = module {
-    singleOf(::AppThemeInteractorImpl) { bind<AppThemeInteractor>() }
+    factoryOf(::AppThemeInteractorImpl) { bind<AppThemeInteractor>() }
     factoryOf(::PlayerInteractorImpl) { bind<PlayerInteractor>() }
-    singleOf(::SearchHistoryInteractorImpl) { bind<SearchHistoryInteractor>() }
-    singleOf(::SettingsInteractorImpl) { bind<SettingsInteractor>() }
-    singleOf(::TracksInteractorImpl) { bind<TracksInteractor>() }
+    factoryOf(::SearchHistoryInteractorImpl) { bind<SearchHistoryInteractor>() }
+    factoryOf(::SettingsInteractorImpl) { bind<SettingsInteractor>() }
+    factoryOf(::TracksInteractorImpl) { bind<TracksInteractor>() }
 
     /** Favorite Tracks UseCases */
     factoryOf(::AddTrackToFavoritesUseCaseImpl) { bind<AddTrackToFavoritesUseCase>() }
