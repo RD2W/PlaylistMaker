@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.main.presentation.view
 
 import android.os.Bundle
-import android.util.Log
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -14,6 +14,7 @@ import com.practicum.playlistmaker.common.constants.LogTags
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,12 +48,12 @@ class MainActivity : AppCompatActivity() {
         // Устанавливаем заголовок TopAppBar при старте приложения
         binding.root.post {
             val currentDestination = navController.currentDestination
-            Log.d(LogTags.NAVIGATION, "Current destination is ${currentDestination?.label}")
+            Timber.tag(LogTags.NAVIGATION).d("Current destination is ${currentDestination?.label}")
             binding.topAppBar.title = currentDestination?.label ?: getString(R.string.app_name)
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            Log.d(LogTags.NAVIGATION, "Navigated to ${destination.label}")
+            Timber.tag(LogTags.NAVIGATION).d("Navigated to ${destination.label}")
 
             // Обновляем заголовок Toolbar
             binding.topAppBar.title = when (destination.id) {
@@ -89,6 +90,10 @@ class MainActivity : AppCompatActivity() {
     private fun showNavBarHideBackButton(isVisible: Boolean) {
         binding.grNavigationView.isVisible = isVisible
         supportActionBar?.setDisplayHomeAsUpEnabled(!isVisible)
+    }
+
+    fun setToolbarTitle(@StringRes titleRes: Int) {
+        binding.topAppBar.title = getString(titleRes)
     }
 
     companion object {

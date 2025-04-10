@@ -8,4 +8,8 @@ object LogTags {
     const val EXTERNAL_NAVIGATION = "ExternalNavigation"
     const val CLICK_DEBOUNCE = "ClickDebounce"
     const val NAVIGATION = "Navigation"
+    const val PLAYLIST = "Playlist"
+    const val PLAYLISTS = "Playlists"
+    const val PLAYLIST_COVER = "PlaylistCover"
+    const val VIBRATION = "Vibration"
 }

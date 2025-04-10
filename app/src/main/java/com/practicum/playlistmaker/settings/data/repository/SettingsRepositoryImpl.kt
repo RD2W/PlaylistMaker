@@ -4,10 +4,10 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import com.practicum.playlistmaker.common.constants.LogTags
-import com.practicum.playlistmaker.settings.domain.repository.SettingsRepository
 import androidx.core.net.toUri
+import com.practicum.playlistmaker.common.constants.LogTags.EXTERNAL_NAVIGATION
+import com.practicum.playlistmaker.settings.domain.repository.SettingsRepository
+import timber.log.Timber
 
 class SettingsRepositoryImpl(private val context: Context) : SettingsRepository {
 
@@ -35,7 +35,7 @@ class SettingsRepositoryImpl(private val context: Context) : SettingsRepository 
     override fun openUserAgreement(userAgreementLink: String) {
         val agreementIntent = Intent(
             Intent.ACTION_VIEW,
-            userAgreementLink.toUri()
+            userAgreementLink.toUri(),
         ).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
@@ -47,13 +47,10 @@ class SettingsRepositoryImpl(private val context: Context) : SettingsRepository 
             try {
                 context.startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                Log.e(LogTags.EXTERNAL_NAVIGATION, "No activity found to handle intent", e)
+                Timber.tag(EXTERNAL_NAVIGATION).e(e, "No activity found to handle intent")
             }
         } else {
-            Log.e(
-                LogTags.EXTERNAL_NAVIGATION,
-                "No activity found to handle intent: ${intent.action}"
-            )
+            Timber.tag(EXTERNAL_NAVIGATION).e("No activity found to handle intent: ${intent.action}")
         }
     }
 }

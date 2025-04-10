@@ -1,12 +1,12 @@
 package com.practicum.playlistmaker.search.domain.interactor.impl
 
-import android.util.Log
-import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.LogTags.SEARCH_HISTORY
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.search.domain.interactor.SearchHistoryInteractor
 import com.practicum.playlistmaker.search.domain.repository.SearchHistoryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import timber.log.Timber
 
 class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) :
     SearchHistoryInteractor {
@@ -20,7 +20,7 @@ class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepositor
         try {
             historyFlow.value = repository.getHistory()
         } catch (e: Exception) {
-            Log.e(LogTags.SEARCH_HISTORY, "Error loading history: ${e.message}", e)
+            Timber.tag(SEARCH_HISTORY).e(e, "Error loading history: ${e.message}")
         }
     }
 
@@ -31,7 +31,7 @@ class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepositor
             repository.addTrack(track)
             loadHistory()
         } catch (e: Exception) {
-            Log.e(LogTags.SEARCH_HISTORY, "Error adding a track: ${e.message}", e)
+            Timber.tag(SEARCH_HISTORY).e(e, "Error adding a track: ${e.message}")
         }
     }
 
@@ -40,7 +40,7 @@ class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepositor
             repository.clearHistory()
             historyFlow.value = emptyList()
         } catch (e: Exception) {
-            Log.e(LogTags.SEARCH_HISTORY, "Error clearing history: ${e.message}", e)
+            Timber.tag(SEARCH_HISTORY).e(e, "Error clearing history: ${e.message}")
         }
     }
 }

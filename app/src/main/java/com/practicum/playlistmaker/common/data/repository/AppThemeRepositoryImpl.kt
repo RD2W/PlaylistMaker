@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import com.practicum.playlistmaker.common.constants.AppConstants
 import com.practicum.playlistmaker.common.constants.PrefsConstants
 import com.practicum.playlistmaker.common.domain.repository.AppThemeRepository
-import androidx.core.content.edit
 
 class AppThemeRepositoryImpl(
     private val context: Context,
@@ -15,7 +15,7 @@ class AppThemeRepositoryImpl(
 ) : AppThemeRepository {
 
     override fun switchTheme(isDark: Boolean) {
-        sharedPreferences.edit() {
+        sharedPreferences.edit {
             putBoolean(PrefsConstants.KEY_IS_DARK_THEME, isDark)
         }
         setTheme(isDark)
@@ -25,7 +25,7 @@ class AppThemeRepositoryImpl(
         return if (sharedPreferences.contains(PrefsConstants.KEY_IS_DARK_THEME)) {
             sharedPreferences.getBoolean(
                 PrefsConstants.KEY_IS_DARK_THEME,
-                AppConstants.DARK_THEME_DEF_STATE
+                AppConstants.DARK_THEME_DEF_STATE,
             )
         } else {
             val uiMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -35,7 +35,7 @@ class AppThemeRepositoryImpl(
 
     private fun setTheme(isDarkTheme: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
-            if (isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            if (isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO,
         )
     }
 }

@@ -1,13 +1,13 @@
 package com.practicum.playlistmaker.search.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.common.constants.AppConstants.CLICK_DEBOUNCE_DELAY_MILLIS
 import com.practicum.playlistmaker.common.constants.AppConstants.SEARCH_DEBOUNCE_DELAY_MILLIS
-import com.practicum.playlistmaker.common.constants.LogTags
+import com.practicum.playlistmaker.common.constants.LogTags.API_RESPONSE
+import com.practicum.playlistmaker.common.constants.LogTags.CLICK_DEBOUNCE
 import com.practicum.playlistmaker.common.domain.mapper.impl.TrackMapperImpl
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.common.presentation.model.TrackParcel
@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SearchViewModel(
@@ -40,7 +41,7 @@ class SearchViewModel(
     private val searchDebounced = debounce<String>(
         delayMillis = SEARCH_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = true
+        useLastParam = true,
     ) { term ->
         searchForTracks(term)
     }
@@ -48,7 +49,7 @@ class SearchViewModel(
     private val clickDebounced = debounce<Unit>(
         delayMillis = CLICK_DEBOUNCE_DELAY_MILLIS,
         coroutineScope = viewModelScope,
-        useLastParam = false
+        useLastParam = false,
     ) {
         isClickAllowed.set(true)
     }
@@ -72,9 +73,15 @@ class SearchViewModel(
             tracksInteractor.searchTracks(term).collect { result ->
                 withContext(Dispatchers.Main) {
                     when (result) {
-                        is NetworkRequestResult.Success -> handleTrackResponse(result.data)
-                        is NetworkRequestResult.Error -> _searchScreenState.value = SearchScreenState.NetworkError
-                        is NetworkRequestResult.NoConnection -> _searchScreenState.value = SearchScreenState.NetworkError
+                        is NetworkRequestResult.Success -> {
+                            handleTrackResponse(result.data)
+                        }
+                        is NetworkRequestResult.Error -> {
+                            _searchScreenState.value = SearchScreenState.NetworkError
+                        }
+                        is NetworkRequestResult.NoConnection -> {
+                            _searchScreenState.value = SearchScreenState.NetworkError
+                        }
                     }
                 }
             }
@@ -101,7 +108,7 @@ class SearchViewModel(
                     val trackParcel = TrackMapperImpl.toParcel(track)
                     _clickEvent.emit(trackParcel)
                 } catch (e: Exception) {
-                    Log.e(LogTags.CLICK_DEBOUNCE, "ClickEvent error: $e")
+                    Timber.tag(CLICK_DEBOUNCE).e("ClickEvent error: $e")
                 }
             }
             clickDebounced(Unit) // Используем debounce для сброса флага isClickAllowed
@@ -123,10 +130,10 @@ class SearchViewModel(
     private fun handleTrackResponse(foundTracks: List<Track>) {
         if (foundTracks.isNotEmpty()) {
             _searchScreenState.value = SearchScreenState.Content(foundTracks)
-            Log.d(LogTags.API_RESPONSE, "Tracks found: ${foundTracks.size}")
+            Timber.tag(API_RESPONSE).d("Tracks found: ${foundTracks.size}")
         } else {
             _searchScreenState.value = SearchScreenState.NotFound
-            Log.d(LogTags.API_RESPONSE, "No tracks found")
+            Timber.tag(API_RESPONSE).d("No tracks found")
         }
     }
 

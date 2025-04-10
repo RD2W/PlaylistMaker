@@ -69,6 +69,10 @@
         <item name="shapeAppearance">@style/PlaylistCoverStyle.CornerSize</item>
     </style>
 
+    <style name="PlaylistDetailsCoverStyle">
+        <item name="shapeAppearance">@style/PlaylistCoverStyle.CornerSize</item>
+    </style>
+
     <style name="PlaylistCoverStyle.CornerSize">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/corner_radius_8</item>
@@ -236,12 +240,12 @@
 
     <style name="OutlinedTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundMode">outline</item>
-        <item name="boxStrokeWidth">2dp</item>
-        <item name="boxStrokeWidthFocused">2dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxStrokeWidth">@dimen/value_2</item>
+        <item name="boxStrokeWidthFocused">@dimen/value_2</item>
+        <item name="boxCornerRadiusTopStart">@dimen/corner_radius_8</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/corner_radius_8</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/corner_radius_8</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/corner_radius_8</item>
         <item name="boxStrokeColor">@color/input_box_stroke_color</item>
         <item name="hintTextColor">@color/light_blue</item>
         <item name="hintTextAppearance">@style/CustomHintTextAppearance</item>
@@ -264,6 +268,76 @@
         <item name="android:inputType">textCapSentences</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="CustomSnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:textColor">@color/text_input</item>
+        <item name="android:textSize">@dimen/text_middle_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:gravity">center</item> <!-- Центрирование -->
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="backgroundTint">@color/background_snackbar</item>
+        <item name="shapeAppearanceOverlay">@style/SnackbarRoundedCorners</item>
+    </style>
+
+    <style name="SnackbarRoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/corner_radius_2</item>
+    </style>
+
+    <!-- Стиль для MaterialAlertDialog -->
+    <style name="ThemeOverlay.PlaylistMaker.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/DialogMessageStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+    </style>
+
+    <!-- Стиль заголовка AlertDialog -->
+    <style name="DialogTitleStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/text_input</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.DialogTitle</item>
+    </style>
+
+    <!-- Текстовая аппиранс для заголовка AlertDialog -->
+    <style name="TextAppearance.PlaylistMaker.DialogTitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/text_input</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:lineSpacingMultiplier">1.25</item> <!-- Межстрочный интервал -->
+        <item name="android:letterSpacing">0.015</item> <!-- Межбуквенный интервал -->
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <!-- Стиль текста сообщения AlertDialog -->
+    <style name="DialogMessageStyle" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/text_input</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.DialogMessage</item>
+    </style>
+
+    <!-- Текстовая аппиранс для сообщения AlertDialog -->
+    <style name="TextAppearance.PlaylistMaker.DialogMessage" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">@dimen/text_middle_size</item>
+        <item name="android:lineSpacingMultiplier">1.25</item> <!-- Межстрочный интервал -->
+        <item name="android:letterSpacing">0.025</item> <!-- Межбуквенный интервал -->
+        <item name="fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <!-- Стиль текста кнопок AlertDialog -->
+    <style name="DialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.DialogButton</item>
+        <item name="android:insetTop">0dp</item> <!-- Убираем стандартные отступы -->
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <!-- Стиль для текста кнопок диалога -->
+    <style name="TextAppearance.PlaylistMaker.DialogButton" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textColor">@color/light_blue</item>
+        <item name="android:textSize">@dimen/text_middle_plus_size</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:letterSpacing">0.02</item> <!-- Опционально -->
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

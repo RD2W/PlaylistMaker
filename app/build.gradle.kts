@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
 }
 
@@ -14,14 +15,18 @@ android {
         applicationId = "com.practicum.playlistmaker"
         minSdk = 31
         targetSdk = 35
-        versionCode = 13
-        versionName = "1.0.13"
+        versionCode = 14
+        versionName = "1.0.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            buildConfigField("Boolean", "DEBUG", "true")
+        }
         release {
+            buildConfigField("Boolean", "DEBUG", "false")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -37,8 +42,17 @@ android {
         jvmTarget = "17"
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
+}
+
+detekt {
+    toolVersion = libs.versions.detekt.get()
+    config.setFrom("${rootDir}/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true  // Совмещает с дефолтными правилами
+    autoCorrect = true
+    source.setFrom("src/main/java")
 }
 
 dependencies {
@@ -65,10 +79,20 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.timber)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    detektPlugins(libs.detekt.cli)
+    detektPlugins(libs.detekt.formatting)
+
     ksp(libs.glide.compiler)
     ksp(libs.room.compiler)
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+    }
 }
