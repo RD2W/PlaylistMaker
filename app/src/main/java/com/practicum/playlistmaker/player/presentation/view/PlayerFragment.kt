@@ -63,12 +63,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             state.track?.let { track ->
                 updateUIWithTrack(track)
             }
+            Timber.d("ScreenState: $state")
             state.screenState.let { screenState ->
+                if (state.showToast && state.screenState is PlayerScreenState.NotReady) {
+                    showToast(state.screenState)
+                    viewModel.onToastShown()
+                }
+
                 when (screenState) {
-                    is PlayerScreenState.NotReady -> {
-                        disablePlayButton()
-                        showToast(screenState)
-                    }
+                    is PlayerScreenState.NotReady -> disablePlayButton()
                     is PlayerScreenState.Ready -> showPlayButton()
                     is PlayerScreenState.Playing -> showPauseButton()
                     is PlayerScreenState.Paused -> showPlayButton()
@@ -237,7 +240,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Обработка анимации скольжения
                 binding.overlay.alpha = slideOffset + 1f
             }
         })

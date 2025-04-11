@@ -71,9 +71,19 @@ class PlayerViewModel(
     private fun preparePlayer(track: Track) {
         playerInteractor.preparePlayer(track, {
             isPlayerReady = true
-            updateState { it.copy(screenState = PlayerScreenState.Ready) }
+            updateState {
+                it.copy(
+                    screenState = PlayerScreenState.Ready,
+                    showToast = false,
+                )
+            }
         }, { error ->
-            updateState { it.copy(screenState = PlayerScreenState.NotReady(error)) }
+            updateState {
+                it.copy(
+                    screenState = PlayerScreenState.NotReady(error),
+                    showToast = true,
+                )
+            }
         })
     }
 
@@ -238,6 +248,8 @@ class PlayerViewModel(
             clickDebounced(Unit)
         }
     }
+
+    fun onToastShown() = updateState { it.copy(showToast = false) }
 
     override fun onCleared() {
         super.onCleared()
