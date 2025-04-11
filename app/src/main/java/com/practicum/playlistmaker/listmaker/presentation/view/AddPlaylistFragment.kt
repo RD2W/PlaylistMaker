@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.listmaker.presentation.view
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,8 +11,6 @@ import android.provider.Settings
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.StringRes
-import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -21,11 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
 import com.practicum.playlistmaker.common.utils.VibrationController
+import com.practicum.playlistmaker.common.utils.buildMaterialDialog
 import com.practicum.playlistmaker.common.utils.setToolbarTitle
 import com.practicum.playlistmaker.common.utils.shake
 import com.practicum.playlistmaker.databinding.FragmentAddPlaylistBinding
@@ -206,18 +203,22 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
 
     private fun showPermissionRationaleDialog(permission: String) {
         buildMaterialDialog(
-            titleRes = R.string.permission_rationale_title,
-            messageRes = R.string.permission_rationale_message,
+            title = getString(R.string.permission_rationale_title),
+            message = getString(R.string.permission_rationale_message),
             positiveButtonRes = R.string.grant,
+            negativeButtonRes = R.string.cancel,
+            isCancelable = false,
             positiveAction = { requestPermissionLauncher.launch(permission) },
         ).show()
     }
 
     private fun showPermissionSettingsDialog() {
         buildMaterialDialog(
-            titleRes = R.string.permission_settings_title,
-            messageRes = R.string.permission_settings_message,
+            title = getString(R.string.permission_settings_title),
+            message = getString(R.string.permission_settings_message),
             positiveButtonRes = R.string.settings,
+            negativeButtonRes = R.string.cancel,
+            isCancelable = false,
             positiveAction = {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", requireContext().packageName, null)
@@ -229,31 +230,12 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
 
     private fun showRemoveCoverConfirmationDialog() {
         buildMaterialDialog(
-            titleRes = R.string.edit_playlist_remove_cover_title,
-            messageRes = R.string.edit_playlist_remove_cover_message,
+            title = getString(R.string.edit_playlist_remove_cover_title),
+            message = getString(R.string.edit_playlist_remove_cover_message),
             positiveButtonRes = R.string.yes,
             negativeButtonRes = R.string.no,
             positiveAction = { viewModel.removeCoverImage() },
         ).show()
-    }
-
-    private fun buildMaterialDialog(
-        context: Context = requireContext(),
-        @StringRes titleRes: Int,
-        @StringRes messageRes: Int,
-        @StringRes positiveButtonRes: Int,
-        @StringRes negativeButtonRes: Int = R.string.cancel,
-        @StyleRes themeResId: Int = R.style.ThemeOverlay_PlaylistMaker_MaterialAlertDialog,
-        positiveAction: (() -> Unit),
-    ): MaterialAlertDialogBuilder {
-        return MaterialAlertDialogBuilder(context, themeResId)
-            .setTitle(getString(titleRes))
-            .setMessage(getString(messageRes))
-            .setNegativeButton(getString(negativeButtonRes)) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(getString(positiveButtonRes)) { _, _ -> positiveAction() }
-            .apply {
-                setCancelable(false)
-            }
     }
 
     private fun showSnackbar(message: String) {
