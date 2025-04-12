@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
+import com.practicum.playlistmaker.common.presentation.navigation.BackPressHandler
 import com.practicum.playlistmaker.common.utils.VibrationController
 import com.practicum.playlistmaker.common.utils.buildMaterialDialog
 import com.practicum.playlistmaker.common.utils.setToolbarTitle
@@ -35,7 +36,7 @@ import timber.log.Timber
 import java.io.File
 import kotlin.getValue
 
-class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
+class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist), BackPressHandler {
 
     private var _binding: FragmentAddPlaylistBinding? = null
     private val binding: FragmentAddPlaylistBinding
@@ -238,6 +239,23 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
         ).show()
     }
 
+    private fun showExitConfirmationDialog() {
+        val titleRes = if (args.playlistId == NEW_PLAYLIST_ID) {
+            R.string.new_playlist_exit_confirmation_title
+        } else {
+            R.string.edit_playlist_exit_confirmation_title
+        }
+
+        buildMaterialDialog(
+            title = getString(titleRes),
+            message = getString(R.string.exit_confirmation_message),
+            positiveButtonRes = R.string.complete,
+            negativeButtonRes = R.string.cancel,
+            isCancelable = false,
+            positiveAction = { navigateBack() },
+        ).show()
+    }
+
     private fun showSnackbar(message: String) {
         Snackbar.make(
             binding.root,
@@ -268,6 +286,11 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun handleBackPressed(): Boolean {
+        showExitConfirmationDialog()
+        return true // Всегда перехватываем нажатие и показываем диалог
     }
 
     companion object {

@@ -45,11 +45,13 @@
     <string name="new_playlist_description">Описание</string>
     <string name="new_playlist_create_button">Создать</string>
     <string name="new_playlist_created_message">Плейлист \"%s\" создан</string>
+    <string name="new_playlist_exit_confirmation_title">Завершить создание плейлиста?</string>
     <string name="edit_playlist_title">Редактирование плейлиста</string>
     <string name="edit_playlist_save_button">Сохранить</string>
     <string name="edit_playlist_remove_cover_title">Удалить обложку</string>
     <string name="edit_playlist_remove_cover_message">Вы уверены, что хотите удалить обложку плейлиста?</string>
     <string name="edit_playlist_saved_message">Плейлист успешно обновлён</string>
+    <string name="edit_playlist_exit_confirmation_title">Завершить редактирование плейлиста?</string>
     <string name="playlist_title">Плейлист</string>
     <string name="playlist_more_share_item">Поделиться</string>
     <string name="playlist_more_edit_item">Редактировать информацию</string>
@@ -71,11 +73,13 @@
     <string name="settings">Настройки</string>
     <string name="grant">Разрешить</string>
     <string name="cancel">Отмена</string>
+    <string name="complete">Завершить</string>
 
     <!-- Сообщения об ошибках -->
     <string name="error_loading_image">Ошибка загрузки изображения</string>
     <string name="image_selected">Изображение выбрано</string>
 
+    <string name="exit_confirmation_message">Все не сохраненные данные будут потеряны</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
 </resources>
