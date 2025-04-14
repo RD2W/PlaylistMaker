@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -84,6 +85,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist), BackPressH
 
         setupObservers()
         setupListeners()
+        setKeyboardAdjustPanMode()
     }
 
     private fun setupObservers() {
@@ -281,6 +283,10 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist), BackPressH
             type = "image/*"
         }
         pickImageLauncher.launch(intent)
+    }
+
+    private fun setKeyboardAdjustPanMode() {
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
     }
 
     override fun onDestroyView() {
