@@ -1,6 +1,6 @@
 [versions]
 # Build tools
-agp = "8.9.1"
+agp = "8.9.2"
 kotlin = "2.1.20"
 ksp = "2.1.20-2.0.0"
 detekt = "1.23.8"
@@ -25,17 +25,17 @@ navigationFragment = "2.8.9"
 lifecycle = "2.8.7"
 
 # Room
-room = "2.7.0"
+room = "2.7.1"
 
 # Network
 retrofit = "2.11.0"
-gson = "2.11.0"
+gson = "2.13.1"
 
 # Media
 media3Exoplayer = "1.6.1"
 
 # DI
-koin = "4.0.2"
+koin = "4.0.4"
 
 # Image loading
 glide = "4.16.0"
