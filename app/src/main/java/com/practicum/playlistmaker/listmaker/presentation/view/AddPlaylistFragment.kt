@@ -295,8 +295,14 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist), BackPressH
     }
 
     override fun handleBackPressed(): Boolean {
-        showExitConfirmationDialog()
-        return true // Всегда перехватываем нажатие и показываем диалог
+        with(binding) {
+            val hasText = !etvPlaylistName.text.isNullOrBlank() ||
+                !etvPlaylistDescription.text.isNullOrBlank()
+            val hasImage = viewModel.hasCover.value
+
+            if (hasText || hasImage) showExitConfirmationDialog() else navigateBack()
+            return true // Всегда перехватываем нажатие
+        }
     }
 
     companion object {
