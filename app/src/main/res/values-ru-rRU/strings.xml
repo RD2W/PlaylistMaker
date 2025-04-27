@@ -63,6 +63,7 @@
     <string name="player_title">Плеер</string>
     <string name="player_add_track_to_playlist">Добавить в плейлист</string>
     <string name="player_track_added_to_playlist_message">Добавлено в плейлист \"%s\"</string>
+    <string name="player_bottom_sheet_placeholder">Список плейлистов пуст\n или трек добавлен во все существующие плейлисты.</string>
 
     <!-- Сообщения о разрешениях -->
     <string name="permission_denied_message">Доступ к галерее запрещен</string>

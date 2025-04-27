@@ -65,6 +65,7 @@
     <string name="player_title">Player</string>
     <string name="player_add_track_to_playlist">Add track to Playlist</string>
     <string name="player_track_added_to_playlist_message">Added to Playlist \"%s\"</string>
+    <string name="player_bottom_sheet_placeholder">No playlists\n or the track has been added to all existing playlists.</string>
 
     <!-- Permission messages -->
     <string name="permission_denied_message">Gallery access denied</string>
