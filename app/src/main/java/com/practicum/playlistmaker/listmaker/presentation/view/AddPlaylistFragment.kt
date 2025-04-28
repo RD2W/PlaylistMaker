@@ -194,12 +194,8 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist), BackPressH
                 openImagePicker()
             }
 
-            shouldShowRequestPermissionRationale(currentPermission) -> {
-                showPermissionRationaleDialog(currentPermission)
-            }
-
             else -> {
-                requestPermissionLauncher.launch(currentPermission)
+                showPermissionRationaleDialog(currentPermission)
             }
         }
     }
