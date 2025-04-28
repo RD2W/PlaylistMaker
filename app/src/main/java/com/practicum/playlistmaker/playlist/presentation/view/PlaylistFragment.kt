@@ -11,11 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.domain.model.Playlist
 import com.practicum.playlistmaker.common.domain.model.Track
+import com.practicum.playlistmaker.common.utils.buildMaterialDialog
 import com.practicum.playlistmaker.common.utils.convertMillisToMinutes
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBinding
 import com.practicum.playlistmaker.playlist.presentation.adapter.TrackInPlaylistAdapter
@@ -190,21 +190,19 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     }
 
     private fun showDeletePlaylistDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.playlist_delete_playlist_title)
-            .setMessage(getString(R.string.playlist_delete_playlist_message))
-            .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(R.string.yes) { _, _ -> viewModel.deletePlaylist() }
-            .show()
+        buildMaterialDialog(
+            title = getString(R.string.playlist_delete_playlist_title),
+            message = getString(R.string.playlist_delete_playlist_message),
+            positiveAction = { viewModel.deletePlaylist() },
+        ).show()
     }
 
     private fun showDeleteTrackDialog(track: Track) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.playlist_delete_track_title)
-            .setMessage(getString(R.string.playlist_delete_track_message, track.trackName))
-            .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(R.string.yes) { _, _ -> viewModel.removeFromPlaylist(track.trackId) }
-            .show()
+        buildMaterialDialog(
+            title = getString(R.string.playlist_delete_track_title),
+            message = getString(R.string.playlist_delete_track_message, track.trackName),
+            positiveAction = { viewModel.removeFromPlaylist(track.trackId) },
+        ).show()
     }
 
     private fun toggleBottomSheetMoreState() {

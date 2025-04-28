@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.listmaker.presentation.view
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,10 +9,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.StringRes
-import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -21,11 +19,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.constants.AppConstants.NEW_PLAYLIST_ID
+import com.practicum.playlistmaker.common.presentation.navigation.BackPressHandler
 import com.practicum.playlistmaker.common.utils.VibrationController
+import com.practicum.playlistmaker.common.utils.buildMaterialDialog
 import com.practicum.playlistmaker.common.utils.setToolbarTitle
 import com.practicum.playlistmaker.common.utils.shake
 import com.practicum.playlistmaker.databinding.FragmentAddPlaylistBinding
@@ -38,7 +37,7 @@ import timber.log.Timber
 import java.io.File
 import kotlin.getValue
 
-class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
+class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist), BackPressHandler {
 
     private var _binding: FragmentAddPlaylistBinding? = null
     private val binding: FragmentAddPlaylistBinding
@@ -86,6 +85,7 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
 
         setupObservers()
         setupListeners()
+        setKeyboardAdjustPanMode()
     }
 
     private fun setupObservers() {
@@ -194,30 +194,30 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
                 openImagePicker()
             }
 
-            shouldShowRequestPermissionRationale(currentPermission) -> {
-                showPermissionRationaleDialog(currentPermission)
-            }
-
             else -> {
-                requestPermissionLauncher.launch(currentPermission)
+                showPermissionRationaleDialog(currentPermission)
             }
         }
     }
 
     private fun showPermissionRationaleDialog(permission: String) {
         buildMaterialDialog(
-            titleRes = R.string.permission_rationale_title,
-            messageRes = R.string.permission_rationale_message,
+            title = getString(R.string.permission_rationale_title),
+            message = getString(R.string.permission_rationale_message),
             positiveButtonRes = R.string.grant,
+            negativeButtonRes = R.string.cancel,
+            isCancelable = false,
             positiveAction = { requestPermissionLauncher.launch(permission) },
         ).show()
     }
 
     private fun showPermissionSettingsDialog() {
         buildMaterialDialog(
-            titleRes = R.string.permission_settings_title,
-            messageRes = R.string.permission_settings_message,
+            title = getString(R.string.permission_settings_title),
+            message = getString(R.string.permission_settings_message),
             positiveButtonRes = R.string.settings,
+            negativeButtonRes = R.string.cancel,
+            isCancelable = false,
             positiveAction = {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", requireContext().packageName, null)
@@ -229,31 +229,29 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
 
     private fun showRemoveCoverConfirmationDialog() {
         buildMaterialDialog(
-            titleRes = R.string.edit_playlist_remove_cover_title,
-            messageRes = R.string.edit_playlist_remove_cover_message,
+            title = getString(R.string.edit_playlist_remove_cover_title),
+            message = getString(R.string.edit_playlist_remove_cover_message),
             positiveButtonRes = R.string.yes,
             negativeButtonRes = R.string.no,
             positiveAction = { viewModel.removeCoverImage() },
         ).show()
     }
 
-    private fun buildMaterialDialog(
-        context: Context = requireContext(),
-        @StringRes titleRes: Int,
-        @StringRes messageRes: Int,
-        @StringRes positiveButtonRes: Int,
-        @StringRes negativeButtonRes: Int = R.string.cancel,
-        @StyleRes themeResId: Int = R.style.ThemeOverlay_PlaylistMaker_MaterialAlertDialog,
-        positiveAction: (() -> Unit),
-    ): MaterialAlertDialogBuilder {
-        return MaterialAlertDialogBuilder(context, themeResId)
-            .setTitle(getString(titleRes))
-            .setMessage(getString(messageRes))
-            .setNegativeButton(getString(negativeButtonRes)) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(getString(positiveButtonRes)) { _, _ -> positiveAction() }
-            .apply {
-                setCancelable(false)
-            }
+    private fun showExitConfirmationDialog() {
+        val titleRes = if (args.playlistId == NEW_PLAYLIST_ID) {
+            R.string.new_playlist_exit_confirmation_title
+        } else {
+            R.string.edit_playlist_exit_confirmation_title
+        }
+
+        buildMaterialDialog(
+            title = getString(titleRes),
+            message = getString(R.string.exit_confirmation_message),
+            positiveButtonRes = R.string.complete,
+            negativeButtonRes = R.string.cancel,
+            isCancelable = false,
+            positiveAction = { navigateBack() },
+        ).show()
     }
 
     private fun showSnackbar(message: String) {
@@ -283,9 +281,24 @@ class AddPlaylistFragment : Fragment(R.layout.fragment_add_playlist) {
         pickImageLauncher.launch(intent)
     }
 
+    private fun setKeyboardAdjustPanMode() {
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun handleBackPressed(): Boolean {
+        with(binding) {
+            val hasText = !etvPlaylistName.text.isNullOrBlank() ||
+                !etvPlaylistDescription.text.isNullOrBlank()
+            val hasImage = viewModel.hasCover.value
+
+            if (hasText || hasImage) showExitConfirmationDialog() else navigateBack()
+            return true // Всегда перехватываем нажатие
+        }
     }
 
     companion object {

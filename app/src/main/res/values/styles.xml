@@ -127,6 +127,10 @@
         <item name="android:textFontWeight">500</item>
     </style>
 
+    <style name="BottomSheetPlaceholderTextStyle" parent="SearchPlaceholderTextStyle">
+        <item name="android:textSize">@dimen/text_small_plus_size</item>
+    </style>
+
     <style name="SearchUpdateButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:backgroundTint">@color/button</item>
         <item name="android:textColor">@color/search_update_button</item>

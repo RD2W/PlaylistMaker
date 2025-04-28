@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.player.presentation.view
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,9 +30,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val binding: FragmentPlayerBinding
         get() = requireNotNull(_binding) { "Binding wasn't initialized!" }
 
-    private val bottomSheetAddToPlaylist by lazy {
-        BottomSheetBehavior.from(binding.bottomSheetAddToPlaylist)
-    }
+    private lateinit var bottomSheetAddToPlaylist: BottomSheetBehavior<LinearLayout>
 
     private val args: PlayerFragmentArgs by navArgs()
     private val viewModel: PlayerViewModel by viewModel()
@@ -52,8 +51,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPlayerBinding.bind(view)
 
-        observePlayerState()
         setupUI()
+        observePlayerState()
         setupRecyclerView()
         setupButtons()
     }
@@ -63,12 +62,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             state.track?.let { track ->
                 updateUIWithTrack(track)
             }
+            Timber.d("ScreenState: $state")
             state.screenState.let { screenState ->
+                if (state.showToast && state.screenState is PlayerScreenState.NotReady) {
+                    showToast(state.screenState)
+                    viewModel.onToastShown()
+                }
+
                 when (screenState) {
-                    is PlayerScreenState.NotReady -> {
-                        disablePlayButton()
-                        showToast(screenState)
-                    }
+                    is PlayerScreenState.NotReady -> disablePlayButton()
                     is PlayerScreenState.Ready -> showPlayButton()
                     is PlayerScreenState.Playing -> showPauseButton()
                     is PlayerScreenState.Paused -> showPlayButton()
@@ -179,7 +181,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 }
             }",
         )
-        adapter.submitList(playlists)
+        with(binding) {
+            val showList = playlists.isNotEmpty()
+            rvPlaylistsList.isVisible = showList
+            tvNoPlaylist.isVisible = !showList
+            if (showList) adapter.submitList(playlists)
+        }
     }
 
     private fun setupButtons() {
@@ -205,14 +212,16 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
 
             btnAddNewPlaylist.setOnClickListener {
+                showBottomSheetAddPlaylist(false)
                 addNewPlaylist()
             }
         }
     }
 
     private fun setupUI() {
-        showBottomSheetAddPlaylist(false)
+        setupBottomSheet()
         setupBottomSheetAddToPlaylistCallback()
+        showBottomSheetAddPlaylist(false)
     }
 
     private fun setupRecyclerView() {
@@ -229,6 +238,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         findNavController().navigate(action)
     }
 
+    private fun setupBottomSheet() {
+        bottomSheetAddToPlaylist = BottomSheetBehavior.from(binding.bottomSheetAddToPlaylist)
+    }
+
     private fun setupBottomSheetAddToPlaylistCallback() {
         bottomSheetAddToPlaylist.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -237,8 +250,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // Обработка анимации скольжения
-                binding.overlay.alpha = slideOffset + 1f
+                _binding?.let { safeBinding ->
+                    safeBinding.overlay.alpha = slideOffset + 1f
+                }
             }
         })
     }
@@ -271,12 +285,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         binding.overlay.isVisible = visibility
     }
 
-    private fun showBottomSheetAddPlaylist(visibility: Boolean) {
-        if (visibility) {
-            bottomSheetAddToPlaylist.state = BottomSheetBehavior.STATE_COLLAPSED
+    private fun showBottomSheetAddPlaylist(visible: Boolean) {
+        bottomSheetAddToPlaylist.state = if (visible) {
+            BottomSheetBehavior.STATE_COLLAPSED
         } else {
-            bottomSheetAddToPlaylist.state = BottomSheetBehavior.STATE_HIDDEN
+            BottomSheetBehavior.STATE_HIDDEN
         }
+        showOverlay(visible)
     }
 
     override fun onStop() {
