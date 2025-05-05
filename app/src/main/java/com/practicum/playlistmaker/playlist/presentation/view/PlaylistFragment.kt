@@ -2,6 +2,8 @@ package com.practicum.playlistmaker.playlist.presentation.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -36,13 +38,8 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     private val args: PlaylistFragmentArgs by navArgs()
     private val viewModel: PlaylistViewModel by viewModel()
 
-    private val bottomSheetBehaviorTracks by lazy {
-        BottomSheetBehavior.from(binding.bottomSheetTracks)
-    }
-
-    private val bottomSheetBehaviorMore by lazy {
-        BottomSheetBehavior.from(binding.bottomSheetMore)
-    }
+    private lateinit var bottomSheetBehaviorMore: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetBehaviorTracks: BottomSheetBehavior<LinearLayout>
 
     private val adapter = TrackInPlaylistAdapter(
         onTrackClick = { track -> launchPlayer(track) },
@@ -58,12 +55,11 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPlaylistBinding.bind(view)
 
+        setupBottomSheet()
         setupRecyclerView()
         observeViewModel()
         observeClickEvent()
-        setupInitialBottomSheetState()
         setupButtons()
-        setupBottomSheetMoreCallback()
     }
 
     private fun observeViewModel() {
@@ -169,9 +165,16 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         findNavController().navigate(action)
     }
 
+    private fun setupBottomSheet() {
+        bottomSheetBehaviorMore = BottomSheetBehavior.from(binding.bottomSheetMore)
+        bottomSheetBehaviorTracks = BottomSheetBehavior.from(binding.bottomSheetTracks)
+        setupBottomSheetMoreCallback()
+        setupInitialBottomSheetState()
+    }
+
     private fun setupInitialBottomSheetState() {
-        bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
+        showBottomSheetTracks()
+        showBottomSheetMore(false)
     }
 
     private fun setupButtons() {
@@ -179,13 +182,13 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
             topAppBar.setNavigationOnClickListener { navigateBack() }
             btnSharePlaylist.setOnClickListener { sharePlaylist() }
             btnMoreActions.setOnClickListener { toggleBottomSheetMoreState() }
-            tvShareItem.setOnClickListener { sharePlaylist() }
+            tvShareItem.setOnClickListener {
+                sharePlaylist()
+                showBottomSheetMore(false)
+            }
             tvEditInfoItem.setOnClickListener { editPlaylist() }
             tvDeleteListItem.setOnClickListener { showDeletePlaylistDialog() }
-
-            overlay.setOnClickListener {
-                bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
-            }
+            overlay.setOnClickListener { showBottomSheetMore(false) }
         }
     }
 
@@ -208,9 +211,9 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     private fun toggleBottomSheetMoreState() {
         if (bottomSheetBehaviorMore.state == BottomSheetBehavior.STATE_HIDDEN) {
             binding.bottomSheetMore.bringToFront()
-            bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_COLLAPSED
+            showBottomSheetMore()
         } else {
-            bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
+            showBottomSheetMore(false)
         }
     }
 
@@ -230,13 +233,13 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     private fun handleBottomSheetMoreStateChange(newState: Int) {
         when (newState) {
             BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_COLLAPSED -> {
-                hideBottomSheetTracks()
+                showBottomSheetTracks(false)
                 showOverlay()
             }
 
             BottomSheetBehavior.STATE_HIDDEN -> {
                 showBottomSheetTracks()
-                hideOverlay()
+                showOverlay(false)
             }
 
             BottomSheetBehavior.STATE_DRAGGING -> {
@@ -253,20 +256,19 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         }
     }
 
-    private fun hideBottomSheetTracks() {
-        bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_HIDDEN
+    private fun showBottomSheetMore(isVisible: Boolean = true) {
+        bottomSheetBehaviorMore.state =
+            if (isVisible) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_HIDDEN
     }
 
-    private fun showBottomSheetTracks() {
-        bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_COLLAPSED
+    private fun showBottomSheetTracks(isVisible: Boolean = true) {
+        binding.bottomSheetTracks.isVisible = isVisible
+        bottomSheetBehaviorTracks.state =
+            if (isVisible) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_HIDDEN
     }
 
-    private fun showOverlay() {
-        binding.overlay.visibility = View.VISIBLE
-    }
-
-    private fun hideOverlay() {
-        binding.overlay.visibility = View.GONE
+    private fun showOverlay(isVisible: Boolean = true) {
+        binding.overlay.isVisible = isVisible
     }
 
     override fun onDestroyView() {
