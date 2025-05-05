@@ -19,6 +19,10 @@ android {
         versionName = "1.0.15"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.add("arm64-v8a") // Собирать apk-файл только для архитектуры arm64-v8a
+        }
     }
 
     buildTypes {
