@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.playlist.presentation.view
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -157,7 +158,26 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun navigateBack() = findNavController().popBackStack()
 
-    private fun sharePlaylist() = viewModel.sharePlaylist()
+    private fun sharePlaylist() {
+        when (val currentState = viewModel.state.value) {
+            is PlaylistScreenState.Content -> {
+                if (currentState.playlist.trackList.isNotEmpty()) {
+                    viewModel.sharePlaylist()
+                } else {
+                    showEmptyPlaylistToast()
+                }
+            }
+            else -> showEmptyPlaylistToast()
+        }
+    }
+
+    private fun showEmptyPlaylistToast() {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.playlist_cannot_share_empty_playlist_toast),
+            Toast.LENGTH_SHORT,
+        ).show()
+    }
 
     private fun editPlaylist() {
         val action =
