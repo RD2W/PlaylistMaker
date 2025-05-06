@@ -21,7 +21,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters.add("arm64-v8a") // Собирать apk-файл только для архитектуры arm64-v8a
+            abiFilters.add("arm64-v8a") // Добавляем поддержку архитектуры arm64-v8a
+            abiFilters.add("x86_64") // Добавляем поддержку архитектуры x86_64
         }
     }
 
