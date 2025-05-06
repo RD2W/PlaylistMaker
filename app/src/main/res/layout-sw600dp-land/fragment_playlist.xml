@@ -185,11 +185,20 @@
             android:layout_marginVertical="@dimen/value_8"
             android:background="@drawable/ic_drag_indicator"/>
 
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/BottomSheetPlaceholderTextStyle"
+            android:id="@+id/tvEmptyPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/value_28"
+            android:text="@string/playlist_bottom_sheet_placeholder"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTrackList"
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero_dp"
-            android:layout_marginTop="@dimen/value_16"
+            android:layout_marginVertical="@dimen/value_16"
             android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/track_item"/>

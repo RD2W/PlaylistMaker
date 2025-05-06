@@ -151,7 +151,12 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun showTracksList(tracks: List<Track>) {
         Timber.d("Tracks: ${tracks.joinToString { it.trackName.toString() }}")
-        adapter.submitList(tracks)
+        with(binding) {
+            val showList = tracks.isNotEmpty()
+            rvTrackList.isVisible = showList
+            tvEmptyPlaylist.isVisible = !showList
+            if (showList) adapter.submitList(tracks)
+        }
     }
 
     private fun launchPlayer(track: Track) = viewModel.clickDebounce(track)

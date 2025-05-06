@@ -185,6 +185,15 @@
             android:layout_marginVertical="@dimen/value_8"
             android:background="@drawable/ic_drag_indicator"/>
 
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/BottomSheetPlaceholderTextStyle"
+            android:id="@+id/tvEmptyPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/value_28"
+            android:text="@string/playlist_bottom_sheet_placeholder"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTrackList"
             android:layout_width="match_parent"
