@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.common.domain.model.Track
 import com.practicum.playlistmaker.databinding.FragmentFavoritesBinding
-import com.practicum.playlistmaker.media.presentation.adapter.FavoriteTrackAdapter
+import com.practicum.playlistmaker.media.presentation.adapter.favorites.FavoriteTrackAdapter
 import com.practicum.playlistmaker.media.presentation.state.FavoriteScreenState
 import com.practicum.playlistmaker.media.presentation.viewmodel.FavoritesViewModel
 import kotlinx.coroutines.launch
