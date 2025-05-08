@@ -27,16 +27,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/value_16"/>
 
-        <!-- Toolbar -->
-        <com.google.android.material.appbar.MaterialToolbar
-            style="@style/PlaylistToolbarStyle"
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
         <!-- Обложка плейлиста -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivCoverFrame"
@@ -48,6 +38,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- Toolbar -->
+        <com.google.android.material.appbar.MaterialToolbar
+            style="@style/PlaylistToolbarStyle"
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <!-- Название плейлиста -->
         <com.google.android.material.textview.MaterialTextView
