@@ -1,6 +1,6 @@
 [versions]
 # Build tools
-agp = "8.9.2"
+agp = "8.10.0"
 kotlin = "2.1.20"
 ksp = "2.1.20-2.0.0"
 detekt = "1.23.8"
@@ -19,10 +19,10 @@ viewPager2 = "1.1.0"
 preference = "1.2.1"
 
 # Navigation
-navigationFragment = "2.8.9"
+navigationFragment = "2.9.0"
 
 # Lifecycle
-lifecycle = "2.8.7"
+lifecycle = "2.9.0"
 
 # Room
 room = "2.7.1"
