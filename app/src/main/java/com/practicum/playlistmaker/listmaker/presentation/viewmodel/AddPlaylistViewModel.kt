@@ -200,7 +200,7 @@ class AddPlaylistViewModel(
             editPlaylistUseCase(
                 playlistId = currentPlaylistId,
                 name = name,
-                description = description.takeIf { it.isNotEmpty() },
+                description = description,
                 coverAction = coverAction,
             )
                 .onSuccess { playlistId ->
