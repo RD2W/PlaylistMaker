@@ -5,6 +5,8 @@ import com.practicum.playlistmaker.media.domain.repository.PlaylistsRepository
 import com.practicum.playlistmaker.media.domain.usecase.GetPlaylistTracksUseCase
 import kotlinx.coroutines.flow.Flow
 
-class GetPlaylistTracksUseCaseImpl(private val repository: PlaylistsRepository) : GetPlaylistTracksUseCase {
-    override operator fun invoke(playlistId: Long): Flow<List<Track>> = repository.getTracksInPlaylist(playlistId)
+class GetPlaylistTracksUseCaseImpl(private val repository: PlaylistsRepository) :
+    GetPlaylistTracksUseCase {
+    override operator fun invoke(playlistId: Long): Flow<List<Track>> =
+        repository.getTracksInPlaylist(playlistId)
 }

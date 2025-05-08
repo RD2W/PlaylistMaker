@@ -9,8 +9,10 @@ import com.practicum.playlistmaker.listmaker.domain.repository.ImageRepository
 import com.practicum.playlistmaker.listmaker.domain.repository.PlaylistCoverRepository
 import com.practicum.playlistmaker.media.data.repository.FavoriteTracksRepositoryImpl
 import com.practicum.playlistmaker.media.data.repository.PlaylistsRepositoryImpl
+import com.practicum.playlistmaker.media.data.repository.TracksDataBaseRepositoryImpl
 import com.practicum.playlistmaker.media.domain.repository.FavoriteTracksRepository
 import com.practicum.playlistmaker.media.domain.repository.PlaylistsRepository
+import com.practicum.playlistmaker.media.domain.repository.TracksDataBaseRepository
 import com.practicum.playlistmaker.player.data.repository.PlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.repository.PlayerRepository
 import com.practicum.playlistmaker.playlist.data.repository.SharePlaylistRepositoryImpl
@@ -33,6 +35,7 @@ val dataModule = module {
     factoryOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
     factoryOf(::SearchHistoryRepositoryImpl) { bind<SearchHistoryRepository>() }
     factoryOf(::TracksRepositoryImpl) { bind<TracksRepository>() }
+    factoryOf(::TracksDataBaseRepositoryImpl) { bind<TracksDataBaseRepository>() }
     factoryOf(::FavoriteTracksRepositoryImpl) { bind<FavoriteTracksRepository>() }
     factoryOf(::PlaylistsRepositoryImpl) { bind<PlaylistsRepository>() }
     factoryOf(::PlaylistCoverRepositoryImpl) { bind<PlaylistCoverRepository>() }
