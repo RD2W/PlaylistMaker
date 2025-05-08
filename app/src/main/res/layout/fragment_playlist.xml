@@ -39,19 +39,15 @@
 
         <!-- Обложка плейлиста -->
         <com.google.android.material.imageview.ShapeableImageView
-            style="@style/PlaylistDetailsCoverStyle"
             android:id="@+id/ivCoverFrame"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="@dimen/zero_dp"
-            android:layout_marginTop="@dimen/value_8"
-            android:layout_marginStart="@dimen/value_8"
-            android:layout_marginEnd="@dimen/value_8"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_track_placeholder"
             app:layout_constraintDimensionRatio="h,1:1"
-            app:layout_constraintTop_toBottomOf="@id/topAppBar"
-            app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-            app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <!-- Название плейлиста -->
         <com.google.android.material.textview.MaterialTextView
