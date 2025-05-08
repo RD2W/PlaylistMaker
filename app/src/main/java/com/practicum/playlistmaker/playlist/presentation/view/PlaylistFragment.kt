@@ -212,7 +212,10 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
                 showBottomSheetMore(false)
             }
             tvEditInfoItem.setOnClickListener { editPlaylist() }
-            tvDeleteListItem.setOnClickListener { showDeletePlaylistDialog() }
+            tvDeleteListItem.setOnClickListener {
+                showDeletePlaylistDialog()
+                showBottomSheetMore(false)
+            }
             overlay.setOnClickListener { showBottomSheetMore(false) }
         }
     }
