@@ -170,9 +170,7 @@
         android:orientation="vertical"
         android:background="@drawable/bottom_sheet_background"
         android:paddingHorizontal="@dimen/value_16"
-        android:minHeight="@dimen/value_160"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/value_108"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!-- Drag handle for accessibility -->

@@ -198,8 +198,23 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     }
 
     private fun setupInitialBottomSheetState() {
+        setupBottomSheetHeight()
         showBottomSheetTracks()
         showBottomSheetMore(false)
+    }
+
+    private fun setupBottomSheetHeight() {
+        binding.root.post {
+            val btnPosition =
+                binding.btnSharePlaylist.bottom + binding.addPlaylist.top + binding.root.paddingTop
+            val screenHeightPx = resources.displayMetrics.heightPixels
+            val paddingPx = resources.getDimensionPixelSize(R.dimen.value_32)
+
+            bottomSheetBehaviorTracks.apply {
+                maxHeight = screenHeightPx
+                peekHeight = screenHeightPx - btnPosition - paddingPx
+            }
+        }
     }
 
     private fun setupButtons() {
