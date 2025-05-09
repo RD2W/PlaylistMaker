@@ -16,6 +16,7 @@ import com.practicum.playlistmaker.media.domain.usecase.AddTrackToFavoritesUseCa
 import com.practicum.playlistmaker.media.domain.usecase.AddTrackToPlaylistUseCase
 import com.practicum.playlistmaker.media.domain.usecase.CreatePlaylistUseCase
 import com.practicum.playlistmaker.media.domain.usecase.DeletePlaylistUseCase
+import com.practicum.playlistmaker.media.domain.usecase.DeleteTrackFromDataBaseUseCase
 import com.practicum.playlistmaker.media.domain.usecase.EditPlaylistUseCase
 import com.practicum.playlistmaker.media.domain.usecase.GetFavoriteTrackByIdUseCase
 import com.practicum.playlistmaker.media.domain.usecase.GetFavoriteTracksUseCase
@@ -31,6 +32,7 @@ import com.practicum.playlistmaker.media.domain.usecase.impl.AddTrackToFavorites
 import com.practicum.playlistmaker.media.domain.usecase.impl.AddTrackToPlaylistUseCaseImpl
 import com.practicum.playlistmaker.media.domain.usecase.impl.CreatePlaylistUseCaseImpl
 import com.practicum.playlistmaker.media.domain.usecase.impl.DeletePlaylistUseCaseImpl
+import com.practicum.playlistmaker.media.domain.usecase.impl.DeleteTrackFromDataBaseUseCaseImpl
 import com.practicum.playlistmaker.media.domain.usecase.impl.EditPlaylistUseCaseImpl
 import com.practicum.playlistmaker.media.domain.usecase.impl.GetFavoriteTrackByIdUseCaseImpl
 import com.practicum.playlistmaker.media.domain.usecase.impl.GetFavoriteTracksUseCaseImpl
@@ -62,6 +64,9 @@ val domainModule = module {
     factoryOf(::SearchHistoryInteractorImpl) { bind<SearchHistoryInteractor>() }
     factoryOf(::SettingsInteractorImpl) { bind<SettingsInteractor>() }
     factoryOf(::TracksInteractorImpl) { bind<TracksInteractor>() }
+
+    /** Tracks UseCases */
+    factoryOf(::DeleteTrackFromDataBaseUseCaseImpl) { bind<DeleteTrackFromDataBaseUseCase>() }
 
     /** Favorite Tracks UseCases */
     factoryOf(::AddTrackToFavoritesUseCaseImpl) { bind<AddTrackToFavoritesUseCase>() }

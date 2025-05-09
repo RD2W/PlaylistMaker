@@ -27,6 +27,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/value_16"/>
 
+        <!-- Обложка плейлиста -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivCoverFrame"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="@dimen/zero_dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_track_placeholder"
+            app:layout_constraintDimensionRatio="h,1:1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <!-- Toolbar -->
         <com.google.android.material.appbar.MaterialToolbar
             style="@style/PlaylistToolbarStyle"
@@ -36,22 +48,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-
-        <!-- Обложка плейлиста -->
-        <com.google.android.material.imageview.ShapeableImageView
-            style="@style/PlaylistDetailsCoverStyle"
-            android:id="@+id/ivCoverFrame"
-            android:layout_width="@dimen/zero_dp"
-            android:layout_height="@dimen/zero_dp"
-            android:layout_marginTop="@dimen/value_8"
-            android:layout_marginStart="@dimen/value_8"
-            android:layout_marginEnd="@dimen/value_8"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_track_placeholder"
-            app:layout_constraintDimensionRatio="h,1:1"
-            app:layout_constraintTop_toBottomOf="@id/topAppBar"
-            app:layout_constraintEnd_toEndOf="@id/rightGuidLineBase"
-            app:layout_constraintStart_toStartOf="@id/leftGuidLineBase"/>
 
         <!-- Название плейлиста -->
         <com.google.android.material.textview.MaterialTextView
@@ -158,13 +154,11 @@
         style="@style/PrimeLinearLayoutStyle"
         android:id="@+id/bottomSheetTracks"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/bottom_sheet_background"
         android:paddingHorizontal="@dimen/value_16"
-        android:minHeight="@dimen/value_160"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/value_160"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!-- Drag handle for accessibility -->
@@ -176,6 +170,15 @@
             android:minHeight="@dimen/value_24"
             android:layout_marginVertical="@dimen/value_8"
             android:background="@drawable/ic_drag_indicator"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/BottomSheetPlaceholderTextStyle"
+            android:id="@+id/tvEmptyPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/value_28"
+            android:text="@string/playlist_bottom_sheet_placeholder"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTrackList"

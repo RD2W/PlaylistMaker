@@ -163,7 +163,7 @@
     </style>
 
     <style name="PlaylistToolbarStyle" parent="CustomToolbarStyle">
-        <item name="android:background">@color/light_gray</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="navigationIconTint">@color/dark_gray</item>
     </style>
 

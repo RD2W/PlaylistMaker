@@ -44,19 +44,21 @@ interface PlaylistTrackCrossRefDao {
     suspend fun removeAllTracksFromPlaylist(playlistId: Long)
 
     /**
-     * Возвращает поток списка треков, принадлежащих указанному плейлисту.
+     * Возвращает поток списка треков, принадлежащих указанному плейлисту,
+     * отсортированных по дате добавления (сначала новые).
      *
      * Логика работы:
      * - Выполняет SQL-запрос, который выбирает все треки из таблицы `tracks`,
      *   чьи `trackId` присутствуют в таблице `playlist_track_cross_ref` для указанного `playlistId`.
+     * - Сортирует результаты по дате добавления в порядке убывания (DESC).
      * - Результат возвращается как поток (`Flow`) списка сущностей `TrackEntity`.
      */
     @Query(
         """
-        SELECT * FROM tracks WHERE track_id IN (
-            SELECT track_id FROM playlist_track_cross_ref
-            WHERE playlist_id = :playlistId
-        )
+        SELECT tracks.* FROM tracks 
+        INNER JOIN playlist_track_cross_ref ON tracks.track_id = playlist_track_cross_ref.track_id
+        WHERE playlist_track_cross_ref.playlist_id = :playlistId
+        ORDER BY playlist_track_cross_ref.added_at DESC
         """,
     )
     fun getTracksInPlaylist(playlistId: Long): Flow<List<TrackEntity>>

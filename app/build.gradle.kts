@@ -15,10 +15,15 @@ android {
         applicationId = "com.practicum.playlistmaker"
         minSdk = 31
         targetSdk = 35
-        versionCode = 15
-        versionName = "1.0.15"
+        versionCode = 16
+        versionName = "1.0.16"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.add("arm64-v8a") // Добавляем поддержку архитектуры arm64-v8a
+            abiFilters.add("x86_64") // Добавляем поддержку архитектуры x86_64
+        }
     }
 
     buildTypes {

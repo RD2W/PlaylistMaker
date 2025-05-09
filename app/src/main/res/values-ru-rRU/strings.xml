@@ -60,6 +60,8 @@
     <string name="playlist_delete_playlist_message">Хотите удалить плейлист?</string>
     <string name="playlist_delete_track_title">Удалить трек</string>
     <string name="playlist_delete_track_message">Хотите удалить трек \"%s\"?</string>
+    <string name="playlist_cannot_share_empty_playlist_toast">Нельзя поделиться пустым плейлистом!</string>
+    <string name="playlist_bottom_sheet_placeholder">Плейлист пуст</string>
     <string name="player_title">Плеер</string>
     <string name="player_add_track_to_playlist">Добавить в плейлист</string>
     <string name="player_track_added_to_playlist_message">Добавлено в плейлист \"%s\"</string>

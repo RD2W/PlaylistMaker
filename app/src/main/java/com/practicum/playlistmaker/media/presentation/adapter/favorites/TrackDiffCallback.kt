@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.media.presentation.adapter
+package com.practicum.playlistmaker.media.presentation.adapter.favorites
 
 import androidx.recyclerview.widget.DiffUtil
 import com.practicum.playlistmaker.common.domain.model.Track

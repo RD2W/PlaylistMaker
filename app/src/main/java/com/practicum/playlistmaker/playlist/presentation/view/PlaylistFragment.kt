@@ -2,6 +2,9 @@ package com.practicum.playlistmaker.playlist.presentation.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -36,13 +39,8 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     private val args: PlaylistFragmentArgs by navArgs()
     private val viewModel: PlaylistViewModel by viewModel()
 
-    private val bottomSheetBehaviorTracks by lazy {
-        BottomSheetBehavior.from(binding.bottomSheetTracks)
-    }
-
-    private val bottomSheetBehaviorMore by lazy {
-        BottomSheetBehavior.from(binding.bottomSheetMore)
-    }
+    private lateinit var bottomSheetBehaviorMore: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetBehaviorTracks: BottomSheetBehavior<LinearLayout>
 
     private val adapter = TrackInPlaylistAdapter(
         onTrackClick = { track -> launchPlayer(track) },
@@ -58,12 +56,11 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentPlaylistBinding.bind(view)
 
+        setupBottomSheet()
         setupRecyclerView()
         observeViewModel()
         observeClickEvent()
-        setupInitialBottomSheetState()
         setupButtons()
-        setupBottomSheetMoreCallback()
     }
 
     private fun observeViewModel() {
@@ -154,14 +151,38 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun showTracksList(tracks: List<Track>) {
         Timber.d("Tracks: ${tracks.joinToString { it.trackName.toString() }}")
-        adapter.submitList(tracks)
+        with(binding) {
+            val showList = tracks.isNotEmpty()
+            rvTrackList.isVisible = showList
+            tvEmptyPlaylist.isVisible = !showList
+            if (showList) adapter.submitList(tracks)
+        }
     }
 
     private fun launchPlayer(track: Track) = viewModel.clickDebounce(track)
 
     private fun navigateBack() = findNavController().popBackStack()
 
-    private fun sharePlaylist() = viewModel.sharePlaylist()
+    private fun sharePlaylist() {
+        when (val currentState = viewModel.state.value) {
+            is PlaylistScreenState.Content -> {
+                if (currentState.playlist.trackList.isNotEmpty()) {
+                    viewModel.sharePlaylist()
+                } else {
+                    showEmptyPlaylistToast()
+                }
+            }
+            else -> showEmptyPlaylistToast()
+        }
+    }
+
+    private fun showEmptyPlaylistToast() {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.playlist_cannot_share_empty_playlist_toast),
+            Toast.LENGTH_SHORT,
+        ).show()
+    }
 
     private fun editPlaylist() {
         val action =
@@ -169,9 +190,32 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         findNavController().navigate(action)
     }
 
+    private fun setupBottomSheet() {
+        bottomSheetBehaviorMore = BottomSheetBehavior.from(binding.bottomSheetMore)
+        bottomSheetBehaviorTracks = BottomSheetBehavior.from(binding.bottomSheetTracks)
+        setupBottomSheetMoreCallback()
+        setupInitialBottomSheetState()
+    }
+
     private fun setupInitialBottomSheetState() {
-        bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
+        setupBottomSheetHeight()
+        showBottomSheetTracks()
+        showBottomSheetMore(false)
+    }
+
+    private fun setupBottomSheetHeight() {
+        binding.root.post {
+            val btnPosition =
+                binding.btnSharePlaylist.bottom + binding.addPlaylist.top + binding.root.paddingTop
+            val screenHeightPx = resources.displayMetrics.heightPixels
+            val paddingPx = resources.getDimensionPixelSize(R.dimen.value_32)
+
+            bottomSheetBehaviorTracks.apply {
+                maxHeight = screenHeightPx
+                peekHeight = screenHeightPx - btnPosition - paddingPx
+                state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
     }
 
     private fun setupButtons() {
@@ -179,13 +223,16 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
             topAppBar.setNavigationOnClickListener { navigateBack() }
             btnSharePlaylist.setOnClickListener { sharePlaylist() }
             btnMoreActions.setOnClickListener { toggleBottomSheetMoreState() }
-            tvShareItem.setOnClickListener { sharePlaylist() }
-            tvEditInfoItem.setOnClickListener { editPlaylist() }
-            tvDeleteListItem.setOnClickListener { showDeletePlaylistDialog() }
-
-            overlay.setOnClickListener {
-                bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
+            tvShareItem.setOnClickListener {
+                sharePlaylist()
+                showBottomSheetMore(false)
             }
+            tvEditInfoItem.setOnClickListener { editPlaylist() }
+            tvDeleteListItem.setOnClickListener {
+                showDeletePlaylistDialog()
+                showBottomSheetMore(false)
+            }
+            overlay.setOnClickListener { showBottomSheetMore(false) }
         }
     }
 
@@ -208,9 +255,9 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     private fun toggleBottomSheetMoreState() {
         if (bottomSheetBehaviorMore.state == BottomSheetBehavior.STATE_HIDDEN) {
             binding.bottomSheetMore.bringToFront()
-            bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_COLLAPSED
+            showBottomSheetMore()
         } else {
-            bottomSheetBehaviorMore.state = BottomSheetBehavior.STATE_HIDDEN
+            showBottomSheetMore(false)
         }
     }
 
@@ -230,13 +277,13 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
     private fun handleBottomSheetMoreStateChange(newState: Int) {
         when (newState) {
             BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_COLLAPSED -> {
-                hideBottomSheetTracks()
+                showBottomSheetTracks(false)
                 showOverlay()
             }
 
             BottomSheetBehavior.STATE_HIDDEN -> {
                 showBottomSheetTracks()
-                hideOverlay()
+                showOverlay(false)
             }
 
             BottomSheetBehavior.STATE_DRAGGING -> {
@@ -253,20 +300,26 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
         }
     }
 
-    private fun hideBottomSheetTracks() {
-        bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_HIDDEN
+    private fun showBottomSheetMore(isVisible: Boolean = true) {
+        bottomSheetBehaviorMore.state =
+            if (isVisible) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_HIDDEN
     }
 
-    private fun showBottomSheetTracks() {
-        bottomSheetBehaviorTracks.state = BottomSheetBehavior.STATE_COLLAPSED
+    private fun showBottomSheetTracks(isVisible: Boolean = true) {
+        binding.bottomSheetTracks.isVisible = isVisible
+        bottomSheetBehaviorTracks.state =
+            if (isVisible) BottomSheetBehavior.STATE_COLLAPSED else BottomSheetBehavior.STATE_HIDDEN
     }
 
-    private fun showOverlay() {
-        binding.overlay.visibility = View.VISIBLE
+    private fun showOverlay(isVisible: Boolean = true) {
+        binding.overlay.isVisible = isVisible
     }
 
-    private fun hideOverlay() {
-        binding.overlay.visibility = View.GONE
+    override fun onResume() {
+        super.onResume()
+        binding.root.post {
+            setupBottomSheetHeight() // Обновление при возвращении
+        }
     }
 
     override fun onDestroyView() {
