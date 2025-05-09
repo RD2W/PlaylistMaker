@@ -213,6 +213,7 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
             bottomSheetBehaviorTracks.apply {
                 maxHeight = screenHeightPx
                 peekHeight = screenHeightPx - btnPosition - paddingPx
+                state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
     }
@@ -312,6 +313,13 @@ class PlaylistFragment : Fragment(R.layout.fragment_playlist) {
 
     private fun showOverlay(isVisible: Boolean = true) {
         binding.overlay.isVisible = isVisible
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.root.post {
+            setupBottomSheetHeight() // Обновление при возвращении
+        }
     }
 
     override fun onDestroyView() {

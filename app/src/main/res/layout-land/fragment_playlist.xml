@@ -166,7 +166,6 @@
         android:layout_width="@dimen/value_480"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/value_32"
         android:orientation="vertical"
         android:background="@drawable/bottom_sheet_background"
         android:paddingHorizontal="@dimen/value_16"
