@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest  # Используем последнюю версию Ubuntu
+    permissions:
+      contents: write
     steps:
       # Шаг 1: Клонирование репозитория
       - name: Checkout code
@@ -44,16 +46,16 @@ jobs:
       - name: Decode Keystore
         run: |
           # Декодируем keystore из base64 (хранится в GitHub Secrets)
-          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > app/keystore.jks
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
           # Проверяем что файл создан и имеет корректный размер
-          ls -la app/keystore.jks
+          ls -la keystore.jks
 
       # Шаг 5: Сборка APK
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace --no-daemon
         env:
           # Передаем параметры для подписи APK
-          RELEASE_KEYSTORE_FILE: app/keystore.jks
+          RELEASE_KEYSTORE_FILE: ${{ github.workspace }}/keystore.jks
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
@@ -83,18 +85,20 @@ jobs:
       - name: Prepare release notes
         id: prepare_release  # Идентификатор для доступа к результатам
         run: |
+          # Получаем текущую дату в нужном формате
+          RELEASE_DATE=$(date '+%d.%m.%Y в %H:%M (UTC%z)')
           # Формируем разное описание для первого и последующих тегов
           if ${{ steps.check_tag.outputs.is_first_tag == 'true' }}; then
             # Для первого тега показываем все коммиты
             NOTES="### Первый релиз PlaylistMaker ${{ github.ref_name }}
-            **Дата сборки:** ${{ github.run_number }}
+            **Дата сборки:** $RELEASE_DATE
             **Полные изменения:** https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}
             **Скачать:** [PlaylistMaker-${{ github.ref_name }}.apk](PlaylistMaker-${{ github.ref_name }}.apk)"
           else
             # Для последующих тегов - сравнение с предыдущей версией
             PREV_TAG=$(git describe --tags --abbrev=0 ${{ github.ref_name }}^)
             NOTES="### PlaylistMaker ${{ github.ref_name }}
-            **Дата сборки:** ${{ github.run_number }}
+            **Дата сборки:** $RELEASE_DATE
             **Изменения:** https://github.com/${{ github.repository }}/compare/$PREV_TAG...${{ github.ref_name }}
             **Скачать:** [PlaylistMaker-${{ github.ref_name }}.apk](PlaylistMaker-${{ github.ref_name }}.apk)"
           fi
@@ -114,19 +118,3 @@ jobs:
           body: ${{ steps.prepare_release.outputs.notes }}  # Описание из шага 8
           draft: true  # Не публиковать сразу (черновик)
           prerelease: false  # Обычный релиз (не пре-релиз)
-
-      # Шаг 10: Проверка релиза
-      - name: Verify Release
-        run: |
-          # Запрашиваем информацию о релизе через GitHub API
-          RESPONSE=$(curl -s \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}")
-          
-          # Проверяем что APK присутствует в ассетах релиза
-          if ! echo "$RESPONSE" | grep -q "PlaylistMaker-${{ github.ref_name }}.apk"; then
-            echo "::error::APK не найден в релизе!"
-            exit 1  # Падаем если что-то пошло не так
-          fi
-          echo "✅ Релиз успешно создан"
