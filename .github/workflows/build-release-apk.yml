@@ -53,7 +53,7 @@ jobs:
         run: ./gradlew assembleRelease --stacktrace --no-daemon
         env:
           # Передаем параметры для подписи APK
-          RELEASE_KEYSTORE_FILE: keystore.jks
+          RELEASE_KEYSTORE_FILE: ${{ github.workspace }}/keystore.jks
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
