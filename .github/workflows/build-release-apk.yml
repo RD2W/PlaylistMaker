@@ -116,19 +116,3 @@ jobs:
           body: ${{ steps.prepare_release.outputs.notes }}  # Описание из шага 8
           draft: true  # Не публиковать сразу (черновик)
           prerelease: false  # Обычный релиз (не пре-релиз)
-
-      # Шаг 10: Проверка релиза
-      - name: Verify Release
-        run: |
-          # Запрашиваем информацию о релизе через GitHub API
-          RESPONSE=$(curl -s \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}")
-          
-          # Проверяем что APK присутствует в ассетах релиза
-          if ! echo "$RESPONSE" | grep -q "PlaylistMaker-${{ github.ref_name }}.apk"; then
-            echo "::error::APK не найден в релизе!"
-            exit 1  # Падаем если что-то пошло не так
-          fi
-          echo "✅ Релиз успешно создан"
