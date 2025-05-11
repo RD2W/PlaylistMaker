@@ -85,18 +85,20 @@ jobs:
       - name: Prepare release notes
         id: prepare_release  # Идентификатор для доступа к результатам
         run: |
+          # Получаем текущую дату в нужном формате
+          RELEASE_DATE=$(date '+%d.%m.%Y в %H:%M (UTC%z)')
           # Формируем разное описание для первого и последующих тегов
           if ${{ steps.check_tag.outputs.is_first_tag == 'true' }}; then
             # Для первого тега показываем все коммиты
             NOTES="### Первый релиз PlaylistMaker ${{ github.ref_name }}
-            **Дата сборки:** ${{ github.run_number }}
+            **Дата сборки:** $RELEASE_DATE
             **Полные изменения:** https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}
             **Скачать:** [PlaylistMaker-${{ github.ref_name }}.apk](PlaylistMaker-${{ github.ref_name }}.apk)"
           else
             # Для последующих тегов - сравнение с предыдущей версией
             PREV_TAG=$(git describe --tags --abbrev=0 ${{ github.ref_name }}^)
             NOTES="### PlaylistMaker ${{ github.ref_name }}
-            **Дата сборки:** ${{ github.run_number }}
+            **Дата сборки:** $RELEASE_DATE
             **Изменения:** https://github.com/${{ github.repository }}/compare/$PREV_TAG...${{ github.ref_name }}
             **Скачать:** [PlaylistMaker-${{ github.ref_name }}.apk](PlaylistMaker-${{ github.ref_name }}.apk)"
           fi
