@@ -16,7 +16,7 @@ android {
         minSdk = 31
         targetSdk = 35
         versionCode = 16
-        versionName = "1.0.16"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -26,13 +26,27 @@ android {
         }
     }
 
+    // Настройка подписи релизных сборок
+    signingConfigs {
+        create("release") {
+            // Используем переменные окружения (для CI/CD)
+            storeFile = file(System.getenv("RELEASE_KEYSTORE_FILE") ?: "debug.keystore")
+            storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField("Boolean", "DEBUG", "true")
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
         }
         release {
             buildConfigField("Boolean", "DEBUG", "false")
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

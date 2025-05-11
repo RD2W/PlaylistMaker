@@ -1,4 +1,4 @@
-name: Build APK on Pull Request
+name: Build debug APK on Pull Request
 
 on:
   pull_request:
@@ -28,7 +28,8 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+            ~/.gradle/daemon
+          key: ${{ runner.os }}-gradle-${{ hashFiles('gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties', 'build.gradle.kts', 'settings.gradle.kts', 'app/build.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
@@ -42,7 +43,7 @@ jobs:
 
       # Шаг 5: Сборка проекта и создание APK
       - name: Build APK
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --build-cache
 
       # Шаг 6: Переименование APK
       - name: Rename APK
