@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest  # Используем последнюю версию Ubuntu
     permissions:
       contents: write
-      releases: write
     steps:
       # Шаг 1: Клонирование репозитория
       - name: Checkout code
