@@ -21,12 +21,15 @@ jobs:
         id: check_tag  # Идентификатор для обращения к результатам шага
         run: |
           # Получаем актуальный список тегов с сервера
-          git fetch --tags
-          # Считаем количество тегов
-          TAG_COUNT=$(git tag | wc -l)
-          # Сохраняем результаты для использования в последующих шагах
-          echo "tag_count=$TAG_COUNT" >> $GITHUB_OUTPUT
-          echo "is_first_tag=$([ $TAG_COUNT -eq 1 ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          git fetch --tags -f        
+          # Пытаемся найти предыдущий тег
+          PREV_TAG=$(git describe --tags --abbrev=0 "${{ github.ref_name }}"^ 2>/dev/null || echo "")
+          # Сохраняем результаты
+          echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
+          echo "is_first_tag=$([ -z "$PREV_TAG" ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT 
+          # Для отладки
+          echo "Current tag: ${{ github.ref_name }}"
+          echo "Previous tag: $PREV_TAG"
 
       # Шаг 3: Установка JDK
       - name: Set up JDK 17
