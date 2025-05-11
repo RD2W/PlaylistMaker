@@ -44,16 +44,16 @@ jobs:
       - name: Decode Keystore
         run: |
           # Декодируем keystore из base64 (хранится в GitHub Secrets)
-          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > app/keystore.jks
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
           # Проверяем что файл создан и имеет корректный размер
-          ls -la app/keystore.jks
+          ls -la keystore.jks
 
       # Шаг 5: Сборка APK
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace --no-daemon
         env:
           # Передаем параметры для подписи APK
-          RELEASE_KEYSTORE_FILE: app/keystore.jks
+          RELEASE_KEYSTORE_FILE: keystore.jks
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
