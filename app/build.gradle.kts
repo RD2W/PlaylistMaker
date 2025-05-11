@@ -30,7 +30,7 @@ android {
     signingConfigs {
         create("release") {
             // Используем переменные окружения (для CI/CD)
-            storeFile = file(System.getenv("RELEASE_KEYSTORE_FILE"))
+            storeFile = file(System.getenv("RELEASE_KEYSTORE_FILE") ?: "debug.keystore")
             storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
             keyAlias = System.getenv("RELEASE_KEY_ALIAS")
             keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
