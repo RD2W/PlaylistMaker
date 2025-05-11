@@ -1,0 +1,129 @@
+name: Build and Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Запускать только при пуше тегов, начинающихся с 'v' (v1.0.0, v2.1.0 и т.д.)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Используем последнюю версию Ubuntu
+    steps:
+      # Шаг 1: Клонирование репозитория
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Полная история коммитов для корректной работы с тегами
+          # Без этого git describe может не найти предыдущие теги
+
+      # Шаг 2: Проверка, является ли тег первым
+      - name: Check if first tag
+        id: check_tag  # Идентификатор для обращения к результатам шага
+        run: |
+          # Получаем актуальный список тегов с сервера
+          git fetch --tags
+          # Считаем количество тегов
+          TAG_COUNT=$(git tag | wc -l)
+          # Сохраняем результаты для использования в последующих шагах
+          echo "tag_count=$TAG_COUNT" >> $GITHUB_OUTPUT
+          echo "is_first_tag=$([ $TAG_COUNT -eq 1 ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+
+      # Шаг 3: Установка JDK
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'  # Версия должна соответствовать проекту
+          distribution: 'temurin'  # Рекомендуемая сборка OpenJDK
+          # Кеширование JDK для ускорения последующих запусков
+          cache: 'gradle'
+
+      # Шаг 4: Декодирование keystore
+      - name: Decode Keystore
+        run: |
+          # Декодируем keystore из base64 (хранится в GitHub Secrets)
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > app/keystore.jks
+          # Проверяем что файл создан и имеет корректный размер
+          ls -la app/keystore.jks
+
+      # Шаг 5: Сборка APK
+      - name: Build Release APK
+        run: ./gradlew assembleRelease --stacktrace --no-daemon
+        env:
+          # Передаем параметры для подписи APK
+          RELEASE_KEYSTORE_FILE: app/keystore.jks
+          RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+          # Отключаем Gradle daemon для стабильности в CI
+          GRADLE_OPTS: -Dorg.gradle.daemon=false
+
+      # Шаг 6: Переименование APK
+      - name: Rename APK
+        run: |
+          # Извлекаем имя тега из переменной GITHUB_REF
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          # Переименовываем APK по шаблону PlaylistMaker-<тег>.apk
+          mv app/build/outputs/apk/release/app-release.apk "PlaylistMaker-$TAG_NAME.apk"
+          # Проверяем что файл переименован корректно
+          ls -la PlaylistMaker-*.apk
+
+      # Шаг 7: Загрузка артефакта
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk  # Имя артефакта
+          path: PlaylistMaker-*.apk  # Путь к APK
+          retention-days: 7  # Автоматическое удаление через 7 дней
+          # Артефакт нужен как временное хранилище до создания релиза
+
+      # Шаг 8: Подготовка описания релиза
+      - name: Prepare release notes
+        id: prepare_release  # Идентификатор для доступа к результатам
+        run: |
+          # Формируем разное описание для первого и последующих тегов
+          if ${{ steps.check_tag.outputs.is_first_tag == 'true' }}; then
+            # Для первого тега показываем все коммиты
+            NOTES="### Первый релиз PlaylistMaker ${{ github.ref_name }}
+            **Дата сборки:** ${{ github.run_number }}
+            **Полные изменения:** https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}
+            **Скачать:** [PlaylistMaker-${{ github.ref_name }}.apk](PlaylistMaker-${{ github.ref_name }}.apk)"
+          else
+            # Для последующих тегов - сравнение с предыдущей версией
+            PREV_TAG=$(git describe --tags --abbrev=0 ${{ github.ref_name }}^)
+            NOTES="### PlaylistMaker ${{ github.ref_name }}
+            **Дата сборки:** ${{ github.run_number }}
+            **Изменения:** https://github.com/${{ github.repository }}/compare/$PREV_TAG...${{ github.ref_name }}
+            **Скачать:** [PlaylistMaker-${{ github.ref_name }}.apk](PlaylistMaker-${{ github.ref_name }}.apk)"
+          fi
+          # Сохраняем сформированное описание
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # Шаг 9: Создание релиза
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')  # Выполнять только для тегов
+        with:
+          files: PlaylistMaker-*.apk  # Прикрепляем APK
+          tag_name: ${{ github.ref_name }}  # Используем имя тега
+          name: "PlaylistMaker ${{ github.ref_name }}"  # Название релиза
+          body: ${{ steps.prepare_release.outputs.notes }}  # Описание из шага 8
+          draft: true  # Не публиковать сразу (черновик)
+          prerelease: false  # Обычный релиз (не пре-релиз)
+
+      # Шаг 10: Проверка релиза
+      - name: Verify Release
+        run: |
+          # Запрашиваем информацию о релизе через GitHub API
+          RESPONSE=$(curl -s \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }}")
+          
+          # Проверяем что APK присутствует в ассетах релиза
+          if ! echo "$RESPONSE" | grep -q "PlaylistMaker-${{ github.ref_name }}.apk"; then
+            echo "::error::APK не найден в релизе!"
+            exit 1  # Падаем если что-то пошло не так
+          fi
+          echo "✅ Релиз успешно создан"

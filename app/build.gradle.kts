@@ -16,13 +16,24 @@ android {
         minSdk = 31
         targetSdk = 35
         versionCode = 16
-        versionName = "1.0.16"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
             abiFilters.add("arm64-v8a") // Добавляем поддержку архитектуры arm64-v8a
             abiFilters.add("x86_64") // Добавляем поддержку архитектуры x86_64
+        }
+    }
+
+    // Настройка подписи релизных сборок
+    signingConfigs {
+        create("release") {
+            // Используем переменные окружения (для CI/CD)
+            storeFile = file(System.getenv("RELEASE_KEYSTORE_FILE"))
+            storePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
         }
     }
 
@@ -34,6 +45,7 @@ android {
         }
         release {
             buildConfigField("Boolean", "DEBUG", "false")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
